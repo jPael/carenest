@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
-import 'package:smartguide_app/components/button/custom_button.dart';
 import 'package:smartguide_app/components/home/card_button.dart';
+import 'package:smartguide_app/pages/midwife/chatbot/chatbot_page.dart';
+import 'package:smartguide_app/pages/midwife/childcare_tips/childcare_tips_page.dart';
 
 class HomeView extends StatelessWidget {
   const HomeView({super.key});
@@ -10,6 +11,7 @@ class HomeView extends StatelessWidget {
     return Padding(
       padding: const EdgeInsets.all(8.0 * 2),
       child: Column(
+        mainAxisAlignment: MainAxisAlignment.center,
         children: [
           Row(
             mainAxisAlignment: MainAxisAlignment.spaceEvenly,
@@ -22,7 +24,12 @@ class HomeView extends StatelessWidget {
                     width: 180,
                   ),
                   label: "Childcare tips",
-                  onPressed: () {}),
+                  onPressed: () => Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                          builder: (context) => ChildcareTipsPage(
+                                label: "Childcare tips",
+                              )))),
               CardButton(
                   content: Image.asset(
                     "lib/assets/images/midwife_home_chatbot_icon.png",
@@ -31,7 +38,8 @@ class HomeView extends StatelessWidget {
                     width: 180,
                   ),
                   label: "Chatbot",
-                  onPressed: () {}),
+                  onPressed: () => Navigator.push(context,
+                      MaterialPageRoute(builder: (context) => ChatbotPage(label: "Chatbot")))),
             ],
           ),
           const SizedBox(

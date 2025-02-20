@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:smartguide_app/components/button/custom_button.dart';
 import 'package:smartguide_app/components/form/custom_form.dart';
-import 'package:smartguide_app/components/custom_input.dart';
+import 'package:smartguide_app/components/input/custom_input.dart';
 import 'package:smartguide_app/pages/midwife/signup/account_creation.dart';
 
 class MotherRegistration extends StatefulWidget {

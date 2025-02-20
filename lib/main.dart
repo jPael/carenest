@@ -5,6 +5,8 @@ void main() {
   runApp(const MyApp());
 }
 
+GlobalKey<NavigatorState> navigatorKey = GlobalKey<NavigatorState>();
+
 class MyApp extends StatelessWidget {
   const MyApp({super.key});
 
@@ -17,7 +19,9 @@ class MyApp extends StatelessWidget {
         colorScheme: ColorScheme.fromSeed(seedColor: Colors.greenAccent),
         useMaterial3: true,
       ),
+      debugShowCheckedModeBanner: false,
       home: const LandingPage(),
+      navigatorKey: navigatorKey,
     );
   }
 }

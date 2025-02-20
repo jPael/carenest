@@ -1,7 +1,12 @@
 import 'package:flutter/material.dart';
 
 class CustomButton extends StatelessWidget {
-  const CustomButton({super.key, required this.onPress, required this.label, this.icon});
+  const CustomButton({
+    super.key,
+    required this.onPress,
+    required this.label,
+    this.icon,
+  });
 
   final VoidCallback onPress;
   final String label;
@@ -27,7 +32,9 @@ class CustomButton extends StatelessWidget {
       {required BuildContext context,
       key,
       required String label,
-      required VoidCallback onPressed}) {
+      required VoidCallback onPressed,
+      Color? color,
+      double? radius}) {
     return Row(
       mainAxisAlignment: MainAxisAlignment.center,
       children: [
@@ -35,9 +42,10 @@ class CustomButton extends StatelessWidget {
           child: ElevatedButton(
               style: ButtonStyle(
                   padding: WidgetStateProperty.all(EdgeInsets.symmetric(vertical: 8 * 2)),
-                  shape: WidgetStateProperty.all(
-                      RoundedRectangleBorder(borderRadius: BorderRadius.circular(8))),
-                  backgroundColor: WidgetStateProperty.all(Theme.of(context).colorScheme.primary)),
+                  shape: WidgetStateProperty.all(RoundedRectangleBorder(
+                      borderRadius: BorderRadius.circular(radius != null ? 8 * radius : 8 * 1))),
+                  backgroundColor:
+                      WidgetStateProperty.all(color ?? Theme.of(context).colorScheme.primary)),
               onPressed: onPressed,
               child: Text(
                 label,

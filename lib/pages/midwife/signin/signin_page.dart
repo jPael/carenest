@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:smartguide_app/components/button/custom_button.dart';
-import 'package:smartguide_app/components/custom_input.dart';
+import 'package:smartguide_app/components/input/custom_input.dart';
 import 'package:smartguide_app/pages/midwife/home/home_layout_page.dart';
 
 class SigninPage extends StatefulWidget {
