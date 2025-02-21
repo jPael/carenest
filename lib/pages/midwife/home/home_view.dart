@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:smartguide_app/components/home/card_button.dart';
 import 'package:smartguide_app/pages/midwife/chatbot/chatbot_page.dart';
 import 'package:smartguide_app/pages/midwife/childcare_tips/childcare_tips_page.dart';
+import 'package:smartguide_app/pages/midwife/reminders/reminders_page.dart';
 
 class HomeView extends StatelessWidget {
   const HomeView({super.key});
@@ -56,7 +57,8 @@ class HomeView extends StatelessWidget {
                     width: 180,
                   ),
                   label: "Reminders",
-                  onPressed: () {}),
+                  onPressed: () => Navigator.push(context,
+                      MaterialPageRoute(builder: (context) => RemindersPage(label: "Reminders")))),
               CardButton(
                   content: Image.asset(
                     "lib/assets/images/midwife_home_forum_icon.png",
