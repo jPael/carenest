@@ -26,6 +26,7 @@ class HomeView extends StatelessWidget {
                     width: 180,
                   ),
                   label: "Childcare tips",
+                  notifCount: 3,
                   onPressed: () => Navigator.push(
                       context,
                       MaterialPageRoute(
@@ -57,6 +58,7 @@ class HomeView extends StatelessWidget {
                     height: 270,
                     width: 180,
                   ),
+                  notifCount: 3,
                   label: "Reminders",
                   onPressed: () => Navigator.push(context,
                       MaterialPageRoute(builder: (context) => RemindersPage(label: "Reminders")))),
@@ -67,6 +69,7 @@ class HomeView extends StatelessWidget {
                     height: 270,
                     width: 190,
                   ),
+                  notifCount: 4,
                   label: "Forum",
                   onPressed: () => Navigator.push(
                       context, MaterialPageRoute(builder: (context) => ForumPage(label: "Forum")))),
