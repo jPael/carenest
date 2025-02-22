@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:smartguide_app/components/home/reminders/reminders_calendar_section.dart';
+import 'package:smartguide_app/components/home/reminders/reminders_completed_schedule_section.dart';
 import 'package:smartguide_app/components/home/reminders/reminders_header_section.dart';
+import 'package:smartguide_app/components/home/reminders/reminders_missed_schedule.dart';
 import 'package:smartguide_app/components/home/reminders/reminders_todays_schedule_section.dart';
 import 'package:smartguide_app/components/home/reminders/reminders_upcoming_schedule_section.dart';
 
@@ -41,7 +43,15 @@ class _RemindersPageState extends State<RemindersPage> {
                     const SizedBox(
                       height: 8 * 3,
                     ),
-                    RemindersTodaysScheduleSection()
+                    RemindersTodaysScheduleSection(),
+                    const SizedBox(
+                      height: 8 * 3,
+                    ),
+                    RemindersCompletedScheduleSection(),
+                    const SizedBox(
+                      height: 8 * 3,
+                    ),
+                    RemindersMissedSchedule(),
                   ],
                 )),
           ],

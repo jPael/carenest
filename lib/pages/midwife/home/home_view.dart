@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:smartguide_app/components/home/card_button.dart';
 import 'package:smartguide_app/pages/midwife/chatbot/chatbot_page.dart';
 import 'package:smartguide_app/pages/midwife/childcare_tips/childcare_tips_page.dart';
+import 'package:smartguide_app/pages/midwife/forum/forum_page.dart';
 import 'package:smartguide_app/pages/midwife/reminders/reminders_page.dart';
 
 class HomeView extends StatelessWidget {
@@ -67,7 +68,8 @@ class HomeView extends StatelessWidget {
                     width: 190,
                   ),
                   label: "Forum",
-                  onPressed: () {}),
+                  onPressed: () => Navigator.push(
+                      context, MaterialPageRoute(builder: (context) => ForumPage(label: "Forum")))),
             ],
           )
         ],
