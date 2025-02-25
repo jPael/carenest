@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:smartguide_app/components/home/forum/forum_toolbar_section.dart';
+import 'package:smartguide_app/components/midwife/home/forum/forum_toolbar_section.dart';
 import 'package:smartguide_app/components/section/custom_section.dart';
 import 'package:smartguide_app/components/section/custom_section_item.dart';
 import 'package:smartguide_app/pages/midwife/forum/forum_post_page.dart';

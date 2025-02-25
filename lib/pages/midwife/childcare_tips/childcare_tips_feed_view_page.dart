@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:fluttertoast/fluttertoast.dart';
-import 'package:smartguide_app/components/home/childcare_tips/feed_view_content_section.dart';
-import 'package:smartguide_app/components/home/childcare_tips/feed_view_title_section.dart';
+import 'package:smartguide_app/components/midwife/home/childcare_tips/feed_view_content_section.dart';
+import 'package:smartguide_app/components/midwife/home/childcare_tips/feed_view_title_section.dart';
 
 class ChildcareTipsFeedViewPage extends StatefulWidget {
   const ChildcareTipsFeedViewPage({super.key, required this.title});

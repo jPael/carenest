@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:smartguide_app/components/home/forum/forum_message_bubble.dart';
+import 'package:smartguide_app/components/midwife/home/forum/forum_message_bubble.dart';
 
 class ForumReplyPage extends StatelessWidget {
   const ForumReplyPage({super.key, required this.title});

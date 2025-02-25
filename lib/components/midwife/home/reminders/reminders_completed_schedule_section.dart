@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:smartguide_app/components/home/reminders/reminders_schedule_item.dart';
+import 'package:smartguide_app/components/midwife/home/reminders/reminders_schedule_item.dart';
 
 class RemindersCompletedScheduleSection extends StatelessWidget {
   const RemindersCompletedScheduleSection({super.key});

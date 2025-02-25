@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:smartguide_app/components/home/chatbot/chatbot_input_field.dart';
-import 'package:smartguide_app/components/home/chatbot/conversation.dart';
+import 'package:smartguide_app/components/midwife/home/chatbot/chatbot_input_field.dart';
+import 'package:smartguide_app/components/midwife/home/chatbot/conversation.dart';
 
 class ChatbotChatPage extends StatelessWidget {
   const ChatbotChatPage({super.key});

@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:smartguide_app/components/home/reminders/reminders_card.dart';
+import 'package:smartguide_app/components/midwife/home/reminders/reminders_card.dart';
 
 class RemindersUpcomingScheduleSection extends StatelessWidget {
   const RemindersUpcomingScheduleSection({super.key});

@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:smartguide_app/components/home/chatbot/conversation_item_chatbot.dart';
-import 'package:smartguide_app/components/home/chatbot/conversation_item_user.dart';
+import 'package:smartguide_app/components/midwife/home/chatbot/conversation_item_chatbot.dart';
+import 'package:smartguide_app/components/midwife/home/chatbot/conversation_item_user.dart';
 
 class Conversation extends StatelessWidget {
   const Conversation({super.key});

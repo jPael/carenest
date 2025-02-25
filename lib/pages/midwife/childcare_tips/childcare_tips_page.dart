@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:smartguide_app/components/home/childcare_tips/feed_section.dart';
-import 'package:smartguide_app/components/home/childcare_tips/profile_section.dart';
+import 'package:smartguide_app/components/midwife/home/childcare_tips/feed_section.dart';
+import 'package:smartguide_app/components/midwife/home/childcare_tips/profile_section.dart';
 
 class ChildcareTipsPage extends StatelessWidget {
   const ChildcareTipsPage({super.key, required this.label});

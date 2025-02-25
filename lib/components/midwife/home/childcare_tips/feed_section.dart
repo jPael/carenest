@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:smartguide_app/components/home/childcare_tips/feed_item.dart';
+import 'package:smartguide_app/components/midwife/home/childcare_tips/feed_item.dart';
 
 class FeedSection extends StatelessWidget {
   const FeedSection({super.key});

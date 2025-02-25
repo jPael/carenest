@@ -50,7 +50,7 @@ class PasswordStrengthChecklistState extends State<PasswordStrengthChecklist> {
       passwordRequirements["hasLowerCase"] = password.contains(RegExp(r'[a-z]'));
       passwordRequirements["hasUpperCase"] = password.contains(RegExp(r'[A-Z]'));
       passwordRequirements["hasNumbers"] = password.contains(RegExp(r'[0-9]'));
-      passwordRequirements["hasSymbols"] = password.contains(RegExp(r'[!@#\$%^&*(),.?":{}|<>]'));
+      passwordRequirements["hasSymbols"] = password.contains(RegExp(r'[_!@#\$%^&*(),.?":{}|<>]'));
       passwordRequirements["passwordsMatch"] =
           confirmPassword.isNotEmpty && password == confirmPassword;
     });

@@ -6,11 +6,13 @@ class CustomButton extends StatelessWidget {
     required this.onPress,
     required this.label,
     this.icon,
+    this.radius = 1,
   });
 
   final VoidCallback onPress;
   final String label;
   final Icon? icon;
+  final int radius;
 
   @override
   Widget build(BuildContext context) {
@@ -18,6 +20,8 @@ class CustomButton extends StatelessWidget {
         icon: icon,
         style: ButtonStyle(
             iconColor: WidgetStateProperty.all(Colors.white),
+            shape: WidgetStateProperty.all(
+                RoundedRectangleBorder(borderRadius: BorderRadius.circular(8.0 * radius))),
             padding:
                 WidgetStateProperty.all(EdgeInsets.symmetric(horizontal: 8 * 3, vertical: 8 * 2)),
             backgroundColor: WidgetStateProperty.all(Theme.of(context).colorScheme.primary)),

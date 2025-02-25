@@ -1,10 +1,10 @@
 import 'package:flutter/material.dart';
-import 'package:smartguide_app/components/home/reminders/reminders_calendar_section.dart';
-import 'package:smartguide_app/components/home/reminders/reminders_completed_schedule_section.dart';
-import 'package:smartguide_app/components/home/reminders/reminders_header_section.dart';
-import 'package:smartguide_app/components/home/reminders/reminders_missed_schedule.dart';
-import 'package:smartguide_app/components/home/reminders/reminders_todays_schedule_section.dart';
-import 'package:smartguide_app/components/home/reminders/reminders_upcoming_schedule_section.dart';
+import 'package:smartguide_app/components/midwife/home/reminders/reminders_calendar_section.dart';
+import 'package:smartguide_app/components/midwife/home/reminders/reminders_completed_schedule_section.dart';
+import 'package:smartguide_app/components/midwife/home/reminders/reminders_header_section.dart';
+import 'package:smartguide_app/components/midwife/home/reminders/reminders_missed_schedule.dart';
+import 'package:smartguide_app/components/midwife/home/reminders/reminders_todays_schedule_section.dart';
+import 'package:smartguide_app/components/midwife/home/reminders/reminders_upcoming_schedule_section.dart';
 
 class RemindersPage extends StatefulWidget {
   const RemindersPage({super.key, required this.label});

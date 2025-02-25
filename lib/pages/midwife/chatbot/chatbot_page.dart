@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:smartguide_app/components/home/chatbot/chatbot_hero.dart';
+import 'package:smartguide_app/components/midwife/home/chatbot/chatbot_hero.dart';
 
 class ChatbotPage extends StatelessWidget {
   const ChatbotPage({super.key, required this.label});
