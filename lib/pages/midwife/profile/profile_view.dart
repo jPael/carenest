@@ -16,7 +16,7 @@ class ProfileView extends StatelessWidget {
         children: [
           ProfileUserSection(),
           CustomSection(
-            spacing: 2,
+            childrenSpacing: 2,
             children: [
               ProfilePersonalInformationItem(),
               ProfileAccountInformationItem(),

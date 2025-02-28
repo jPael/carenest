@@ -45,6 +45,8 @@ class CustomInput {
       firstDate: firstDate,
       lastDate: lastDate,
       onChange: onChange,
+      label: label,
+      hint: hint,
     );
   }
 }

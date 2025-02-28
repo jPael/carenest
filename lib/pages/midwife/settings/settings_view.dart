@@ -3,6 +3,7 @@ import 'package:ionicons/ionicons.dart';
 import 'package:smartguide_app/components/section/custom_section.dart';
 import 'package:smartguide_app/components/settings/settings_item.dart';
 import 'package:smartguide_app/pages/midwife/settings/settings_language_page.dart';
+import 'package:smartguide_app/pages/midwife/settings/settings_prenatal_records_page.dart';
 
 class SettingsView extends StatelessWidget {
   const SettingsView({super.key});
@@ -13,7 +14,7 @@ class SettingsView extends StatelessWidget {
       child: Padding(
         padding: const EdgeInsets.all(8.0 * 2),
         child: CustomSection(
-          spacing: 0,
+          childrenSpacing: 0,
           children: [
             SettingsItem(
               icon: Icon(Ionicons.language_outline),
@@ -29,7 +30,8 @@ class SettingsView extends StatelessWidget {
             SettingsItem(
               icon: Icon(Ionicons.list_outline),
               title: "Prenatal Record",
-              onTap: () {},
+              onTap: () => Navigator.push(
+                  context, MaterialPageRoute(builder: (context) => SettingsPrenatalRecordsPage())),
             ),
           ],
         ),

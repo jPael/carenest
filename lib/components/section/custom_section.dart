@@ -6,29 +6,43 @@ class CustomSection extends StatelessWidget {
       this.title,
       this.children = const [],
       this.emptyChildrenContent,
-      this.spacing = 2});
+      this.childrenSpacing = 2,
+      this.titleStyle,
+      this.alignment,
+      this.description,
+      this.headerSpacing = 2});
 
   final String? title;
+  final Widget? description;
+  final TextStyle? titleStyle;
+  final CrossAxisAlignment? alignment;
   final List<Widget> children;
   final Widget? emptyChildrenContent;
-  final int spacing;
+  final int headerSpacing;
+  final int childrenSpacing;
 
   @override
   Widget build(BuildContext context) {
     return Column(
-      spacing: 8 * 2,
+      mainAxisSize: MainAxisSize.min,
+      crossAxisAlignment: alignment ?? CrossAxisAlignment.center,
       children: [
         if (title != null)
           Row(
             children: [
               Text(
                 title!,
-                style: TextStyle(fontSize: 8 * 3, fontWeight: FontWeight.w500),
+                style: titleStyle ?? TextStyle(fontSize: 8 * 3, fontWeight: FontWeight.w500),
               ),
             ],
           ),
+        if (description != null) description!,
+        SizedBox(
+          height: 8.0 * headerSpacing,
+        ),
         Column(
-            spacing: 8.0 * spacing,
+            mainAxisSize: MainAxisSize.min,
+            spacing: 8.0 * childrenSpacing,
             children: children.isEmpty
                 ? [
                     Padding(

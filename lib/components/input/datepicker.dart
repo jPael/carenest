@@ -52,18 +52,20 @@ class DatePickerState extends State<DatePicker> {
 
   @override
   Widget build(BuildContext context) {
-    return TextField(
-      readOnly: true,
-      controller: dateController,
-      decoration: InputDecoration(
-        label: Text(widget.label),
-        hintText: widget.hint,
-        prefixIcon: Icon(Icons.date_range_outlined, color: Theme.of(context).colorScheme.primary),
-        suffixIcon: IconButton(
-          onPressed: () => _selectDate(context),
-          icon: Icon(Icons.edit_outlined, color: Theme.of(context).colorScheme.primary),
+    return Flexible(
+      child: TextField(
+        readOnly: true,
+        controller: dateController,
+        decoration: InputDecoration(
+          label: Text(widget.label),
+          hintText: widget.hint,
+          prefixIcon: Icon(Icons.date_range_outlined, color: Theme.of(context).colorScheme.primary),
+          suffixIcon: IconButton(
+            onPressed: () => _selectDate(context),
+            icon: Icon(Icons.edit_outlined, color: Theme.of(context).colorScheme.primary),
+          ),
+          border: OutlineInputBorder(borderRadius: BorderRadius.circular(16)),
         ),
-        border: OutlineInputBorder(borderRadius: BorderRadius.circular(16)),
       ),
     );
   }
