@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:ionicons/ionicons.dart';
-import 'package:smartguide_app/pages/midwife/home/chat_view.dart';
+import 'package:smartguide_app/pages/mother/home/chat_view.dart';
 import 'package:smartguide_app/pages/midwife/home/home_view.dart';
-import 'package:smartguide_app/pages/midwife/profile/profile_view.dart';
-import 'package:smartguide_app/pages/midwife/settings/settings_view.dart';
+import 'package:smartguide_app/pages/mother/profile/profile_view.dart';
+import 'package:smartguide_app/pages/mother/settings/settings_view.dart';
 
 class HomeLayoutPage extends StatefulWidget {
   const HomeLayoutPage({super.key});

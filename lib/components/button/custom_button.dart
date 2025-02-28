@@ -1,18 +1,24 @@
 import 'package:flutter/material.dart';
 
+enum SocialButtonType { google }
+
 class CustomButton extends StatelessWidget {
-  const CustomButton({
-    super.key,
-    required this.onPress,
-    required this.label,
-    this.icon,
-    this.radius = 1,
-  });
+  const CustomButton(
+      {super.key,
+      required this.onPress,
+      required this.label,
+      this.icon,
+      this.radius = 1,
+      this.horizontalPadding = 3,
+      this.verticalPadding = 2});
 
   final VoidCallback onPress;
   final String label;
   final Icon? icon;
   final int radius;
+
+  final int horizontalPadding;
+  final int verticalPadding;
 
   @override
   Widget build(BuildContext context) {
@@ -22,8 +28,8 @@ class CustomButton extends StatelessWidget {
             iconColor: WidgetStateProperty.all(Colors.white),
             shape: WidgetStateProperty.all(
                 RoundedRectangleBorder(borderRadius: BorderRadius.circular(8.0 * radius))),
-            padding:
-                WidgetStateProperty.all(EdgeInsets.symmetric(horizontal: 8 * 3, vertical: 8 * 2)),
+            padding: WidgetStateProperty.all(EdgeInsets.symmetric(
+                horizontal: 8.0 * horizontalPadding, vertical: 8.0 * verticalPadding)),
             backgroundColor: WidgetStateProperty.all(Theme.of(context).colorScheme.primary)),
         onPressed: onPress,
         label: Text(
@@ -60,19 +66,72 @@ class CustomButton extends StatelessWidget {
     );
   }
 
+  static Widget social(
+      {required BuildContext context,
+      required String label,
+      required VoidCallback onPressed,
+      SocialButtonType buttonType = SocialButtonType.google}) {
+    late ButtonStyle buttonStyle;
+    late TextStyle textStyle;
+    late Image img;
+
+    switch (buttonType) {
+      case SocialButtonType.google:
+        buttonStyle = ButtonStyle(
+            elevation: WidgetStateProperty.all(1),
+            padding: WidgetStateProperty.all(EdgeInsets.symmetric(vertical: 8 * 2)),
+            shape: WidgetStateProperty.all(
+                RoundedRectangleBorder(borderRadius: BorderRadius.circular(8 * 4))),
+            backgroundColor: WidgetStateProperty.all(Colors.white));
+
+        textStyle = TextStyle(fontSize: 8 * 3, color: Colors.black.withValues(alpha: 0.6));
+
+        img = Image.asset(
+          "lib/assets/images/google_logo.png",
+          scale: 25,
+          fit: BoxFit.cover,
+        );
+        break;
+    }
+
+    return ElevatedButton(
+        style: buttonStyle,
+        onPressed: onPressed,
+        child: Row(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: [
+            img,
+            const SizedBox(
+              width: 8 * 2,
+            ),
+            Text(
+              label,
+              style: textStyle,
+            )
+          ],
+        ));
+  }
+
   static Widget link(
       {required BuildContext context,
       required String label,
       required VoidCallback onPressed,
+      Widget? icon,
       double fontSize = 8.0 * 2}) {
     return InkWell(
       onTap: onPressed,
-      child: Text(
-        label,
-        style: TextStyle(
-            fontSize: fontSize,
-            fontWeight: FontWeight.w600,
-            color: Theme.of(context).colorScheme.primary),
+      child: Row(
+        spacing: 4,
+        children: [
+          icon ?? Container(),
+          Text(
+            label,
+            style: TextStyle(
+                fontSize: fontSize,
+                fontWeight: FontWeight.w600,
+                color: Theme.of(context).colorScheme.primary),
+          ),
+        ],
       ),
     );
   }

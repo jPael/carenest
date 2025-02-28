@@ -1,3 +1,4 @@
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:smartguide_app/components/input/datepicker.dart';
 import 'package:smartguide_app/components/input/password.dart';
@@ -26,6 +27,40 @@ class CustomInput {
       String hint = "",
       Icon? startIcon}) {
     return Password(controller: controller, label: label, hint: hint, startIcon: startIcon);
+  }
+
+  static Widget timepicker(
+      {required BuildContext context,
+      TimeOfDay? selectedTime,
+      String label = "",
+      String hint = "",
+      required void Function(TimeOfDay) onChange}) {
+    selectedTime ??= TimeOfDay.now();
+
+    return GestureDetector(
+      onTap: () async {
+        final TimeOfDay? picked =
+            await showTimePicker(context: context, initialTime: selectedTime ?? TimeOfDay.now());
+
+        if (picked != null && picked != selectedTime) {
+          onChange(picked);
+        }
+      },
+      child: InputDecorator(
+        decoration: InputDecoration(
+          labelText: label,
+          hintText: hint,
+          border: OutlineInputBorder(borderRadius: BorderRadius.circular(8 * 2)),
+        ),
+        child: Row(
+          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+          children: <Widget>[
+            Text(selectedTime.format(context)),
+            Icon(Icons.access_time),
+          ],
+        ),
+      ),
+    );
   }
 
   static Widget datepicker(

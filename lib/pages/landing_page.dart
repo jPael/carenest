@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:smartguide_app/components/button/custom_button.dart';
-import 'package:smartguide_app/pages/midwife/welcome_page.dart';
+import 'package:smartguide_app/pages/mother/welcome_page.dart' as mother;
+import 'package:smartguide_app/pages/midwife/welcome_page.dart' as midwife;
 
 class LandingPage extends StatelessWidget {
   const LandingPage({super.key});
@@ -63,8 +64,8 @@ class LandingPage extends StatelessWidget {
                             scale: 2,
                           ),
                           label: "Midwife",
-                          onPressed: () => Navigator.push(
-                              context, MaterialPageRoute(builder: (context) => WelcomePage()))),
+                          onPressed: () => Navigator.push(context,
+                              MaterialPageRoute(builder: (context) => midwife.WelcomePage()))),
                       const SizedBox(
                         width: 8 * 2,
                       ),
@@ -75,7 +76,8 @@ class LandingPage extends StatelessWidget {
                             scale: 2,
                           ),
                           label: "Mother",
-                          onPressed: () {})
+                          onPressed: () => Navigator.push(context,
+                              MaterialPageRoute(builder: (context) => mother.WelcomePage())))
                     ],
                   )
                 ],

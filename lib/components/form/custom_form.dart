@@ -6,15 +6,18 @@ class CustomForm extends StatelessWidget {
     this.label,
     required this.children,
     required this.actions,
+    this.socials = const [],
   });
 
   final String? label;
   final List<Widget> children;
   final List<Widget> actions;
+  final List<Widget> socials;
 
   @override
   Widget build(BuildContext context) {
     return Column(
+      mainAxisSize: MainAxisSize.min,
       children: [
         Row(
           children: [
@@ -34,7 +37,15 @@ class CustomForm extends StatelessWidget {
         Row(
           mainAxisAlignment: MainAxisAlignment.end,
           children: [...actions],
-        )
+        ),
+        const SizedBox(
+          height: 8 * 2,
+        ),
+        Divider(),
+        const SizedBox(
+          height: 8,
+        ),
+        if (socials.isNotEmpty) ...socials
       ],
     );
   }

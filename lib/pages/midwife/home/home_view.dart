@@ -1,9 +1,8 @@
 import 'package:flutter/material.dart';
-import 'package:smartguide_app/components/midwife/home/card_button.dart';
-import 'package:smartguide_app/pages/midwife/chatbot/chatbot_page.dart';
-import 'package:smartguide_app/pages/midwife/childcare_tips/childcare_tips_page.dart';
-import 'package:smartguide_app/pages/midwife/forum/forum_page.dart';
-import 'package:smartguide_app/pages/midwife/reminders/reminders_page.dart';
+import 'package:smartguide_app/components/mother/home/card_button.dart';
+import 'package:smartguide_app/pages/midwife/add_reminders/add_reminders_page.dart';
+import 'package:smartguide_app/pages/midwife/prenatal_records/prenatal_records_list_page.dart';
+import 'package:smartguide_app/pages/mother/chatbot/chatbot_page.dart';
 
 class HomeView extends StatelessWidget {
   const HomeView({super.key});
@@ -20,61 +19,27 @@ class HomeView extends StatelessWidget {
             children: [
               CardButton(
                   content: Image.asset(
-                    "lib/assets/images/midwife_home_tips_icon.png",
+                    "lib/assets/images/midwife_home_prenatal_records_icon.png",
                     fit: BoxFit.fill,
                     height: 270,
                     width: 180,
                   ),
-                  label: "Childcare tips",
+                  label: "Prenatal Records",
                   notifCount: 3,
                   onPressed: () => Navigator.push(
-                      context,
-                      MaterialPageRoute(
-                          builder: (context) => ChildcareTipsPage(
-                                label: "Childcare tips",
-                              )))),
+                      context, MaterialPageRoute(builder: (context) => PrenatalRecordsListPage()))),
               CardButton(
                   content: Image.asset(
-                    "lib/assets/images/midwife_home_chatbot_icon.png",
+                    "lib/assets/images/midwife_home_add_reminders_icon.png",
                     fit: BoxFit.fill,
                     height: 270,
                     width: 180,
                   ),
-                  label: "Chatbot",
-                  onPressed: () => Navigator.push(context,
-                      MaterialPageRoute(builder: (context) => ChatbotPage(label: "Chatbot")))),
-            ],
-          ),
-          const SizedBox(
-            height: 8 * 2,
-          ),
-          Row(
-            mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-            children: [
-              CardButton(
-                  content: Image.asset(
-                    "lib/assets/images/midwife_home_reminders_icon.png",
-                    fit: BoxFit.fill,
-                    height: 270,
-                    width: 180,
-                  ),
-                  notifCount: 3,
-                  label: "Reminders",
-                  onPressed: () => Navigator.push(context,
-                      MaterialPageRoute(builder: (context) => RemindersPage(label: "Reminders")))),
-              CardButton(
-                  content: Image.asset(
-                    "lib/assets/images/midwife_home_forum_icon.png",
-                    fit: BoxFit.fill,
-                    height: 270,
-                    width: 190,
-                  ),
-                  notifCount: 4,
-                  label: "Forum",
+                  label: "Add Reminders",
                   onPressed: () => Navigator.push(
-                      context, MaterialPageRoute(builder: (context) => ForumPage(label: "Forum")))),
+                      context, MaterialPageRoute(builder: (context) => AddRemindersPage()))),
             ],
-          )
+          ),
         ],
       ),
     );

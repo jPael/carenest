@@ -10,13 +10,15 @@ class CustomSection extends StatelessWidget {
       this.titleStyle,
       this.alignment,
       this.description,
-      this.headerSpacing = 2});
+      this.headerSpacing = 2,
+      this.action});
 
   final String? title;
   final Widget? description;
   final TextStyle? titleStyle;
   final CrossAxisAlignment? alignment;
   final List<Widget> children;
+  final Widget? action;
   final Widget? emptyChildrenContent;
   final int headerSpacing;
   final int childrenSpacing;
@@ -29,11 +31,14 @@ class CustomSection extends StatelessWidget {
       children: [
         if (title != null)
           Row(
+            spacing: 8,
+            crossAxisAlignment: CrossAxisAlignment.center,
             children: [
               Text(
                 title!,
                 style: titleStyle ?? TextStyle(fontSize: 8 * 3, fontWeight: FontWeight.w500),
               ),
+              action ?? Container()
             ],
           ),
         if (description != null) description!,
@@ -41,21 +46,22 @@ class CustomSection extends StatelessWidget {
           height: 8.0 * headerSpacing,
         ),
         Column(
-            mainAxisSize: MainAxisSize.min,
-            spacing: 8.0 * childrenSpacing,
-            children: children.isEmpty
-                ? [
-                    Padding(
-                      padding: const EdgeInsets.all(8.0 * 4),
-                      child: Center(
-                        child: Column(
-                          mainAxisAlignment: MainAxisAlignment.center,
-                          children: [emptyChildrenContent ?? Text("Empty")],
-                        ),
+          mainAxisSize: MainAxisSize.min,
+          spacing: 8.0 * childrenSpacing,
+          children: children.isEmpty
+              ? [
+                  Padding(
+                    padding: const EdgeInsets.all(8.0 * 4),
+                    child: Center(
+                      child: Column(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        children: [emptyChildrenContent ?? Text("Empty")],
                       ),
-                    )
-                  ]
-                : children)
+                    ),
+                  )
+                ]
+              : children,
+        ),
       ],
     );
   }

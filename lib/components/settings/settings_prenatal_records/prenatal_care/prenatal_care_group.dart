@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:ionicons/ionicons.dart';
+import 'package:smartguide_app/components/button/custom_button.dart';
 import 'package:smartguide_app/components/section/custom_section.dart';
 import 'package:smartguide_app/components/settings/settings_prenatal_records/prenatal_care/prenatal_care_item.dart';
 
@@ -13,6 +14,14 @@ class PrenatalCareGroup extends StatelessWidget {
     return CustomSection(
       alignment: CrossAxisAlignment.start,
       title: title,
+      action: CustomButton.link(
+          context: context,
+          onPressed: () {},
+          label: "Edit",
+          icon: Icon(
+            Ionicons.pencil_outline,
+            size: 8 * 2,
+          )),
       titleStyle: TextStyle(fontSize: 8 * 2.5, fontWeight: FontWeight.w500),
       headerSpacing: 2,
       description: Container(
