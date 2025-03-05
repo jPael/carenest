@@ -1,0 +1,2 @@
+C:/projects/carenest/android/app/.cxx/Debug/666o2x4a/x86/CMakeFiles/edit_cache.dir
+C:/projects/carenest/android/app/.cxx/Debug/666o2x4a/x86/CMakeFiles/rebuild_cache.dir

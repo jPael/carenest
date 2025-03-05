@@ -2,7 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:smartguide_app/components/mother/home/card_button.dart';
 import 'package:smartguide_app/pages/midwife/add_reminders/add_reminders_page.dart';
 import 'package:smartguide_app/pages/midwife/prenatal_records/prenatal_records_list_page.dart';
-import 'package:smartguide_app/pages/mother/chatbot/chatbot_page.dart';
 
 class HomeView extends StatelessWidget {
   const HomeView({super.key});
@@ -26,8 +25,7 @@ class HomeView extends StatelessWidget {
                   ),
                   label: "Prenatal Records",
                   notifCount: 3,
-                  onPressed: () => Navigator.push(
-                      context, MaterialPageRoute(builder: (context) => PrenatalRecordsListPage()))),
+                  onPressed: () => Navigator.push(context, MaterialPageRoute(builder: (context) => PrenatalRecordsListPage()))),
               CardButton(
                   content: Image.asset(
                     "lib/assets/images/midwife_home_add_reminders_icon.png",
@@ -36,8 +34,7 @@ class HomeView extends StatelessWidget {
                     width: 180,
                   ),
                   label: "Add Reminders",
-                  onPressed: () => Navigator.push(
-                      context, MaterialPageRoute(builder: (context) => AddRemindersPage()))),
+                  onPressed: () => Navigator.push(context, MaterialPageRoute(builder: (context) => AddRemindersPage()))),
             ],
           ),
         ],
