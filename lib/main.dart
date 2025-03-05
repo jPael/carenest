@@ -3,17 +3,18 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:smartguide_app/models/user.dart';
 import 'package:smartguide_app/pages/auth/auth_page.dart';
-
 import 'firebase_options.dart';
+import 'package:flutter_dotenv/flutter_dotenv.dart';
+import 'package:smartguide_app/pages/landing_page.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
   await Firebase.initializeApp(
     options: DefaultFirebaseOptions.currentPlatform,
   );
+  await dotenv.load(fileName: ".env");
 
-  runApp(MultiProvider(
-      providers: [ChangeNotifierProvider(create: (context) => User())], child: const MyApp()));
+  runApp(MultiProvider(providers: [ChangeNotifierProvider(create: (context) => User())], child: const MyApp()));
 }
 
 GlobalKey<NavigatorState> navigatorKey = GlobalKey<NavigatorState>();

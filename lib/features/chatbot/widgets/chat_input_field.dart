@@ -2,7 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:smartguide_app/components/input/custom_input.dart';
 
 class ChatInputField extends StatefulWidget {
-  const ChatInputField({super.key});
+  final Function(String) onSendMessage;
+  const ChatInputField({super.key, required this.onSendMessage});
 
   @override
   State<ChatInputField> createState() => _ChatInputFieldState();
@@ -24,7 +25,11 @@ class _ChatInputFieldState extends State<ChatInputField> {
             child: CustomInput.text(context: context, controller: messageController, label: "Write your message..."),
           ),
           IconButton(
-            onPressed: () {},
+            onPressed: () {
+              widget.onSendMessage(messageController.text);
+              messageController.clear();
+              FocusScope.of(context).unfocus();
+            },
             icon: Icon(
               Icons.send_rounded,
             ),

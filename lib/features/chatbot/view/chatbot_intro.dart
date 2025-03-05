@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
+import 'package:smartguide_app/constants/constants.dart';
+import 'package:smartguide_app/features/chatbot/chatbot.dart';
 import 'package:smartguide_app/components/button/custom_button.dart';
-import 'package:smartguide_app/features/chatbot/view/chat_page.dart';
 
 class ChatbotIntro extends StatelessWidget {
   const ChatbotIntro({super.key});
@@ -49,7 +50,7 @@ class ChatbotIntro extends StatelessWidget {
                 children: [
                   Flexible(
                       child: Text(
-                    "Start chatting with MOMI AI now you can ask me anything",
+                    "Start chatting with ${AppConstants.chatbotName} now you can ask me anything",
                     style: TextStyle(fontSize: 8 * 2.5),
                     textAlign: TextAlign.center,
                     softWrap: true,
@@ -63,7 +64,7 @@ class ChatbotIntro extends StatelessWidget {
                 padding: const EdgeInsets.symmetric(horizontal: 8.0 * 3),
                 child: CustomButton.large(
                     context: context,
-                    onPressed: () => Navigator.push(context, MaterialPageRoute(builder: (context) => ChatPage())),
+                    onPressed: () => Navigator.push(context, MaterialPageRoute(builder: (context) => ChatbotPage())),
                     label: "Start Chat",
                     radius: 3,
                     color: Colors.blueAccent[700]),

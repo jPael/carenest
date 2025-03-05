@@ -41,7 +41,7 @@ class HomeView extends StatelessWidget {
                     width: 180,
                   ),
                   label: "Chatbot",
-                  onPressed: () => Navigator.push(context, MaterialPageRoute(builder: (context) => ChatbotPage()))),
+                  onPressed: () => Navigator.push(context, MaterialPageRoute(builder: (context) => ChatbotIntro()))),
             ],
           ),
           const SizedBox(

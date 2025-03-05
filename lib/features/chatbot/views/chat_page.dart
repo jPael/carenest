@@ -1,7 +1,9 @@
 import 'package:flutter/material.dart';
+import 'package:smartguide_app/constants/app_constants.dart';
+import 'package:smartguide_app/features/chatbot/widgets/widgets.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:smartguide_app/constants/constants.dart';
-import 'package:smartguide_app/features/chatbot/chatbot.dart';
+import 'package:smartguide_app/features/chatbot/blocs/chat_bloc.dart';
+import 'package:smartguide_app/features/chatbot/models/models.dart';
 
 class ChatPage extends StatefulWidget {
   const ChatPage({super.key});
