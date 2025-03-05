@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 
 class ChatMessageAppBar extends StatelessWidget implements PreferredSizeWidget {
-  const ChatMessageAppBar({Key? key}) : super(key: key);
+  const ChatMessageAppBar({super.key});
 
   final double profileImageSize = 30.0;
 

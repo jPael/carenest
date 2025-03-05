@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:smartguide_app/components/mother/home/card_button.dart';
-import 'package:smartguide_app/pages/mother/chatbot/chatbot_page.dart';
+import 'package:smartguide_app/features/chatbot/chatbot.dart';
 import 'package:smartguide_app/pages/mother/childcare_tips/childcare_tips_page.dart';
 import 'package:smartguide_app/pages/mother/forum/forum_page.dart';
 import 'package:smartguide_app/pages/mother/reminders/reminders_page.dart';
@@ -41,8 +41,7 @@ class HomeView extends StatelessWidget {
                     width: 180,
                   ),
                   label: "Chatbot",
-                  onPressed: () => Navigator.push(context,
-                      MaterialPageRoute(builder: (context) => ChatbotPage(label: "Chatbot")))),
+                  onPressed: () => Navigator.push(context, MaterialPageRoute(builder: (context) => ChatbotPage()))),
             ],
           ),
           const SizedBox(
@@ -60,8 +59,7 @@ class HomeView extends StatelessWidget {
                   ),
                   notifCount: 3,
                   label: "Reminders",
-                  onPressed: () => Navigator.push(context,
-                      MaterialPageRoute(builder: (context) => RemindersPage(label: "Reminders")))),
+                  onPressed: () => Navigator.push(context, MaterialPageRoute(builder: (context) => RemindersPage(label: "Reminders")))),
               CardButton(
                   content: Image.asset(
                     "lib/assets/images/mother_home_forum_icon.png",
@@ -71,8 +69,7 @@ class HomeView extends StatelessWidget {
                   ),
                   notifCount: 4,
                   label: "Forum",
-                  onPressed: () => Navigator.push(
-                      context, MaterialPageRoute(builder: (context) => ForumPage(label: "Forum")))),
+                  onPressed: () => Navigator.push(context, MaterialPageRoute(builder: (context) => ForumPage(label: "Forum")))),
             ],
           )
         ],

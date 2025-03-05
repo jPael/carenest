@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:smartguide_app/components/button/custom_button.dart';
 import 'package:smartguide_app/pages/midwife/signin/midwife_signin_page.dart';
-import 'package:smartguide_app/pages/mother/signin/mother_signin_page.dart';
 import 'package:smartguide_app/pages/mother/signup/mother_registration.dart';
 
 class WelcomePage extends StatelessWidget {
@@ -38,8 +37,7 @@ class WelcomePage extends StatelessWidget {
               child: CustomButton.large(
                 context: context,
                 label: "Go to Sign in",
-                onPressed: () => Navigator.push(
-                    context, MaterialPageRoute(builder: (context) => MidwifeSigninPage())),
+                onPressed: () => Navigator.push(context, MaterialPageRoute(builder: (context) => MidwifeSigninPage())),
               ),
             ),
             const SizedBox(
@@ -58,8 +56,7 @@ class WelcomePage extends StatelessWidget {
                 CustomButton.link(
                     context: context,
                     label: "Sign up",
-                    onPressed: () => Navigator.push(context,
-                        MaterialPageRoute(builder: (context) => const MotherRegistration())),
+                    onPressed: () => Navigator.push(context, MaterialPageRoute(builder: (context) => const MotherRegistration())),
                     fontSize: 8 * 3)
               ],
             ),
@@ -104,11 +101,7 @@ class WelcomePage extends StatelessWidget {
             ),
             Padding(
               padding: const EdgeInsets.symmetric(horizontal: 8.0 * 3),
-              child: CustomButton.social(
-                  context: context,
-                  label: "Continue with Google",
-                  onPressed: () {},
-                  buttonType: SocialButtonType.google),
+              child: CustomButton.social(context: context, label: "Continue with Google", onPressed: () {}, buttonType: SocialButtonType.google),
             )
           ],
         )),
