@@ -22,3 +22,12 @@ class ChatError extends ChatState {
   @override
   List<Object> get props => [message];
 }
+
+class ChatSuccess extends ChatState {
+  final Chat chat;
+
+  const ChatSuccess(this.chat);
+
+  @override
+  List<Object> get props => [chat];
+}
