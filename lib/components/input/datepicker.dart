@@ -4,20 +4,22 @@ import 'package:intl/intl.dart';
 class DatePicker extends StatefulWidget {
   const DatePicker({
     super.key,
-    required this.selectedDate,
+    this.selectedDate,
     required this.firstDate,
     required this.lastDate,
     this.label = "",
     this.hint = "",
     required this.onChange,
+    this.validator,
   });
 
-  final DateTime selectedDate;
+  final DateTime? selectedDate;
   final DateTime firstDate;
   final DateTime lastDate;
   final String label;
   final String hint;
   final void Function(DateTime) onChange;
+  final String? Function(String?)? validator;
 
   @override
   DatePickerState createState() => DatePickerState();
@@ -30,7 +32,8 @@ class DatePickerState extends State<DatePicker> {
   void initState() {
     super.initState();
     dateController = TextEditingController(
-      text: DateFormat("MMMM d, y").format(widget.selectedDate),
+      text:
+          widget.selectedDate != null ? DateFormat("MMMM d, y").format(widget.selectedDate!) : null,
     );
   }
 
@@ -53,8 +56,9 @@ class DatePickerState extends State<DatePicker> {
   @override
   Widget build(BuildContext context) {
     return Flexible(
-      child: TextField(
+      child: TextFormField(
         readOnly: true,
+        validator: widget.validator,
         controller: dateController,
         decoration: InputDecoration(
           label: Text(widget.label),

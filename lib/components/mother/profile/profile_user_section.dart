@@ -1,7 +1,16 @@
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:ionicons/ionicons.dart';
+import 'package:smartguide_app/components/button/custom_button.dart';
 
 class ProfileUserSection extends StatelessWidget {
-  const ProfileUserSection({super.key});
+  ProfileUserSection({super.key, required this.firstname});
+
+  final String firstname;
+
+  void handleLogout() {
+    FirebaseAuth.instance.signOut();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -24,10 +33,18 @@ class ProfileUserSection extends StatelessWidget {
               child: Image.asset("lib/assets/images/profile_fallback.png", fit: BoxFit.contain),
             ),
           ),
-          Text(
-            "Hi [Username]",
-            style: TextStyle(fontSize: 8 * 3, fontWeight: FontWeight.w500, color: Colors.white),
-          )
+          Expanded(
+            child: Text(
+              "Hi $firstname",
+              style: TextStyle(fontSize: 8 * 3, fontWeight: FontWeight.w500, color: Colors.white),
+            ),
+          ),
+          CustomButton.ghost(
+              context: context,
+              onPressed: handleLogout,
+              label: "Log out",
+              horizontalPadding: 1.5,
+              icon: Icon(Ionicons.log_out))
         ],
       ),
     );

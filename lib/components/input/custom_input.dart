@@ -1,4 +1,3 @@
-import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:smartguide_app/components/input/datepicker.dart';
 import 'package:smartguide_app/components/input/password.dart';
@@ -9,8 +8,10 @@ class CustomInput {
       String label = "",
       String hint = "",
       Widget? startIcon,
+      String? Function(String?)? validator,
       required TextEditingController controller}) {
-    return TextField(
+    return TextFormField(
+      validator: validator,
       controller: controller,
       decoration: InputDecoration(
           label: Text(label),
@@ -25,8 +26,14 @@ class CustomInput {
       required TextEditingController controller,
       String label = "",
       String hint = "",
+      String? Function(String?)? validator,
       Icon? startIcon}) {
-    return Password(controller: controller, label: label, hint: hint, startIcon: startIcon);
+    return Password(
+        validator: validator,
+        controller: controller,
+        label: label,
+        hint: hint,
+        startIcon: startIcon);
   }
 
   static Widget timepicker(
@@ -70,8 +77,8 @@ class CustomInput {
       DateTime? lastDate,
       String label = "",
       String hint = "",
-      required void Function(DateTime) onChange}) {
-    selectedDate ??= DateTime.now();
+      required void Function(DateTime) onChange,
+      String? Function(String?)? validator}) {
     firstDate ??= DateTime(1900);
     lastDate ??= DateTime(3000);
 
@@ -82,6 +89,7 @@ class CustomInput {
       onChange: onChange,
       label: label,
       hint: hint,
+      validator: validator,
     );
   }
 }

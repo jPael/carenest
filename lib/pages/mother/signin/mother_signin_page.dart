@@ -1,5 +1,6 @@
+import 'package:firebase_auth/firebase_auth.dart';
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
-import 'package:ionicons/ionicons.dart';
 import 'package:smartguide_app/components/button/custom_button.dart';
 import 'package:smartguide_app/components/input/custom_input.dart';
 import 'package:smartguide_app/pages/mother/home/home_layout_page.dart';
@@ -14,6 +15,39 @@ class MotherSigninPage extends StatefulWidget {
 class _MotherSigninPageState extends State<MotherSigninPage> {
   final TextEditingController emailController = TextEditingController();
   final TextEditingController passwordController = TextEditingController();
+
+  void handleSignin() async {
+    try {
+      // Sign in with email and password
+      UserCredential userCredential = await FirebaseAuth.instance.signInWithEmailAndPassword(
+        email: emailController.text,
+        password: passwordController.text,
+      );
+
+      if (userCredential.user != null && mounted) {
+        Navigator.pushReplacement(
+            context, MaterialPageRoute(builder: (context) => HomeLayoutPage()));
+      }
+    } on FirebaseAuthException catch (e) {
+      // Handle errors
+      if (kDebugMode) {
+        print("Sign-in error: ${e.code} - ${e.message}");
+      }
+      if (!mounted) return;
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(content: Text("Sign-in failed: ${e.message}")),
+      );
+    } catch (e) {
+      // Handle other errors
+      if (kDebugMode) {
+        print("Unexpected error: $e");
+      }
+      if (!mounted) return;
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(content: Text("An unexpected error occurred")),
+      );
+    }
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -70,11 +104,7 @@ class _MotherSigninPageState extends State<MotherSigninPage> {
                 const SizedBox(
                   height: 8 * 3,
                 ),
-                CustomButton.large(
-                    context: context,
-                    label: "Sign in",
-                    onPressed: () => Navigator.push(
-                        context, MaterialPageRoute(builder: (context) => HomeLayoutPage()))),
+                CustomButton.large(context: context, label: "Sign in", onPressed: handleSignin),
                 const SizedBox(
                   height: 8 * 2,
                 ),

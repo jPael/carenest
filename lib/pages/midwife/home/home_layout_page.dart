@@ -76,7 +76,7 @@ class _HomeLayoutPageState extends State<HomeLayoutPage> {
               extendBehindAppbar ? Colors.transparent : Theme.of(context).colorScheme.primary,
           automaticallyImplyLeading: false,
           title: Text(
-            titles[selectedView],
+            titles[selectedView] + " Midwife",
             style: TextStyle(color: Colors.white, fontWeight: FontWeight.w900, fontSize: 8 * 3),
           ),
         ),

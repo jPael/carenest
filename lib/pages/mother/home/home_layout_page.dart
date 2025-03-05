@@ -1,3 +1,4 @@
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:ionicons/ionicons.dart';
 import 'package:smartguide_app/pages/mother/home/chat_view.dart';
@@ -76,7 +77,7 @@ class _HomeLayoutPageState extends State<HomeLayoutPage> {
               extendBehindAppbar ? Colors.transparent : Theme.of(context).colorScheme.primary,
           automaticallyImplyLeading: false,
           title: Text(
-            titles[selectedView],
+            titles[selectedView] + " Mother",
             style: TextStyle(color: Colors.white, fontWeight: FontWeight.w900, fontSize: 8 * 3),
           ),
         ),

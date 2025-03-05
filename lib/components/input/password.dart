@@ -7,12 +7,15 @@ class Password extends StatefulWidget {
     this.label = "",
     this.hint = "",
     this.startIcon,
+    this.validator,
   });
 
   final TextEditingController controller;
   final String label;
   final String hint;
   final Icon? startIcon;
+
+  final String? Function(String?)? validator;
 
   @override
   PasswordState createState() => PasswordState();
@@ -23,8 +26,9 @@ class PasswordState extends State<Password> {
 
   @override
   Widget build(BuildContext context) {
-    return TextField(
+    return TextFormField(
       controller: widget.controller,
+      validator: widget.validator,
       obscureText: !showPassword,
       decoration: InputDecoration(
           label: Text(widget.label),

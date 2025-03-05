@@ -10,7 +10,8 @@ class CustomButton extends StatelessWidget {
       this.icon,
       this.radius = 1,
       this.horizontalPadding = 3,
-      this.verticalPadding = 2});
+      this.verticalPadding = 2,
+      this.isLoading = false});
 
   final VoidCallback onPress;
   final String label;
@@ -20,17 +21,21 @@ class CustomButton extends StatelessWidget {
   final int horizontalPadding;
   final int verticalPadding;
 
+  final bool isLoading;
+
   @override
   Widget build(BuildContext context) {
     return ElevatedButton.icon(
-        icon: icon,
+        icon: isLoading ? loadingIndicator() : icon,
         style: ButtonStyle(
+            elevation: WidgetStateProperty.all(isLoading ? 0 : null),
             iconColor: WidgetStateProperty.all(Colors.white),
             shape: WidgetStateProperty.all(
                 RoundedRectangleBorder(borderRadius: BorderRadius.circular(8.0 * radius))),
             padding: WidgetStateProperty.all(EdgeInsets.symmetric(
                 horizontal: 8.0 * horizontalPadding, vertical: 8.0 * verticalPadding)),
-            backgroundColor: WidgetStateProperty.all(Theme.of(context).colorScheme.primary)),
+            backgroundColor: WidgetStateProperty.all(
+                Theme.of(context).colorScheme.primary.withValues(alpha: isLoading ? 0.5 : 1.0))),
         onPressed: onPress,
         label: Text(
           label,
@@ -38,9 +43,43 @@ class CustomButton extends StatelessWidget {
         ));
   }
 
+  Widget loadingIndicator() {
+    return SizedBox(
+      height: 8 * 2,
+      width: 8 * 2,
+      child: CircularProgressIndicator(
+        strokeWidth: 2,
+        valueColor: AlwaysStoppedAnimation<Color>(Colors.white),
+      ),
+    );
+  }
+
+  static Widget ghost(
+      {required BuildContext context,
+      Icon? icon,
+      required String label,
+      required VoidCallback onPressed,
+      Color? color,
+      double radius = 1,
+      horizontalPadding = 3,
+      verticalPadding = 2}) {
+    return ElevatedButton.icon(
+        icon: icon,
+        style: ButtonStyle(
+            shape: WidgetStateProperty.all(
+                RoundedRectangleBorder(borderRadius: BorderRadius.circular(8.0 * radius))),
+            padding: WidgetStateProperty.all(EdgeInsets.symmetric(
+                horizontal: 8.0 * horizontalPadding, vertical: 4.0 * verticalPadding)),
+            backgroundColor: WidgetStateProperty.all(Colors.white)),
+        onPressed: onPressed,
+        label: Text(
+          label,
+          style: TextStyle(fontSize: 8 * 2),
+        ));
+  }
+
   static Widget large(
       {required BuildContext context,
-      key,
       required String label,
       required VoidCallback onPressed,
       Color? color,

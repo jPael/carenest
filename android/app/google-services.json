@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "220867692338",
+    "project_id": "carenest-84e01",
+    "storage_bucket": "carenest-84e01.firebasestorage.app"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:220867692338:android:c0eba49397e520ea4a392b",
+        "android_client_info": {
+          "package_name": "com.example.smartguide_app"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBIRIPHJqyyphE3HLcqjMSKolcN2YUpU1s"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
