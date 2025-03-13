@@ -75,6 +75,7 @@ flutter:
   assets:
     - lib/assets/images/
     - .env
+    - aidata/healthybuntis.txt
   #   - images/a_dot_burr.jpeg
   #   - images/a_dot_ham.jpeg
 

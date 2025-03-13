@@ -1,3 +1,4 @@
+import 'package:flutter/services.dart' show rootBundle;
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:equatable/equatable.dart';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
@@ -16,14 +17,16 @@ class ChatBloc extends Bloc<ChatEvent, ChatState> {
   }
 
   Future<void> _onChatMessageSent(ChatMessageSent event, Emitter<ChatState> emit) async {
-    final Chat initialChat = (Chat(messages: [
-      Message(
-          role: 'system',
-          content:
-              'Ikaw ay MOMI AI, isang chat assistant na tumutulong sa mga buntis o hindi buntis na babae na makakuha ng impormasyon tungkol sa pagbubuntis at pag-aalaga ng sanggol. Maaari ka lamang magsalita/mag-reply sa Tagalog.'),
-    ]));
-
     try {
+      final data = await rootBundle.loadString('aidata/healthybuntis.txt');
+
+      final Chat initialChat = (Chat(messages: [
+        Message(
+            role: 'system',
+            content:
+                'Ikaw ay MOMI AI, isang chat assistant na tumutulong sa mga buntis o hindi buntis na babae na makakuha ng impormasyon tungkol sa pagbubuntis at pag-aalaga ng sanggol. Maaari ka lamang magsalita/mag-reply sa Tagalog. Narito ang ilang impormasyon: $data'),
+      ]));
+
       final currentChat = state is ChatSuccess ? (state as ChatSuccess).chat : initialChat;
 
       final updatedChat = currentChat.copyWith(
