@@ -21,3 +21,16 @@ Future<Map<String, dynamic>?> getUserByEmail(String email) async {
     return null;
   }
 }
+
+Future<Map<String, dynamic>?> getUserByUID(String uid) async {
+  try {
+    final user = await FirebaseFirestore.instance.collection("users").doc(uid).get();
+
+    return user.data();
+  } catch (e) {
+    if (kDebugMode) {
+      print("Error fetching user data: $e");
+    }
+    return null;
+  }
+}

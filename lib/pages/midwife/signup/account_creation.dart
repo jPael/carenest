@@ -5,6 +5,7 @@ import 'package:smartguide_app/components/form/custom_form.dart';
 import 'package:smartguide_app/components/password_strength_checklist/password_strength_checklist.dart';
 import 'package:smartguide_app/error/app_error.dart';
 import 'package:smartguide_app/models/new_user.dart';
+import 'package:smartguide_app/pages/midwife/signin/midwife_signin_page.dart';
 import 'package:smartguide_app/pages/mother/signin/mother_signin_page.dart';
 
 class AccountCreation extends StatefulWidget {
@@ -45,10 +46,10 @@ class AccountCreationState extends State<AccountCreation> {
       // await Future.delayed(const Duration(seconds: 3));
 
       final NewUser user = NewUser(
-          type: UserType.mother,
+          type: UserType.midwife,
           firstname: widget.firstname,
           lastname: widget.lastname,
-          address: widget.lastname,
+          address: widget.address,
           phoneNumber: widget.phoneNumber,
           dateOfBirth: widget.dateOfBirth,
           email: emailController.text,
@@ -63,7 +64,7 @@ class AccountCreationState extends State<AccountCreation> {
       }
 
       if (!mounted) return;
-      Navigator.push(context, MaterialPageRoute(builder: (context) => MotherSigninPage()));
+      Navigator.push(context, MaterialPageRoute(builder: (context) => MidwifeSigninPage()));
     }
   }
 

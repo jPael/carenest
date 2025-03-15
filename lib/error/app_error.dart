@@ -1,27 +1,37 @@
+import 'package:flutter/material.dart';
+import 'package:smartguide_app/error/firebase_auth_error_constants.dart';
+
 String errorMessage(String code) {
   String errorMessage = "An error occurred. Please try again.";
 
   switch (code) {
-    case 'email-already-in-use':
+    case FirebaseAuthError.emailAlreadyInUse:
       errorMessage = "The email address is already in use by another account.";
       break;
-    case 'invalid-email':
+    case FirebaseAuthError.invalidCredential:
+      errorMessage = "The email does'nt exists.";
+
+      break;
+    case FirebaseAuthError.invalidEmail:
       errorMessage = "The email address is invalid.";
       break;
-    case 'weak-password':
+    case FirebaseAuthError.weakPassword:
       errorMessage = "The password is too weak.";
       break;
-    case 'user-not-found':
+    case FirebaseAuthError.userNotFound:
       errorMessage = "No user found with this email address.";
       break;
-    case 'wrong-password':
+    case FirebaseAuthError.wrongPassword:
       errorMessage = "Incorrect password.";
       break;
-    case 'too-many-requests':
+    case FirebaseAuthError.tooManyRequests:
       errorMessage = "Too many requests. Please try again later.";
       break;
-    case 'operation-not-allowed':
+    case FirebaseAuthError.operationNotAllowed:
       errorMessage = "This operation is not allowed.";
+      break;
+    case FirebaseAuthError.userNotAuthenticated:
+      errorMessage = "User not authenticated";
       break;
     default:
       errorMessage = "An unknown error occurred.";

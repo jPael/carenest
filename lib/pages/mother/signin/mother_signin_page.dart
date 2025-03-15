@@ -1,6 +1,7 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
+import 'package:smartguide_app/components/alert/alert.dart';
 import 'package:smartguide_app/components/button/custom_button.dart';
 import 'package:smartguide_app/components/input/custom_input.dart';
 import 'package:smartguide_app/pages/mother/home/home_layout_page.dart';
@@ -34,18 +35,16 @@ class _MotherSigninPageState extends State<MotherSigninPage> {
         print("Sign-in error: ${e.code} - ${e.message}");
       }
       if (!mounted) return;
-      ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(content: Text("Sign-in failed: ${e.message}")),
-      );
+      showErrorMessage(context: context, message: e.code);
     } catch (e) {
-      // Handle other errors
       if (kDebugMode) {
         print("Unexpected error: $e");
       }
       if (!mounted) return;
-      ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(content: Text("An unexpected error occurred")),
-      );
+      showErrorMessage(
+          context: context,
+          message: "An unexpected error occurred",
+          duration: const Duration(seconds: 5));
     }
   }
 

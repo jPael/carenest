@@ -34,9 +34,12 @@ class CustomSection extends StatelessWidget {
             spacing: 8,
             crossAxisAlignment: CrossAxisAlignment.center,
             children: [
-              Text(
-                title!,
-                style: titleStyle ?? TextStyle(fontSize: 8 * 3, fontWeight: FontWeight.w500),
+              Flexible(
+                child: Text(
+                  title!,
+                  style: titleStyle ?? TextStyle(fontSize: 8 * 3, fontWeight: FontWeight.w500),
+                  softWrap: true,
+                ),
               ),
               action ?? Container()
             ],

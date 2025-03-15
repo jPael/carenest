@@ -9,6 +9,8 @@ class PrenatalCareGroup extends StatelessWidget {
 
   final String title;
 
+  // TODO:: edit the prenatal care group into something in the notepad
+
   @override
   Widget build(BuildContext context) {
     return CustomSection(
@@ -24,44 +26,6 @@ class PrenatalCareGroup extends StatelessWidget {
           )),
       titleStyle: TextStyle(fontSize: 8 * 2.5, fontWeight: FontWeight.w500),
       headerSpacing: 2,
-      description: Container(
-        decoration: BoxDecoration(
-            border: Border(bottom: BorderSide(color: Colors.black.withValues(alpha: 0.1)))),
-        child: Row(
-          children: [
-            Expanded(
-                child: Text(
-              "Please check Services Provided",
-              style: TextStyle(fontStyle: FontStyle.italic),
-            )),
-            SizedBox(
-              width: MediaQuery.of(context).size.width * 0.3,
-              child: Row(
-                children: [
-                  Expanded(
-                      child: Container(
-                    decoration: BoxDecoration(
-                        border: Border(
-                      right: BorderSide(color: Colors.black.withValues(alpha: 0.1)),
-                    )),
-                    child: Icon(
-                      Ionicons.checkmark_circle,
-                      color: Colors.green.shade200,
-                    ),
-                  )),
-                  Expanded(
-                      child: Container(
-                          decoration: BoxDecoration(
-                              border: Border(
-                            left: BorderSide(color: Colors.black.withValues(alpha: 0.1)),
-                          )),
-                          child: Icon(Ionicons.close_circle, color: Colors.red.shade200)))
-                ],
-              ),
-            )
-          ],
-        ),
-      ),
       children: [
         PrenatalCareItem(
           description:

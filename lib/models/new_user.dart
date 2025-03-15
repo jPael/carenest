@@ -32,13 +32,16 @@ class NewUser {
         UserFields.address: address,
         UserFields.phoneNumber: phoneNumber,
         UserFields.dateOfBirth: dateOfBirth.toString(),
-        UserFields.userType: getUserType(type)
+        UserFields.userType: getUserType(type),
       };
 
   Future<String?> createAccount() async {
     try {
-      await FirebaseAuth.instance.createUserWithEmailAndPassword(email: email, password: password);
-      await FirebaseFirestore.instance.collection("users").add(getUserDetails());
+      final user = await FirebaseAuth.instance
+          .createUserWithEmailAndPassword(email: email, password: password);
+
+      final String uid = user.user!.uid;
+      await FirebaseFirestore.instance.collection("users").doc(uid).set(getUserDetails());
       return null;
     } on FirebaseException catch (e, stackTrace) {
       if (kDebugMode) {

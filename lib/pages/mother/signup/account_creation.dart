@@ -48,7 +48,7 @@ class AccountCreationState extends State<AccountCreation> {
           type: UserType.mother,
           firstname: widget.firstname,
           lastname: widget.lastname,
-          address: widget.lastname,
+          address: widget.address,
           phoneNumber: widget.phoneNumber,
           dateOfBirth: widget.dateOfBirth,
           email: emailController.text,
