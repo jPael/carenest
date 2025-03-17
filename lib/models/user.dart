@@ -20,7 +20,16 @@ class User extends ChangeNotifier {
 
   Map<String, String?>? prevData;
 
-  Map<String, String> get getUser {
+  Map<String, String>? get getUser {
+    if (firstname == null &&
+        lastname == null &&
+        address == null &&
+        phoneNumber == null &&
+        dateOfBirth == null &&
+        email == null) {
+      return null;
+    }
+
     return {
       UserFields.firstname: firstname!,
       UserFields.lastname: lastname!,
@@ -75,7 +84,7 @@ class User extends ChangeNotifier {
     }
 
     final userRef = FirebaseFirestore.instance.collection("users").doc(uid);
-    await userRef.update(getUser);
+    await userRef.update(getUser!);
 
     return "Profile updated successfully";
   }

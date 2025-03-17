@@ -7,12 +7,14 @@ class CustomForm extends StatelessWidget {
     required this.children,
     required this.actions,
     this.socials = const [],
+    this.actionMainAxisAlignment,
   });
 
   final String? label;
   final List<Widget> children;
   final List<Widget> actions;
   final List<Widget> socials;
+  final MainAxisAlignment? actionMainAxisAlignment;
 
   @override
   Widget build(BuildContext context) {
@@ -35,7 +37,7 @@ class CustomForm extends StatelessWidget {
           height: 8 * 3,
         ),
         Row(
-          mainAxisAlignment: MainAxisAlignment.end,
+          mainAxisAlignment: actionMainAxisAlignment ?? MainAxisAlignment.end,
           children: [...actions],
         ),
         const SizedBox(
