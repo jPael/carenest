@@ -91,11 +91,7 @@ class _ProfileAccountInformationItemState extends State<ProfileAccountInformatio
       form: Column(
         spacing: 8,
         children: [
-          CustomInput.text(
-              context: context,
-              controller: emailController,
-              label: "Email",
-              hint: "e.g. example@email.com"),
+          CustomInput.text(context: context, controller: emailController, label: "Email", hint: "e.g. example@email.com"),
           CustomInput.text(
             context: context,
             controller: passwordController,
@@ -106,10 +102,7 @@ class _ProfileAccountInformationItemState extends State<ProfileAccountInformatio
             controller: confirmPasswordController,
             label: "Password",
           ),
-          PasswordStrengthChecklist(
-              password: passwordController,
-              confirmPassword: confirmPasswordController,
-              onChange: (_) {}),
+          PasswordStrengthChecklist(password: passwordController, confirmPassword: confirmPasswordController, onChange: (_) {}),
           Row(mainAxisAlignment: MainAxisAlignment.end, children: [
             CustomButton(
               onPress: handleSave,
@@ -121,6 +114,5 @@ class _ProfileAccountInformationItemState extends State<ProfileAccountInformatio
         ],
       ),
     );
-    ;
   }
 }

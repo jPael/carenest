@@ -38,8 +38,7 @@ class WelcomePage extends StatelessWidget {
               child: CustomButton.large(
                 context: context,
                 label: "Go to Sign in",
-                onPressed: () => Navigator.push(
-                    context, MaterialPageRoute(builder: (context) => MidwifeSigninPage())),
+                onPressed: () => Navigator.push(context, MaterialPageRoute(builder: (context) => MidwifeSigninPage())),
               ),
             ),
             const SizedBox(
@@ -104,11 +103,7 @@ class WelcomePage extends StatelessWidget {
             ),
             Padding(
               padding: const EdgeInsets.symmetric(horizontal: 8.0 * 3),
-              child: CustomButton.social(
-                  context: context,
-                  label: "Continue with Google",
-                  onPressed: () {},
-                  buttonType: SocialButtonType.google),
+              child: CustomButton.social(context: context, label: "Continue with Google", onPressed: () {}, buttonType: SocialButtonType.google),
             )
           ],
         )),

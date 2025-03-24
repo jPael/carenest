@@ -2,7 +2,6 @@ import 'package:flutter/material.dart';
 
 class ChatMessageAppBar extends StatelessWidget implements PreferredSizeWidget {
   const ChatMessageAppBar({Key? key, required this.email, required this.name}) : super(key: key);
-
   final String email;
   final String name;
 

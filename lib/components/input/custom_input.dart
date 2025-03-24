@@ -14,10 +14,7 @@ class CustomInput {
       validator: validator,
       controller: controller,
       decoration: InputDecoration(
-          label: Text(label),
-          hintText: hint,
-          border: OutlineInputBorder(borderRadius: BorderRadius.circular(8 * 2)),
-          prefixIcon: startIcon),
+          label: Text(label), hintText: hint, border: OutlineInputBorder(borderRadius: BorderRadius.circular(8 * 2)), prefixIcon: startIcon),
     );
   }
 
@@ -28,26 +25,16 @@ class CustomInput {
       String hint = "",
       String? Function(String?)? validator,
       Icon? startIcon}) {
-    return Password(
-        validator: validator,
-        controller: controller,
-        label: label,
-        hint: hint,
-        startIcon: startIcon);
+    return Password(validator: validator, controller: controller, label: label, hint: hint, startIcon: startIcon);
   }
 
   static Widget timepicker(
-      {required BuildContext context,
-      TimeOfDay? selectedTime,
-      String label = "",
-      String hint = "",
-      required void Function(TimeOfDay) onChange}) {
+      {required BuildContext context, TimeOfDay? selectedTime, String label = "", String hint = "", required void Function(TimeOfDay) onChange}) {
     selectedTime ??= TimeOfDay.now();
 
     return GestureDetector(
       onTap: () async {
-        final TimeOfDay? picked =
-            await showTimePicker(context: context, initialTime: selectedTime ?? TimeOfDay.now());
+        final TimeOfDay? picked = await showTimePicker(context: context, initialTime: selectedTime ?? TimeOfDay.now());
 
         if (picked != null && picked != selectedTime) {
           onChange(picked);
