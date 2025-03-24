@@ -2,7 +2,6 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/foundation.dart';
 import 'package:smartguide_app/fields/user_fields.dart';
-import 'package:smartguide_app/services/laravel/user_services.dart';
 import 'package:smartguide_app/utils/utils.dart';
 
 class NewUser {
@@ -34,35 +33,22 @@ class NewUser {
         UserFields.phoneNumber: phoneNumber,
         UserFields.dateOfBirth: dateOfBirth.toString(),
         UserFields.userType: getUserType(type),
-        UserFields.laravelPassword: password,
       };
 
-  Future<Map<String, String>> createAccount() async {
+  Future<String?> createAccount() async {
     try {
       final user = await FirebaseAuth.instance
           .createUserWithEmailAndPassword(email: email, password: password);
 
       final String uid = user.user!.uid;
-      await FirebaseFirestore.instance
-          .collection("users")
-          .doc(uid)
-          .set({UserFields.uid: uid, ...getUserDetails()});
-
-      await registerAccount(name: "$firstname $lastname", email: email, password: password);
-
-      return {"success": "Registered successfully! Continue logging in with your new account"};
+      await FirebaseFirestore.instance.collection("users").doc(uid).set(getUserDetails());
+      return null;
     } on FirebaseException catch (e, stackTrace) {
       if (kDebugMode) {
         print(e.code);
         print(stackTrace);
       }
-      return {"error": e.code};
-    } on Exception catch (e, stackTrace) {
-      if (kDebugMode) {
-        print(e);
-        print("on exception: $stackTrace");
-      }
-      return {"error": e.toString()};
+      return e.code;
     }
   }
 

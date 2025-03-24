@@ -17,7 +17,6 @@ class User extends ChangeNotifier {
   String? phoneNumber;
   String? dateOfBirth;
   String? email;
-  String? token;
 
   Map<String, String?>? prevData;
 
@@ -38,7 +37,6 @@ class User extends ChangeNotifier {
       UserFields.phoneNumber: phoneNumber!,
       UserFields.dateOfBirth: dateOfBirth!,
       UserFields.email: email!,
-      UserFields.token: token!,
     };
   }
 
@@ -49,7 +47,6 @@ class User extends ChangeNotifier {
     phoneNumber = json[UserFields.phoneNumber];
     dateOfBirth = json[UserFields.dateOfBirth];
     email = json[UserFields.email];
-    token = json[UserFields.token];
 
     notifyListeners();
   }

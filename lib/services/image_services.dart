@@ -1,15 +1,15 @@
-// import 'dart:developer';
+import 'dart:developer';
 
-// import 'package:image_picker/image_picker.dart';
+import 'package:image_picker/image_picker.dart';
 
-// pickImage(ImageSource source) async {
-//   final ImagePicker imagePicker = ImagePicker();
+pickImage(ImageSource source) async {
+  final ImagePicker imagePicker = ImagePicker();
 
-//   XFile? file = await imagePicker.pickImage(source: source);
+  XFile? file = await imagePicker.pickImage(source: source);
 
-//   if (file != null) {
-//     return await file.readAsBytes();
-//   } else {
-//     log("No image is selected");
-//   }
-// }
+  if (file != null) {
+    return await file.readAsBytes();
+  } else {
+    log("No image is selected");
+  }
+}

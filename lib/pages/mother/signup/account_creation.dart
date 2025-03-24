@@ -1,12 +1,11 @@
 import 'package:flutter/material.dart';
-import 'package:smartguide_app/components/alert/alert.dart';
 import 'package:smartguide_app/components/button/custom_button.dart';
-import 'package:smartguide_app/components/form/custom_form.dart';
 import 'package:smartguide_app/components/input/custom_input.dart';
+import 'package:smartguide_app/components/form/custom_form.dart';
 import 'package:smartguide_app/components/password_strength_checklist/password_strength_checklist.dart';
 import 'package:smartguide_app/error/app_error.dart';
 import 'package:smartguide_app/models/new_user.dart';
-import 'package:smartguide_app/pages/auth/auth_page.dart';
+import 'package:smartguide_app/pages/mother/signin/mother_signin_page.dart';
 
 class AccountCreation extends StatefulWidget {
   const AccountCreation(
@@ -40,7 +39,7 @@ class AccountCreationState extends State<AccountCreation> {
   void createAccount() async {
     if (formKey.currentState!.validate()) {
       setState(() {
-        isLoading = true;
+        isLoading = !isLoading;
       });
 
       // await Future.delayed(const Duration(seconds: 3));
@@ -55,27 +54,16 @@ class AccountCreationState extends State<AccountCreation> {
           email: emailController.text,
           password: passwordController.text);
 
-      Map<String, String> result = await user.createAccount();
+      String? result = await user.createAccount();
 
-      if (result["error"] != null) {
+      if (result != null) {
         if (mounted) {
-          showErrorMessage(context: context, message: errorMessage(result["error"]!));
+          ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text(errorMessage(result))));
         }
-
-        setState(() {
-          isLoading = false;
-        });
-        return;
       }
 
       if (!mounted) return;
-      showSuccessMessage(context: context, message: errorMessage(result["success"]!));
-      Navigator.pop(context);
-      Navigator.push(context, MaterialPageRoute(builder: (context) => AuthPage()));
-
-      setState(() {
-        isLoading = false;
-      });
+      Navigator.push(context, MaterialPageRoute(builder: (context) => MotherSigninPage()));
     }
   }
 

@@ -1,23 +1,17 @@
-import 'dart:developer';
-
 import 'package:flutter/material.dart';
 
 enum MessageType { outgoing, incoming }
 
 class ChatConversationMessage extends StatelessWidget {
-  ChatConversationMessage(
-      {super.key, required this.type, required this.content, required this.userEmail});
+  ChatConversationMessage({super.key, required this.type, required this.content});
 
   final String content;
   final MessageType type;
-  final String userEmail;
 
-  // final Image img = Image.asset("lib/assets/images/profile_fallback.png");
+  final Image img = Image.asset("lib/assets/images/profile_fallback.png");
 
   @override
   Widget build(BuildContext context) {
-    log(userEmail);
-
     switch (type) {
       case MessageType.incoming:
         return Padding(
@@ -27,8 +21,7 @@ class ChatConversationMessage extends StatelessWidget {
             crossAxisAlignment: CrossAxisAlignment.end,
             children: [
               CircleAvatar(
-                foregroundImage: NetworkImage("https://i.pravatar.cc/200?u=$userEmail"),
-                backgroundImage: AssetImage("lib/assets/images/profile_fallback.png"),
+                backgroundImage: img.image,
               ),
               const SizedBox(
                 width: 8,
@@ -83,7 +76,7 @@ class ChatConversationMessage extends StatelessWidget {
                 child: Container(
                   padding: const EdgeInsets.all(8 * 2),
                   decoration: BoxDecoration(
-                      color: Theme.of(context).colorScheme.primary,
+                      color: Theme.of(context).colorScheme.inversePrimary,
                       boxShadow: [
                         BoxShadow(
                           color: Colors.black.withValues(alpha: 0.1),
@@ -97,13 +90,11 @@ class ChatConversationMessage extends StatelessWidget {
                           bottomLeft: Radius.circular(8 * 2),
                           topRight: Radius.circular(8 * 2))),
                   child: Row(
-                    mainAxisSize: MainAxisSize.min,
                     children: [
                       Flexible(
                         child: Text(
                           content,
-                          style: TextStyle(
-                              fontSize: 8 * 2, color: Theme.of(context).colorScheme.inversePrimary),
+                          style: TextStyle(fontSize: 8 * 2),
                           softWrap: true,
                         ),
                       ),
@@ -115,8 +106,7 @@ class ChatConversationMessage extends StatelessWidget {
                 width: 8,
               ),
               CircleAvatar(
-                foregroundImage: NetworkImage("https://i.pravatar.cc/200?u=$userEmail"),
-                backgroundImage: AssetImage("lib/assets/images/profile_fallback.png"),
+                backgroundImage: img.image,
               ),
             ],
           ),

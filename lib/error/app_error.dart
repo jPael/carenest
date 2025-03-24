@@ -33,7 +33,7 @@ String errorMessage(String code) {
       errorMessage = "User not authenticated";
       break;
     default:
-      errorMessage = code;
+      errorMessage = "An unknown error occurred.";
       break;
   }
 
