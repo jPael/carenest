@@ -7,32 +7,28 @@ class ProfileMenuItem extends StatefulWidget {
     this.form,
     this.startIcon,
     this.endIcon,
+    required this.isOpen,
+    required this.onTap,
   });
 
   final String title;
   final Widget? form;
   final Widget? startIcon;
   final Widget? endIcon;
+  final bool isOpen;
+  final VoidCallback onTap;
 
   @override
   State<ProfileMenuItem> createState() => _ProfileMenuItemState();
 }
 
 class _ProfileMenuItemState extends State<ProfileMenuItem> {
-  bool showForm = false;
-
-  void handleShowForm() {
-    setState(() {
-      showForm = !showForm;
-    });
-  }
-
   @override
   Widget build(BuildContext context) {
     return Column(
       children: [
         InkWell(
-          onTap: handleShowForm,
+          onTap: widget.onTap,
           child: Padding(
             padding: const EdgeInsets.symmetric(vertical: 8 * 2, horizontal: 8.0 * 3),
             child: Row(
@@ -60,7 +56,7 @@ class _ProfileMenuItemState extends State<ProfileMenuItem> {
           AnimatedSize(
             duration: const Duration(milliseconds: 300),
             curve: Curves.easeIn,
-            child: showForm
+            child: widget.isOpen
                 ? Card(
                     child: Padding(
                       padding: const EdgeInsets.all(8 * 2),

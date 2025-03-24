@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:smartguide_app/components/button/custom_button.dart';
 import 'package:smartguide_app/pages/midwife/signin/midwife_signin_page.dart';
+import 'package:smartguide_app/pages/midwife/signup/midwife_registration.dart';
 import 'package:smartguide_app/pages/mother/signup/mother_registration.dart';
 
 class WelcomePage extends StatelessWidget {
@@ -56,7 +57,8 @@ class WelcomePage extends StatelessWidget {
                 CustomButton.link(
                     context: context,
                     label: "Sign up",
-                    onPressed: () => Navigator.push(context, MaterialPageRoute(builder: (context) => const MotherRegistration())),
+                    onPressed: () => Navigator.push(context,
+                        MaterialPageRoute(builder: (context) => const MidwifeRegistration())),
                     fontSize: 8 * 3)
               ],
             ),

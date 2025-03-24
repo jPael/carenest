@@ -3,9 +3,13 @@ import 'package:smartguide_app/components/mother/chat/chat_conversation_input_fi
 import 'package:smartguide_app/components/mother/chat/chat_conversation_section.dart';
 import 'package:smartguide_app/components/mother/chat/chat_message_app_bar.dart';
 import 'package:smartguide_app/components/mother/chat/chat_user_details_section.dart';
+import 'package:smartguide_app/fields/user_fields.dart';
+import 'package:smartguide_app/utils/utils.dart';
 
 class ChatMessageView extends StatefulWidget {
-  const ChatMessageView({super.key});
+  const ChatMessageView({super.key, required this.receiver});
+
+  final Map<String, dynamic> receiver;
 
   @override
   State<ChatMessageView> createState() => _ChatMessageViewState();
@@ -32,7 +36,10 @@ class _ChatMessageViewState extends State<ChatMessageView> {
         fit: BoxFit.cover,
       ),
       Scaffold(
-        appBar: ChatMessageAppBar(),
+        appBar: ChatMessageAppBar(
+            name:
+                "${widget.receiver[UserFields.firstname]} ${widget.receiver[UserFields.lastname]}",
+            email: widget.receiver[UserFields.email]),
         backgroundColor: Colors.transparent,
         body: Column(
           children: [
@@ -41,13 +48,23 @@ class _ChatMessageViewState extends State<ChatMessageView> {
                 controller: scrollController,
                 child: Column(
                   children: [
-                    ChatUserDetailsSection(),
-                    ChatConversationSection(),
+                    ChatUserDetailsSection(
+                        name:
+                            "${widget.receiver[UserFields.firstname]} ${widget.receiver[UserFields.lastname]}",
+                        address: widget.receiver[UserFields.address],
+                        type: widget.receiver[UserFields.userType],
+                        email: widget.receiver[UserFields.email]),
+                    ChatConversationSection(
+                        receiverEmail: widget.receiver[UserFields.email],
+                        receiverId: widget.receiver[UserFields.uid]),
                   ],
                 ),
               ),
             ),
-            ChatConversationInputField()
+            ChatConversationInputField(
+              receiverId: widget.receiver[UserFields.uid],
+              receiverEmail: widget.receiver[UserFields.email],
+            )
           ],
         ),
       ),

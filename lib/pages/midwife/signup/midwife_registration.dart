@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:smartguide_app/components/button/custom_button.dart';
 import 'package:smartguide_app/components/form/custom_form.dart';
 import 'package:smartguide_app/components/input/custom_input.dart';
-import 'package:smartguide_app/pages/mother/signup/account_creation.dart';
+import 'package:smartguide_app/pages/midwife/signup/account_creation.dart';
 
 class MidwifeRegistration extends StatefulWidget {
   const MidwifeRegistration({super.key});
@@ -61,12 +61,12 @@ class _MidwifeRegistrationState extends State<MidwifeRegistration> {
                   children: [
                     Flexible(
                         child: Text(
-                      "Mother registration",
+                      "Midwife registration",
                       style: TextStyle(fontSize: 8 * 6, fontWeight: FontWeight.w500),
                       softWrap: true,
                     )),
                     Image.asset(
-                      "lib/assets/images/mothers_registration_hero.png",
+                      "lib/assets/images/midwife_signin_hero.png",
                       scale: 1.8,
                     )
                   ],

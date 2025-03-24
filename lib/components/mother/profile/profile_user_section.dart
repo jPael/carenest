@@ -1,16 +1,47 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
+// import 'package:image_picker/image_picker.dart';
 import 'package:ionicons/ionicons.dart';
 import 'package:smartguide_app/components/button/custom_button.dart';
 
-class ProfileUserSection extends StatelessWidget {
-  ProfileUserSection({super.key, required this.firstname});
+class ProfileUserSection extends StatefulWidget {
+  const ProfileUserSection({super.key, required this.firstname, required this.email});
 
   final String firstname;
+  final String email;
+
+  @override
+  State<ProfileUserSection> createState() => _ProfileUserSectionState();
+}
+
+class _ProfileUserSectionState extends State<ProfileUserSection> {
+  Uint8List? profileImage;
+  bool updatingProfile = false;
 
   void handleLogout() {
     FirebaseAuth.instance.signOut();
   }
+
+  void selectImage() async {
+    // setState(() {
+    //   updatingProfile = !updatingProfile;
+    // });
+
+    // await Future.delayed(Duration(seconds: 3));
+
+    // setState(() {
+    //   updatingProfile = !updatingProfile;
+    // });
+
+    // Uint8List img = await pickImage(ImageSource.gallery);
+
+    // setState(() {
+    //   profileImage = img;
+    // });
+  }
+
+  //TODO: enable user to upload an avatar. for now, we can't because i only have free firebase account
 
   @override
   Widget build(BuildContext context) {
@@ -20,22 +51,30 @@ class ProfileUserSection extends StatelessWidget {
       child: Row(
         spacing: 8 * 2,
         children: [
-          Container(
-            height: 80,
-            width: 80,
-            clipBehavior: Clip.antiAlias,
-            decoration: BoxDecoration(shape: BoxShape.circle, border: Border.all()),
-            child: OverflowBox(
-              minHeight: 50,
-              minWidth: 50,
-              maxHeight: 100,
-              maxWidth: 100,
-              child: Image.asset("lib/assets/images/profile_fallback.png", fit: BoxFit.contain),
-            ),
+          Stack(
+            alignment: Alignment.center,
+            children: [
+              SizedBox(
+                height: 70,
+                width: 70,
+                child: CircleAvatar(
+                  foregroundImage: NetworkImage("https://i.pravatar.cc/200?u=${widget.email}"),
+                  backgroundImage: AssetImage("lib/assets/images/profile_fallback.png"),
+                ),
+              ),
+              // !updatingProfile
+              //     ? Positioned(
+              //         child: IconButton(
+              //             iconSize: 4 * 8,
+              //             tooltip: "Edit",
+              //             onPressed: selectImage,
+              //             icon: Icon(Icons.edit)))
+              //     : Positioned(child: CircularProgressIndicator()),
+            ],
           ),
           Expanded(
             child: Text(
-              "Hi $firstname",
+              "Hi ${widget.firstname}",
               style: TextStyle(fontSize: 8 * 3, fontWeight: FontWeight.w500, color: Colors.white),
             ),
           ),
