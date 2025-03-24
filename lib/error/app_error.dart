@@ -1,4 +1,3 @@
-import 'package:flutter/material.dart';
 import 'package:smartguide_app/error/firebase_auth_error_constants.dart';
 
 String errorMessage(String code) {
