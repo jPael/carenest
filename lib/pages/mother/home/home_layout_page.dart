@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:ionicons/ionicons.dart';
+import 'package:smartguide_app/pages/mother/chat/new_chat_page.dart';
 import 'package:smartguide_app/pages/mother/home/chat_view.dart';
 import 'package:smartguide_app/pages/mother/home/home_view.dart';
 import 'package:smartguide_app/pages/mother/profile/profile_view.dart';
@@ -24,6 +25,8 @@ class _HomeLayoutPageState extends State<HomeLayoutPage> {
     ProfileView(),
     SettingsView(),
   ];
+
+  late List<Widget?> floatingButtons;
 
   final List<String> titles = ["CareNest", "Chat", "", "Settings"];
 
@@ -66,6 +69,23 @@ class _HomeLayoutPageState extends State<HomeLayoutPage> {
   }
 
   @override
+  void initState() {
+    super.initState();
+    floatingButtons = [
+      null,
+      null,
+      // FloatingActionButton.extended(
+      //   onPressed: () =>
+      //       Navigator.push(context, MaterialPageRoute(builder: (context) => NewChatPage())),
+      //   label: Text("New chat"),
+      //   icon: Icon(Ionicons.pencil),
+      // ),
+      null,
+      null
+    ];
+  }
+
+  @override
   Widget build(BuildContext context) {
     return PopScope(
       canPop: navigationStack.length <= 1,
@@ -81,6 +101,7 @@ class _HomeLayoutPageState extends State<HomeLayoutPage> {
           ),
         ),
         extendBodyBehindAppBar: extendBehindAppbar,
+        floatingActionButton: floatingButtons[selectedView],
         body: PageView(
           controller: _pageController,
           physics: NeverScrollableScrollPhysics(), // Disable swipe to change page

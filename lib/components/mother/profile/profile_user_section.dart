@@ -1,10 +1,9 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
-import 'package:image_picker/image_picker.dart';
+// import 'package:image_picker/image_picker.dart';
 import 'package:ionicons/ionicons.dart';
 import 'package:smartguide_app/components/button/custom_button.dart';
-import 'package:smartguide_app/services/image_services.dart';
 
 class ProfileUserSection extends StatefulWidget {
   const ProfileUserSection({super.key, required this.firstname, required this.email});
@@ -35,11 +34,11 @@ class _ProfileUserSectionState extends State<ProfileUserSection> {
     //   updatingProfile = !updatingProfile;
     // });
 
-    Uint8List img = await pickImage(ImageSource.gallery);
+    // Uint8List img = await pickImage(ImageSource.gallery);
 
-    setState(() {
-      profileImage = img;
-    });
+    // setState(() {
+    //   profileImage = img;
+    // });
   }
 
   //TODO: enable user to upload an avatar. for now, we can't because i only have free firebase account

@@ -3,7 +3,7 @@ import 'package:flutter/material.dart';
 ScaffoldFeatureController<SnackBar, SnackBarClosedReason> showErrorMessage(
     {required BuildContext context,
     required String message,
-    Duration duration = const Duration(hours: 1)}) {
+    Duration duration = const Duration(seconds: 10)}) {
   return ScaffoldMessenger.of(context).showSnackBar(
     SnackBar(
       content: Text(
@@ -21,7 +21,7 @@ ScaffoldFeatureController<SnackBar, SnackBarClosedReason> showErrorMessage(
 ScaffoldFeatureController<SnackBar, SnackBarClosedReason> showSuccessMessage(
     {required BuildContext context,
     required String message,
-    Duration duration = const Duration(hours: 1)}) {
+    Duration duration = const Duration(seconds: 5)}) {
   return ScaffoldMessenger.of(context).showSnackBar(
     SnackBar(
       content: Text(

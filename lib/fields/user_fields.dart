@@ -7,4 +7,7 @@ class UserFields {
   static String get userType => "userType";
   static String get email => "email";
   static String get password => "password";
+  static String get token => "token";
+  static String get laravelPassword => "laravelPassword";
+  static String get uid => "uid";
 }

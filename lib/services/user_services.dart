@@ -1,5 +1,10 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/foundation.dart';
+import 'package:smartguide_app/fields/user_fields.dart';
+import 'package:smartguide_app/services/laravel/user_services.dart';
+
+User? get getCurrentUser => FirebaseAuth.instance.currentUser;
 
 Future<Map<String, dynamic>?> getUserByEmail(String email) async {
   try {
@@ -9,14 +14,17 @@ Future<Map<String, dynamic>?> getUserByEmail(String email) async {
         .limit(1)
         .get();
 
+    final data = querySnapshot.docs.first.data();
+
     if (querySnapshot.docs.isNotEmpty) {
-      return querySnapshot.docs.first.data(); // Return the user data as a Map
+      return data; // Return the user data as a Map
     } else {
       return null; // No user found
     }
-  } catch (e) {
+  } catch (e, stackTrace) {
     if (kDebugMode) {
       print("Error fetching user data: $e");
+      print(stackTrace);
     }
     return null;
   }
@@ -26,7 +34,12 @@ Future<Map<String, dynamic>?> getUserByUID(String uid) async {
   try {
     final user = await FirebaseFirestore.instance.collection("users").doc(uid).get();
 
-    return user.data();
+    final data = user.data();
+
+    String token = await loginAccount(
+        email: data![UserFields.email], password: data[UserFields.laravelPassword]);
+
+    return {...data, UserFields.token: token};
   } catch (e) {
     if (kDebugMode) {
       print("Error fetching user data: $e");
