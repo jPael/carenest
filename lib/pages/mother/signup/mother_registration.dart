@@ -1,8 +1,13 @@
+import 'dart:collection';
+import 'dart:developer';
+
 import 'package:flutter/material.dart';
 import 'package:smartguide_app/components/button/custom_button.dart';
 import 'package:smartguide_app/components/form/custom_form.dart';
 import 'package:smartguide_app/components/input/custom_input.dart';
+import 'package:smartguide_app/models/barangay.dart';
 import 'package:smartguide_app/pages/mother/signup/account_creation.dart';
+import 'package:smartguide_app/services/laravel/barangay_services.dart';
 
 class MotherRegistration extends StatefulWidget {
   const MotherRegistration({super.key});
@@ -17,8 +22,13 @@ class _MotherRegistrationState extends State<MotherRegistration> {
   final TextEditingController firstnameController = TextEditingController();
   final TextEditingController lastnameController = TextEditingController();
   final TextEditingController phoneNumberController = TextEditingController();
-  final TextEditingController addressController = TextEditingController();
+  // final TextEditingController addressController = TextEditingController();
+  // late String barangay;
   DateTime? dateOfBirth;
+  bool fetchingBarangay = false;
+  late String selectedBarangay;
+
+  late final List<Barangay> barangays;
 
   void handleDateOfBirthChange(DateTime date) {
     setState(() {
@@ -35,10 +45,33 @@ class _MotherRegistrationState extends State<MotherRegistration> {
                     firstname: firstnameController.text,
                     lastname: lastnameController.text,
                     phoneNumber: phoneNumberController.text,
-                    address: addressController.text,
+                    address: selectedBarangay,
                     dateOfBirth: dateOfBirth!,
                   )));
     }
+  }
+
+  Future<void> _fetchBarangay() async {
+    setState(() {
+      fetchingBarangay = true;
+    });
+
+    barangays = await BarangayServices().fetchALlBarangays();
+
+    setState(() {
+      selectedBarangay = barangays.first.name;
+
+      fetchingBarangay = false;
+    });
+  }
+
+  // typedef MenuEntry = DropdownMenuItem<String>;
+
+  @override
+  void initState() {
+    super.initState();
+
+    _fetchBarangay();
   }
 
   @override
@@ -79,13 +112,6 @@ class _MotherRegistrationState extends State<MotherRegistration> {
                       icon: Icon(Icons.arrow_forward_outlined),
                       onPress: handleNext,
                     )
-                  ],
-                  socials: [
-                    CustomButton.social(
-                        context: context,
-                        label: "Or sign up with Google",
-                        buttonType: SocialButtonType.google,
-                        onPressed: () {})
                   ],
                   children: [
                     CustomInput.text(
@@ -144,17 +170,55 @@ class _MotherRegistrationState extends State<MotherRegistration> {
                     const SizedBox(
                       height: 8 * 2,
                     ),
-                    CustomInput.text(
-                        context: context,
-                        validator: (v) {
-                          if (v == null || v.isEmpty) {
-                            return "Please enter your address";
-                          }
-                          return null;
-                        },
-                        controller: addressController,
-                        label: "Address",
-                        hint: "(Barangray, City)"),
+
+                    fetchingBarangay
+                        ? Row(
+                            spacing: 4 * 2,
+                            children: [
+                              SizedBox.square(
+                                dimension: 4 * 6,
+                                child: CircularProgressIndicator(),
+                              ),
+                              Text("Fetching barangay")
+                            ],
+                          )
+                        : DropdownButtonFormField(
+                            decoration: InputDecoration(
+                              labelText: "Barangay",
+                              hintText: "Select your barangay",
+                              border: OutlineInputBorder(
+                                borderRadius: BorderRadius.circular(8 * 2),
+                              ),
+                            ),
+                            value: selectedBarangay,
+                            onChanged: (value) {
+                              setState(() {
+                                selectedBarangay = value!;
+                              });
+                            },
+                            items: barangays
+                                .map((b) => DropdownMenuItem(value: b.name, child: Text(b.name)))
+                                .toList(),
+                            validator: (value) {
+                              if (value == null || value.isEmpty) {
+                                return "Please select your barangay";
+                              }
+                              return null;
+                            },
+                          )
+
+                    // CustomInput.text(
+
+                    //     context: context,
+                    //     validator: (v) {
+                    //       if (v == null || v.isEmpty) {
+                    //         return "Please enter your address";
+                    //       }
+                    //       return null;
+                    //     },
+                    //     controller: addressController,
+                    //     label: "Address",
+                    //     hint: "(Barangray, City)"),
                   ],
                 )
               ],

@@ -126,6 +126,8 @@ class CustomButton extends StatelessWidget {
     late TextStyle textStyle;
     late Image img;
 
+    bool isHidden = true;
+
     switch (buttonType) {
       case SocialButtonType.google:
         buttonStyle = ButtonStyle(

@@ -73,50 +73,50 @@ class WelcomePage extends StatelessWidget {
               const SizedBox(
                 height: 8 * 2,
               ),
-              Row(
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: [
-                  Expanded(
-                    child: Container(
-                      decoration: BoxDecoration(
-                        border: Border(
-                          bottom: BorderSide(
-                            color: Colors.grey,
-                            width: 1.0,
-                          ),
-                        ),
-                      ),
-                    ),
-                  ),
-                  Padding(
-                    padding: const EdgeInsets.symmetric(horizontal: 8.0),
-                    child: Text("Or"),
-                  ),
-                  Expanded(
-                    child: Container(
-                      decoration: BoxDecoration(
-                        border: Border(
-                          bottom: BorderSide(
-                            color: Colors.grey,
-                            width: 1.0,
-                          ),
-                        ),
-                      ),
-                    ),
-                  ),
-                ],
-              ),
-              const SizedBox(
-                height: 8 * 2,
-              ),
-              Padding(
-                padding: const EdgeInsets.symmetric(horizontal: 8.0 * 3),
-                child: CustomButton.social(
-                    context: context,
-                    label: "Continue with Google",
-                    onPressed: () {},
-                    buttonType: SocialButtonType.google),
-              )
+              // Row(
+              //   mainAxisAlignment: MainAxisAlignment.center,
+              //   children: [
+              //     Expanded(
+              //       child: Container(
+              //         decoration: BoxDecoration(
+              //           border: Border(
+              //             bottom: BorderSide(
+              //               color: Colors.grey,
+              //               width: 1.0,
+              //             ),
+              //           ),
+              //         ),
+              //       ),
+              //     ),
+              //     Padding(
+              //       padding: const EdgeInsets.symmetric(horizontal: 8.0),
+              //       child: Text("Or"),
+              //     ),
+              //     Expanded(
+              //       child: Container(
+              //         decoration: BoxDecoration(
+              //           border: Border(
+              //             bottom: BorderSide(
+              //               color: Colors.grey,
+              //               width: 1.0,
+              //             ),
+              //           ),
+              //         ),
+              //       ),
+              //     ),
+              //   ],
+              // ),
+              // const SizedBox(
+              //   height: 8 * 2,
+              // ),
+              // Padding(
+              //   padding: const EdgeInsets.symmetric(horizontal: 8.0 * 3),
+              //   child: CustomButton.social(
+              //       context: context,
+              //       label: "Continue with Google",
+              //       onPressed: () {},
+              //       buttonType: SocialButtonType.google),
+              // )
             ],
           ),
         ),
