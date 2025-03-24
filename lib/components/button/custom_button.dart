@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:smartguide_app/utils/utils.dart';
 
 enum SocialButtonType { google }
 
@@ -84,37 +83,26 @@ class CustomButton extends StatelessWidget {
       required String label,
       required VoidCallback onPressed,
       Color? color,
-      bool isLoading = false,
       double? radius}) {
-    final padding = EdgeInsets.symmetric(vertical: 8 * 2, horizontal: 4 * 16);
-    final borderRadius = BorderRadius.circular(radius != null ? 8 * radius : 8 * 1);
-    final bgColor = isLoading
-        ? muteColor(Theme.of(context).colorScheme.primary)
-        : color ?? Theme.of(context).colorScheme.primary;
-
-    return ElevatedButton(
-        style: ButtonStyle(
-            padding: WidgetStateProperty.all(padding),
-            shape: WidgetStateProperty.all(RoundedRectangleBorder(borderRadius: borderRadius)),
-            backgroundColor: WidgetStateProperty.all(bgColor)),
-        onPressed: isLoading ? () {} : onPressed,
-        child: Row(
-          spacing: 4 * 2,
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: [
-            isLoading
-                ? SizedBox.square(
-                    dimension: 4 * 7,
-                    child: CircularProgressIndicator(
-                      color: Colors.white,
-                    ),
-                  )
-                : Text(
-                    label,
-                    style: TextStyle(fontSize: 8 * 3, color: Colors.white),
-                  ),
-          ],
-        ));
+    return Row(
+      mainAxisAlignment: MainAxisAlignment.center,
+      children: [
+        Expanded(
+          child: ElevatedButton(
+              style: ButtonStyle(
+                  padding: WidgetStateProperty.all(EdgeInsets.symmetric(vertical: 8 * 2)),
+                  shape: WidgetStateProperty.all(RoundedRectangleBorder(
+                      borderRadius: BorderRadius.circular(radius != null ? 8 * radius : 8 * 1))),
+                  backgroundColor:
+                      WidgetStateProperty.all(color ?? Theme.of(context).colorScheme.primary)),
+              onPressed: onPressed,
+              child: Text(
+                label,
+                style: TextStyle(fontSize: 8 * 3, color: Colors.white),
+              )),
+        )
+      ],
+    );
   }
 
   static Widget social(
@@ -208,7 +196,7 @@ class CustomButton extends StatelessWidget {
         ),
         Text(
           label ?? "",
-          style: TextStyle(fontSize: 8 * 3, fontWeight: FontWeight.w500, color: Colors.white),
+          style: TextStyle(fontSize: 8 * 3, fontWeight: FontWeight.w500),
         )
       ],
     );

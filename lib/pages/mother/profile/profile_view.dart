@@ -47,7 +47,7 @@ class _ProfileViewState extends State<ProfileView> {
           return Column(
             children: [
               ProfileUserSection(
-                firstname: data![UserFields.firstname]!,
+                firstname: data[UserFields.firstname]!,
                 email: data[UserFields.email] as String,
               ),
               CustomSection(

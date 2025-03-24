@@ -25,7 +25,7 @@ class LandingPage extends StatelessWidget {
                     margin: const EdgeInsets.only(top: 8 * 8, right: 8 * 5),
                     padding: const EdgeInsets.symmetric(vertical: 8 * 8, horizontal: 8 * 8),
                     decoration: BoxDecoration(
-                        color: Theme.of(context).colorScheme.primary,
+                        color: Theme.of(context).colorScheme.inversePrimary,
                         borderRadius: BorderRadius.only(
                             topRight: Radius.circular(8 * 15),
                             bottomRight: Radius.circular(8 * 15))),

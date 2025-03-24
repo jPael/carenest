@@ -36,17 +36,11 @@ class WelcomePage extends StatelessWidget {
               ),
               Padding(
                 padding: const EdgeInsets.symmetric(horizontal: 8 * 6),
-                child: Row(
-                  children: [
-                    Expanded(
-                      child: CustomButton.large(
-                        context: context,
-                        label: "Get started",
-                        onPressed: () => Navigator.push(
-                            context, MaterialPageRoute(builder: (context) => MotherSigninPage())),
-                      ),
-                    ),
-                  ],
+                child: CustomButton.large(
+                  context: context,
+                  label: "Get started",
+                  onPressed: () => Navigator.push(
+                      context, MaterialPageRoute(builder: (context) => MotherSigninPage())),
                 ),
               ),
               const SizedBox(

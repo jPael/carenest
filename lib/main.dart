@@ -13,15 +13,13 @@ void main() async {
   );
 
   runApp(MultiProvider(
-      providers: [ChangeNotifierProvider(create: (context) => User())], child: MyApp()));
+      providers: [ChangeNotifierProvider(create: (context) => User())], child: const MyApp()));
 }
 
 GlobalKey<NavigatorState> navigatorKey = GlobalKey<NavigatorState>();
 
 class MyApp extends StatelessWidget {
-  MyApp({super.key});
-
-  final Color primaryColor = Color(0xFF696CFF);
+  const MyApp({super.key});
 
   // This widget is the root of your application.
   @override
@@ -29,9 +27,7 @@ class MyApp extends StatelessWidget {
     return MaterialApp(
       title: 'CareNest',
       theme: ThemeData(
-        primaryColor: primaryColor,
-        colorScheme: ColorScheme.light(
-            primary: primaryColor, secondary: primaryColor.withValues(alpha: 0.8)),
+        colorScheme: ColorScheme.fromSeed(seedColor: Colors.greenAccent),
         useMaterial3: true,
       ),
       debugShowCheckedModeBanner: false,

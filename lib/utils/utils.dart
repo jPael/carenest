@@ -1,4 +1,3 @@
-import 'package:flutter/material.dart';
 import 'package:smartguide_app/models/new_user.dart';
 
 class Utils {
@@ -35,13 +34,4 @@ UserType getEnumUserType(String type) {
     default:
       throw ArgumentError("Invalid user type: $type");
   }
-}
-
-Color muteColor(Color color) {
-  final hslColor = HSLColor.fromColor(color);
-
-  final mutedColor = hslColor.withSaturation(hslColor.saturation * 0.4)
-    ..withLightness(hslColor.lightness * 0.1);
-
-  return mutedColor.toColor();
 }
