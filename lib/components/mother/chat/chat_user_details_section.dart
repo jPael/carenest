@@ -1,9 +1,17 @@
 import 'package:flutter/material.dart';
 
 class ChatUserDetailsSection extends StatelessWidget {
-  const ChatUserDetailsSection({super.key});
+  const ChatUserDetailsSection(
+      {super.key,
+      required this.email,
+      required this.name,
+      required this.address,
+      required this.type});
 
-  final double profileImageSize = 90.0;
+  final String email;
+  final String name;
+  final String address;
+  final String type;
 
   @override
   Widget build(BuildContext context) {
@@ -11,32 +19,16 @@ class ChatUserDetailsSection extends StatelessWidget {
       child: Column(
         spacing: 8,
         children: [
-          Container(
-            margin: const EdgeInsets.only(top: 8 * 5),
-            height: profileImageSize,
-            width: profileImageSize,
-            decoration: BoxDecoration(
-              shape: BoxShape.circle,
-              boxShadow: [
-                BoxShadow(
-                  color: Colors.black.withValues(alpha: 0.1),
-                  spreadRadius: 1,
-                  blurRadius: 2,
-                  offset: Offset(0, 0),
-                ),
-              ],
-            ),
-            clipBehavior: Clip.antiAlias,
-            child: OverflowBox(
-              child: Image.asset("lib/assets/images/profile_fallback.png"),
-            ),
+          CircleAvatar(
+            foregroundImage: NetworkImage("https://i.pravatar.cc/200?u=$email"),
+            backgroundImage: AssetImage("lib/assets/images/profile_fallback.png"),
           ),
           Text(
-            "Maria",
+            name,
             style: TextStyle(fontSize: 8 * 3, fontWeight: FontWeight.w500),
           ),
-          Text("Purisima, Tago, Surigao Del Sur"),
-          Text("Midwife"),
+          Text(address),
+          Text(type),
         ],
       ),
     );

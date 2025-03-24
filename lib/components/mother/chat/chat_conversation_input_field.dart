@@ -1,8 +1,13 @@
 import 'package:flutter/material.dart';
 import 'package:smartguide_app/components/input/custom_input.dart';
+import 'package:smartguide_app/services/chat_services.dart';
 
 class ChatConversationInputField extends StatefulWidget {
-  const ChatConversationInputField({super.key});
+  const ChatConversationInputField(
+      {super.key, required this.receiverId, required this.receiverEmail});
+
+  final String receiverId;
+  final String receiverEmail;
 
   @override
   State<ChatConversationInputField> createState() => _ChatConversationInputFieldState();
@@ -10,6 +15,17 @@ class ChatConversationInputField extends StatefulWidget {
 
 class _ChatConversationInputFieldState extends State<ChatConversationInputField> {
   final TextEditingController messageController = TextEditingController();
+
+  final ChatServices chatServices = ChatServices();
+
+  Future<void> sendMessage() async {
+    if (messageController.text.isNotEmpty) {
+      print("sending: ${messageController.text}");
+      await chatServices.sendMessage(widget.receiverId, messageController.text);
+
+      messageController.clear();
+    }
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -25,7 +41,7 @@ class _ChatConversationInputFieldState extends State<ChatConversationInputField>
                 context: context, controller: messageController, label: "Write your message..."),
           ),
           IconButton(
-            onPressed: () {},
+            onPressed: sendMessage,
             icon: Icon(
               Icons.send_rounded,
             ),

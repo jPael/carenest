@@ -1,12 +1,12 @@
 import 'package:flutter/material.dart';
+import 'package:smartguide_app/components/alert/alert.dart';
 import 'package:smartguide_app/components/button/custom_button.dart';
-import 'package:smartguide_app/components/input/custom_input.dart';
 import 'package:smartguide_app/components/form/custom_form.dart';
+import 'package:smartguide_app/components/input/custom_input.dart';
 import 'package:smartguide_app/components/password_strength_checklist/password_strength_checklist.dart';
 import 'package:smartguide_app/error/app_error.dart';
 import 'package:smartguide_app/models/new_user.dart';
-import 'package:smartguide_app/pages/midwife/signin/midwife_signin_page.dart';
-import 'package:smartguide_app/pages/mother/signin/mother_signin_page.dart';
+import 'package:smartguide_app/pages/auth/auth_page.dart';
 
 class AccountCreation extends StatefulWidget {
   const AccountCreation(
@@ -40,13 +40,13 @@ class AccountCreationState extends State<AccountCreation> {
   void createAccount() async {
     if (formKey.currentState!.validate()) {
       setState(() {
-        isLoading = !isLoading;
+        isLoading = true;
       });
 
       // await Future.delayed(const Duration(seconds: 3));
 
       final NewUser user = NewUser(
-          type: UserType.midwife,
+          type: UserType.mother,
           firstname: widget.firstname,
           lastname: widget.lastname,
           address: widget.address,
@@ -55,16 +55,27 @@ class AccountCreationState extends State<AccountCreation> {
           email: emailController.text,
           password: passwordController.text);
 
-      String? result = await user.createAccount();
+      Map<String, String> result = await user.createAccount();
 
-      if (result != null) {
+      if (result["error"] != null) {
         if (mounted) {
-          ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text(errorMessage(result))));
+          showErrorMessage(context: context, message: errorMessage(result["error"]!));
         }
+
+        setState(() {
+          isLoading = false;
+        });
+        return;
       }
 
       if (!mounted) return;
-      Navigator.push(context, MaterialPageRoute(builder: (context) => MidwifeSigninPage()));
+      showSuccessMessage(context: context, message: errorMessage(result["success"]!));
+      Navigator.pop(context);
+      Navigator.push(context, MaterialPageRoute(builder: (context) => AuthPage()));
+
+      setState(() {
+        isLoading = false;
+      });
     }
   }
 
