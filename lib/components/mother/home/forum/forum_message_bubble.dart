@@ -1,11 +1,12 @@
 import 'package:flutter/material.dart';
+import 'package:smartguide_app/models/forum/reply.dart';
 import 'package:smartguide_app/pages/mother/forum/forum_reply_page.dart';
 import 'package:timeago/timeago.dart' as timeago;
 
 class ForumMessageBubble extends StatefulWidget {
-  const ForumMessageBubble({super.key, this.replies});
+  const ForumMessageBubble({super.key, required this.reply});
 
-  final List<Widget>? replies;
+  final Reply reply;
 
   @override
   State<ForumMessageBubble> createState() => _ForumMessageBubbleState();
@@ -58,7 +59,7 @@ class _ForumMessageBubbleState extends State<ForumMessageBubble> {
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
                         Text(
-                          "Marry",
+                          "${widget.reply.author!.firstname} ${widget.reply.author!.lastname}",
                           style: TextStyle(
                             fontSize: 8 * 2.5,
                             fontWeight: FontWeight.w500,
@@ -68,7 +69,7 @@ class _ForumMessageBubbleState extends State<ForumMessageBubble> {
                           children: [
                             Flexible(
                                 child: Text(
-                              "Try eating small, frequent meals throughout the day. Crackers or toast worked for me!",
+                              widget.reply.content,
                               style: TextStyle(fontSize: 8 * 2),
                               softWrap: true,
                             )),
@@ -82,27 +83,31 @@ class _ForumMessageBubbleState extends State<ForumMessageBubble> {
                     children: [
                       Text(timeHumanize),
                       InkWell(
-                        onTap: () => Navigator.push(context,
-                            MaterialPageRoute(builder: (context) => ForumReplyPage(title: "Mary"))),
+                        onTap: () => Navigator.push(
+                            context,
+                            MaterialPageRoute(
+                                builder: (context) => ForumReplyPage(
+                                    title:
+                                        "${widget.reply.author!.firstname} ${widget.reply.author!.lastname}"))),
                         child: Text(
                           "Reply",
                           style: TextStyle(fontWeight: FontWeight.w500),
                         ),
                       ),
-                      IconButton(
-                          onPressed: handleLike,
-                          icon: liked
-                              ? Icon(
-                                  Icons.favorite,
-                                  color: Colors.red,
-                                )
-                              : Icon(Icons.favorite_outline))
+                      // IconButton(
+                      //     onPressed: handleLike,
+                      //     icon: liked
+                      //         ? Icon(
+                      //             Icons.favorite,
+                      //             color: Colors.red,
+                      //           )
+                      //         : Icon(Icons.favorite_outline))
                     ],
                   ),
-                  Column(
-                    spacing: 8,
-                    children: [if (widget.replies != null) ...widget.replies!],
-                  )
+                  // Column(
+                  //   spacing: 8,
+                  //   children: [if (widget.replies != null) ...widget.replies!],
+                  // )
                 ],
               ),
             ),

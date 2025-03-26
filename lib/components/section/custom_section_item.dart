@@ -9,7 +9,8 @@ class CustomSectionItem extends StatefulWidget {
       required this.replyCount,
       required this.date,
       this.liked,
-      required this.onTap});
+      required this.onTap,
+      required this.email});
 
   final String title;
   final String user;
@@ -17,6 +18,7 @@ class CustomSectionItem extends StatefulWidget {
   final DateTime date;
   final bool? liked;
   final GestureTapCallback onTap;
+  final String email;
 
   @override
   State<CustomSectionItem> createState() => _CustomSectionItemState();
@@ -47,16 +49,9 @@ class _CustomSectionItemState extends State<CustomSectionItem> {
       child: Row(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          Container(
-            height: profileImageSize,
-            width: profileImageSize,
-            decoration: BoxDecoration(
-              shape: BoxShape.circle,
-            ),
-            clipBehavior: Clip.antiAlias,
-            child: OverflowBox(
-              child: Image.asset("lib/assets/images/profile_fallback.png"),
-            ),
+          CircleAvatar(
+            foregroundImage: NetworkImage("https://i.pravatar.cc/200?u=${widget.email}"),
+            backgroundImage: AssetImage("lib/assets/images/profile_fallback.png"),
           ),
           const SizedBox(
             width: 8,
@@ -72,7 +67,7 @@ class _CustomSectionItemState extends State<CustomSectionItem> {
                         child: Text(
                       widget.title,
                       style: TextStyle(
-                        fontSize: 8 * 2.5,
+                        fontSize: 4 * 6,
                         fontWeight: FontWeight.w500,
                       ),
                       softWrap: true,
@@ -86,44 +81,43 @@ class _CustomSectionItemState extends State<CustomSectionItem> {
                         child: Text(
                       widget.user,
                       style: TextStyle(
-                          fontSize: 8 * 2.3,
+                          fontSize: 4 * 4,
                           fontWeight: FontWeight.w500,
                           color: Colors.black.withValues(alpha: 0.5)),
                       softWrap: true,
                     )),
                   ],
                 ),
-                Row(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    Flexible(
-                        child: Text(
-                      "${widget.replyCount} replies",
-                      style: TextStyle(
-                        fontSize: 8 * 2,
-                        fontWeight: FontWeight.w600,
-                      ),
-                      softWrap: true,
-                    )),
-                  ],
-                ),
+                // Row(
+                //   crossAxisAlignment: CrossAxisAlignment.start,
+                //   children: [
+                //     Flexible(
+                //         child: Text(
+                //       "${widget.replyCount} replies",
+                //       style: TextStyle(
+                //         fontSize: 8 * 2,
+                //         fontWeight: FontWeight.w600,
+                //       ),
+                //       softWrap: true,
+                //     )),
+                //   ],
+                // ),
               ],
             ),
           ),
           Column(
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             crossAxisAlignment: CrossAxisAlignment.end,
-            spacing: 8 * 2,
             children: [
-              IconButton(
-                  iconSize: 8 * 4,
-                  onPressed: handleLike,
-                  icon: liked
-                      ? Icon(
-                          Icons.favorite,
-                          color: Colors.red,
-                        )
-                      : Icon(Icons.favorite_border)),
+              // IconButton(
+              //     iconSize: 8 * 4,
+              //     onPressed: handleLike,
+              //     icon: liked
+              //         ? Icon(
+              //             Icons.favorite,
+              //             color: Colors.red,
+              //           )
+              //         : Icon(Icons.favorite_border)),
               Text(timeHumanize)
             ],
           )

@@ -39,10 +39,11 @@ Future<Map<String, dynamic>?> getUserByUID(String uid) async {
     String token = await loginAccount(
         email: data![UserFields.email], password: data[UserFields.laravelPassword]);
 
-    return {...data, UserFields.token: token};
-  } catch (e) {
+    return {...data, UserFields.token: token, UserFields.uid: uid};
+  } catch (e, stackTrace) {
     if (kDebugMode) {
       print("Error fetching user data: $e");
+      print(stackTrace);
     }
     return null;
   }

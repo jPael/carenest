@@ -10,7 +10,7 @@ class CustomButton extends StatelessWidget {
       required this.label,
       this.icon,
       this.radius = 1,
-      this.horizontalPadding = 3,
+      this.horizontalPadding = 4,
       this.verticalPadding = 2,
       this.isLoading = false});
 
@@ -125,6 +125,8 @@ class CustomButton extends StatelessWidget {
     late ButtonStyle buttonStyle;
     late TextStyle textStyle;
     late Image img;
+
+    bool isHidden = true;
 
     switch (buttonType) {
       case SocialButtonType.google:

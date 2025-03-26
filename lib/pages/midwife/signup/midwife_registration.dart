@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:smartguide_app/components/barangay/barangay_selector.dart';
 import 'package:smartguide_app/components/button/custom_button.dart';
 import 'package:smartguide_app/components/form/custom_form.dart';
 import 'package:smartguide_app/components/input/custom_input.dart';
@@ -17,7 +18,8 @@ class _MidwifeRegistrationState extends State<MidwifeRegistration> {
   final TextEditingController firstnameController = TextEditingController();
   final TextEditingController lastnameController = TextEditingController();
   final TextEditingController phoneNumberController = TextEditingController();
-  final TextEditingController addressController = TextEditingController();
+  // final TextEditingController addressController = TextEditingController();
+
   DateTime? dateOfBirth;
 
   void handleDateOfBirthChange(DateTime date) {
@@ -35,10 +37,17 @@ class _MidwifeRegistrationState extends State<MidwifeRegistration> {
                     firstname: firstnameController.text,
                     lastname: lastnameController.text,
                     phoneNumber: phoneNumberController.text,
-                    address: addressController.text,
+                    address: selectedBarangay,
                     dateOfBirth: dateOfBirth!,
                   )));
     }
+  }
+
+  String selectedBarangay = "";
+  void handleBarangaySelection(String? value) {
+    setState(() {
+      selectedBarangay = value ?? "";
+    });
   }
 
   @override
@@ -79,13 +88,6 @@ class _MidwifeRegistrationState extends State<MidwifeRegistration> {
                       icon: Icon(Icons.arrow_forward_outlined),
                       onPress: handleNext,
                     )
-                  ],
-                  socials: [
-                    CustomButton.social(
-                        context: context,
-                        label: "Or sign up with Google",
-                        buttonType: SocialButtonType.google,
-                        onPressed: () {})
                   ],
                   children: [
                     CustomInput.text(
@@ -144,17 +146,21 @@ class _MidwifeRegistrationState extends State<MidwifeRegistration> {
                     const SizedBox(
                       height: 8 * 2,
                     ),
-                    CustomInput.text(
-                        context: context,
-                        validator: (v) {
-                          if (v == null || v.isEmpty) {
-                            return "Please enter your address";
-                          }
-                          return null;
-                        },
-                        controller: addressController,
-                        label: "Address",
-                        hint: "(Barangray, City)"),
+                    BarangaySelector(
+                      onChange: handleBarangaySelection,
+                      value: selectedBarangay,
+                    )
+                    // CustomInput.text(
+                    //     context: context,
+                    //     validator: (v) {
+                    //       if (v == null || v.isEmpty) {
+                    //         return "Please enter your address";
+                    //       }
+                    //       return null;
+                    //     },
+                    //     controller: addressController,
+                    //     label: "Address",
+                    //     hint: "(Barangray, City)"),
                   ],
                 )
               ],

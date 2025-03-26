@@ -43,11 +43,13 @@ class CustomForm extends StatelessWidget {
         const SizedBox(
           height: 8 * 2,
         ),
-        Divider(),
-        const SizedBox(
-          height: 8,
-        ),
-        if (socials.isNotEmpty) ...socials
+        if (socials.isNotEmpty) ...[
+          Divider(),
+          const SizedBox(
+            height: 8,
+          ),
+          ...socials
+        ]
       ],
     );
   }

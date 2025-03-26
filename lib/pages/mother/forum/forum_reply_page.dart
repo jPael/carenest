@@ -19,19 +19,11 @@ class ForumReplyPage extends StatelessWidget {
           padding: const EdgeInsets.symmetric(vertical: 8 * 2, horizontal: 8 * 3),
           child: Column(
             children: [
-              ForumMessageBubble(
-                replies: [
-                  ForumMessageBubble(),
-                  ForumMessageBubble(
-                    replies: [
-                      ForumMessageBubble(),
-                      ForumMessageBubble(),
-                    ],
-                  ),
-                  ForumMessageBubble(),
-                  ForumMessageBubble(),
-                ],
-              )
+              // ForumMessageBubble(
+              //   reply: [
+
+              //   ],
+              // )
             ],
           ),
         ),
