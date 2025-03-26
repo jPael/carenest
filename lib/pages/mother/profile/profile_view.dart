@@ -44,6 +44,7 @@ class _ProfileViewState extends State<ProfileView> {
         builder: (context, user, child) {
           final data = user.getUser;
 
+          log(data.toString());
           return Column(
             children: [
               ProfileUserSection(

@@ -10,7 +10,7 @@ class CustomButton extends StatelessWidget {
       required this.label,
       this.icon,
       this.radius = 1,
-      this.horizontalPadding = 3,
+      this.horizontalPadding = 4,
       this.verticalPadding = 2,
       this.isLoading = false});
 

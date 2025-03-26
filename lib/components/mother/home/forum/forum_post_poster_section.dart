@@ -46,20 +46,20 @@ class _ForumPostPosterSectionState extends State<ForumPostPosterSection> {
     return Row(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
-        Container(
-          height: profileImageSize,
-          width: profileImageSize,
-          decoration: BoxDecoration(
-            shape: BoxShape.circle,
-          ),
-          clipBehavior: Clip.antiAlias,
-          child: OverflowBox(
-            child: Image.asset("lib/assets/images/profile_fallback.png"),
-          ),
-        ),
-        const SizedBox(
-          width: 8,
-        ),
+        // Container(
+        //   height: profileImageSize,
+        //   width: profileImageSize,
+        //   decoration: BoxDecoration(
+        //     shape: BoxShape.circle,
+        //   ),
+        //   clipBehavior: Clip.antiAlias,
+        //   child: OverflowBox(
+        //     child: Image.asset("lib/assets/images/profile_fallback.png"),
+        //   ),
+        // ),
+        // const SizedBox(
+        //   width: 8,
+        // ),
         Expanded(
           child: Column(
             mainAxisAlignment: MainAxisAlignment.start,
@@ -71,7 +71,7 @@ class _ForumPostPosterSectionState extends State<ForumPostPosterSection> {
                       child: Text(
                     widget.user,
                     style: TextStyle(
-                      fontSize: 8 * 2.5,
+                      fontSize: 8 * 2,
                       fontWeight: FontWeight.w500,
                     ),
                     softWrap: true,
@@ -85,7 +85,7 @@ class _ForumPostPosterSectionState extends State<ForumPostPosterSection> {
                       child: Text(
                     timeHumanize,
                     style: TextStyle(
-                      fontSize: 8 * 2,
+                      fontSize: 8 * 1.5,
                     ),
                     softWrap: true,
                   )),
@@ -94,19 +94,19 @@ class _ForumPostPosterSectionState extends State<ForumPostPosterSection> {
             ],
           ),
         ),
-        Row(
-          children: [
-            IconButton(
-                onPressed: handleLike,
-                icon: liked
-                    ? Icon(
-                        Icons.favorite,
-                        color: Colors.red,
-                      )
-                    : Icon(Icons.favorite_outline_outlined)),
-            Text(likeCount.toString())
-          ],
-        )
+        // Row(
+        //   children: [
+        //     IconButton(
+        //         onPressed: handleLike,
+        //         icon: liked
+        //             ? Icon(
+        //                 Icons.favorite,
+        //                 color: Colors.red,
+        //               )
+        //             : Icon(Icons.favorite_outline_outlined)),
+        //     Text(likeCount.toString())
+        //   ],
+        // ),
       ],
     );
   }

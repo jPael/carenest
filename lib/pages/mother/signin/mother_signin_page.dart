@@ -5,7 +5,10 @@ import 'package:smartguide_app/components/alert/alert.dart';
 import 'package:smartguide_app/components/button/custom_button.dart';
 import 'package:smartguide_app/components/form/custom_form.dart';
 import 'package:smartguide_app/components/input/custom_input.dart';
+import 'package:smartguide_app/models/new_user.dart';
+import 'package:smartguide_app/pages/auth/auth_page.dart';
 import 'package:smartguide_app/pages/mother/home/home_layout_page.dart';
+import 'package:smartguide_app/services/auth_services.dart';
 
 class MotherSigninPage extends StatefulWidget {
   const MotherSigninPage({super.key});
@@ -19,6 +22,7 @@ class _MotherSigninPageState extends State<MotherSigninPage> {
 
   final TextEditingController emailController = TextEditingController();
   final TextEditingController passwordController = TextEditingController();
+  final AuthServices _auth = AuthServices();
 
   bool loggingIn = false;
 
@@ -31,41 +35,26 @@ class _MotherSigninPageState extends State<MotherSigninPage> {
       loggingIn = true;
     });
 
-    try {
-      // Sign in with email and password
-      UserCredential userCredential = await FirebaseAuth.instance.signInWithEmailAndPassword(
-        email: emailController.text,
-        password: passwordController.text,
-      );
+    final Map<String, dynamic> result =
+        await _auth.signIn(emailController.text, passwordController.text, UserType.mother);
 
-      if (userCredential.user != null && mounted) {
-        Navigator.pushAndRemoveUntil(
-          context,
-          MaterialPageRoute(builder: (context) => HomeLayoutPage()),
-          (route) => false,
-        );
-      }
-    } on FirebaseAuthException catch (e) {
-      // Handle errors
-      if (kDebugMode) {
-        print("Sign-in error: ${e.code} - ${e.message}");
-      }
+    if (result['status'] == false) {
+      print(result);
+
       if (!mounted) return;
-      showErrorMessage(context: context, message: e.code);
-    } catch (e) {
-      if (kDebugMode) {
-        print("Unexpected error: $e");
-      }
+      showErrorMessage(context: context, message: result["message"]);
+    } else {
       if (!mounted) return;
-      showErrorMessage(
-          context: context,
-          message: "An unexpected error occurred",
-          duration: const Duration(seconds: 5));
-    } finally {
-      setState(() {
-        loggingIn = false;
-      });
+      Navigator.pushAndRemoveUntil(
+        context,
+        MaterialPageRoute(builder: (context) => AuthPage()),
+        (route) => false,
+      );
     }
+
+    setState(() {
+      loggingIn = false;
+    });
   }
 
   @override
@@ -162,11 +151,11 @@ class _MotherSigninPageState extends State<MotherSigninPage> {
                 const SizedBox(
                   height: 8 * 2,
                 ),
-                CustomButton.social(
-                  context: context,
-                  label: "Sign in with Google",
-                  onPressed: () {},
-                )
+                // CustomButton.social(
+                //   context: context,
+                //   label: "Sign in with Google",
+                //   onPressed: () {},
+                // )
               ],
             ),
           ),

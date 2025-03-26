@@ -1,13 +1,9 @@
-import 'dart:collection';
-import 'dart:developer';
-
 import 'package:flutter/material.dart';
+import 'package:smartguide_app/components/barangay/barangay_selector.dart';
 import 'package:smartguide_app/components/button/custom_button.dart';
 import 'package:smartguide_app/components/form/custom_form.dart';
 import 'package:smartguide_app/components/input/custom_input.dart';
-import 'package:smartguide_app/models/barangay.dart';
 import 'package:smartguide_app/pages/mother/signup/account_creation.dart';
-import 'package:smartguide_app/services/laravel/barangay_services.dart';
 
 class MotherRegistration extends StatefulWidget {
   const MotherRegistration({super.key});
@@ -25,10 +21,6 @@ class _MotherRegistrationState extends State<MotherRegistration> {
   // final TextEditingController addressController = TextEditingController();
   // late String barangay;
   DateTime? dateOfBirth;
-  bool fetchingBarangay = false;
-  late String selectedBarangay;
-
-  late final List<Barangay> barangays;
 
   void handleDateOfBirthChange(DateTime date) {
     setState(() {
@@ -51,28 +43,14 @@ class _MotherRegistrationState extends State<MotherRegistration> {
     }
   }
 
-  Future<void> _fetchBarangay() async {
+  String selectedBarangay = "";
+  void handleBarangaySelection(String? value) {
     setState(() {
-      fetchingBarangay = true;
-    });
-
-    barangays = await BarangayServices().fetchALlBarangays();
-
-    setState(() {
-      selectedBarangay = barangays.first.name;
-
-      fetchingBarangay = false;
+      selectedBarangay = value ?? "";
     });
   }
 
   // typedef MenuEntry = DropdownMenuItem<String>;
-
-  @override
-  void initState() {
-    super.initState();
-
-    _fetchBarangay();
-  }
 
   @override
   Widget build(BuildContext context) {
@@ -171,41 +149,10 @@ class _MotherRegistrationState extends State<MotherRegistration> {
                       height: 8 * 2,
                     ),
 
-                    fetchingBarangay
-                        ? Row(
-                            spacing: 4 * 2,
-                            children: [
-                              SizedBox.square(
-                                dimension: 4 * 6,
-                                child: CircularProgressIndicator(),
-                              ),
-                              Text("Fetching barangay")
-                            ],
-                          )
-                        : DropdownButtonFormField(
-                            decoration: InputDecoration(
-                              labelText: "Barangay",
-                              hintText: "Select your barangay",
-                              border: OutlineInputBorder(
-                                borderRadius: BorderRadius.circular(8 * 2),
-                              ),
-                            ),
-                            value: selectedBarangay,
-                            onChanged: (value) {
-                              setState(() {
-                                selectedBarangay = value!;
-                              });
-                            },
-                            items: barangays
-                                .map((b) => DropdownMenuItem(value: b.name, child: Text(b.name)))
-                                .toList(),
-                            validator: (value) {
-                              if (value == null || value.isEmpty) {
-                                return "Please select your barangay";
-                              }
-                              return null;
-                            },
-                          )
+                    BarangaySelector(
+                      onChange: handleBarangaySelection,
+                      value: selectedBarangay,
+                    )
 
                     // CustomInput.text(
 

@@ -1,16 +1,16 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:smartguide_app/components/mother/home/forum/forum_message_bubble.dart';
 import 'package:smartguide_app/components/mother/home/forum/forum_message_input_section.dart';
 import 'package:smartguide_app/components/mother/home/forum/forum_post_poster_section.dart';
 import 'package:smartguide_app/components/section/custom_section.dart';
-import 'package:smartguide_app/components/section/custom_section_item.dart';
+import 'package:smartguide_app/models/forum/forum.dart';
 
 class ForumPostPage extends StatefulWidget {
-  const ForumPostPage({super.key, required this.user, this.liked, required this.date});
+  const ForumPostPage({super.key, this.liked, required this.forum});
 
-  final String user;
+  final Forum forum;
   final bool? liked;
-  final DateTime date;
 
   @override
   State<ForumPostPage> createState() => _ForumPostPageState();
@@ -32,8 +32,6 @@ class _ForumPostPageState extends State<ForumPostPage> {
     return Scaffold(
       appBar: AppBar(
         forceMaterialTransparency: true,
-        centerTitle: true,
-        title: Text(widget.user),
       ),
       body: Padding(
         padding: const EdgeInsets.symmetric(vertical: 8 * 2),
@@ -43,23 +41,33 @@ class _ForumPostPageState extends State<ForumPostPage> {
               child: Padding(
                 padding: const EdgeInsets.symmetric(horizontal: 8 * 3),
                 child: Column(
-                  spacing: 8 * 3,
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  spacing: 8 * 2,
                   children: [
                     Text(
-                      "What foods help with morning sickness?",
-                      style: TextStyle(fontSize: 8 * 4, fontWeight: FontWeight.w500),
+                      widget.forum.title,
+                      style: TextStyle(fontSize: 8 * 3, fontWeight: FontWeight.w500),
+                    ),
+                    Text(widget.forum.content),
+                    const SizedBox(
+                      height: 4 * 2,
                     ),
                     ForumPostPosterSection(
-                      user: widget.user,
-                      date: widget.date,
+                      user: "${widget.forum.author!.firstname} ${widget.forum.author!.lastname}",
+                      date: (widget.forum.createdAt as Timestamp).toDate(),
                       liked: liked,
                     ),
-                    CustomSection(children: [ForumMessageBubble()]),
+                    CustomSection(
+                        children: widget.forum.replies!
+                            .map((reply) => ForumMessageBubble(reply: reply))
+                            .toList()),
                   ],
                 ),
               ),
             ),
-            ForumMessageInputSection()
+            ForumMessageInputSection(
+              forum: widget.forum,
+            )
           ],
         ),
       ),

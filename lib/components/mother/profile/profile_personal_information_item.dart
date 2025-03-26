@@ -4,6 +4,7 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:smartguide_app/components/alert/alert.dart';
+import 'package:smartguide_app/components/barangay/barangay_selector.dart';
 import 'package:smartguide_app/components/button/custom_button.dart';
 import 'package:smartguide_app/components/input/custom_input.dart';
 import 'package:smartguide_app/components/mother/profile/profile_menu_item.dart';
@@ -39,13 +40,20 @@ class _ProfilePersonalInformationItemState extends State<ProfilePersonalInformat
   final TextEditingController lastnameController = TextEditingController();
   late DateTime dateOfBirth;
   final TextEditingController phoneNumberController = TextEditingController();
-  final TextEditingController addressController = TextEditingController();
+  // final TextEditingController addressController = TextEditingController();
+  String selectedBarangay = "";
 
   late User? user;
 
   void handleDateOfBirthChange(DateTime date) {
     setState(() {
       dateOfBirth = date;
+    });
+  }
+
+  void handleBarangaySelection(String? value) {
+    setState(() {
+      selectedBarangay = value ?? "";
     });
   }
 
@@ -66,7 +74,7 @@ class _ProfilePersonalInformationItemState extends State<ProfilePersonalInformat
       final String result = await context.read<current_user.User>().setPersonalInformation(
           firstnameController.text,
           lastnameController.text,
-          addressController.text,
+          selectedBarangay,
           phoneNumberController.text,
           dateOfBirth);
 
@@ -107,7 +115,7 @@ class _ProfilePersonalInformationItemState extends State<ProfilePersonalInformat
     firstnameController.text = widget.firstname ?? "";
     lastnameController.text = widget.lastname ?? "";
     phoneNumberController.text = widget.phoneNumber ?? "";
-    addressController.text = widget.address ?? "";
+    selectedBarangay = widget.address ?? "";
     dateOfBirth = DateTime.parse(widget.dateOfBirth!);
   }
 
@@ -117,7 +125,6 @@ class _ProfilePersonalInformationItemState extends State<ProfilePersonalInformat
     firstnameController.dispose();
     lastnameController.dispose();
     phoneNumberController.dispose();
-    addressController.dispose();
   }
 
   @override
@@ -151,11 +158,12 @@ class _ProfilePersonalInformationItemState extends State<ProfilePersonalInformat
               controller: phoneNumberController,
               label: "Phone number",
               hint: "09 (xx-xxx-xxxx)"),
-          CustomInput.text(
-              context: context,
-              controller: addressController,
-              label: "Address",
-              hint: "e.g., 123 Rizal St., Brgy. San Isidro, Makati City, Metro Manila, 1230"),
+          // CustomInput.text(
+          //     context: context,
+          //     controller: addressController,
+          //     label: "Address",
+          //     hint: "e.g., 123 Rizal St., Brgy. San Isidro, Makati City, Metro Manila, 1230"),
+          BarangaySelector(onChange: handleBarangaySelection, value: selectedBarangay),
           Row(mainAxisAlignment: MainAxisAlignment.end, children: [
             CustomButton(
               onPress: () async {

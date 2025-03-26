@@ -4,6 +4,7 @@ import 'package:flutter/services.dart';
 // import 'package:image_picker/image_picker.dart';
 import 'package:ionicons/ionicons.dart';
 import 'package:smartguide_app/components/button/custom_button.dart';
+import 'package:smartguide_app/pages/auth/auth_page.dart';
 
 class ProfileUserSection extends StatefulWidget {
   const ProfileUserSection({super.key, required this.firstname, required this.email});
@@ -21,6 +22,7 @@ class _ProfileUserSectionState extends State<ProfileUserSection> {
 
   void handleLogout() {
     FirebaseAuth.instance.signOut();
+    Navigator.pushReplacement(context, MaterialPageRoute(builder: (context) => AuthPage()));
   }
 
   void selectImage() async {

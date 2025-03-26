@@ -46,7 +46,7 @@ class AccountCreationState extends State<AccountCreation> {
       // await Future.delayed(const Duration(seconds: 3));
 
       final NewUser user = NewUser(
-          type: UserType.mother,
+          type: UserType.midwife,
           firstname: widget.firstname,
           lastname: widget.lastname,
           address: widget.address,
@@ -70,8 +70,11 @@ class AccountCreationState extends State<AccountCreation> {
 
       if (!mounted) return;
       showSuccessMessage(context: context, message: errorMessage(result["success"]!));
-      Navigator.pop(context);
-      Navigator.push(context, MaterialPageRoute(builder: (context) => AuthPage()));
+      Navigator.pushAndRemoveUntil(
+        context,
+        MaterialPageRoute(builder: (context) => AuthPage()),
+        (route) => false,
+      );
 
       setState(() {
         isLoading = false;
@@ -123,13 +126,6 @@ class AccountCreationState extends State<AccountCreation> {
                         icon: Icon(Icons.arrow_forward_outlined),
                         isLoading: isLoading,
                         onPress: createAccount)
-                  ],
-                  socials: [
-                    CustomButton.social(
-                        context: context,
-                        label: "Or sign up with Google",
-                        buttonType: SocialButtonType.google,
-                        onPressed: () {})
                   ],
                   children: [
                     CustomInput.text(

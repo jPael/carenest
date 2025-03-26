@@ -6,10 +6,19 @@ import 'package:smartguide_app/pages/mother/forum/forum_page.dart';
 import 'package:smartguide_app/pages/mother/reminders/reminders_page.dart';
 
 class HomeView extends StatelessWidget {
-  const HomeView({super.key});
+  HomeView({super.key});
+
+  final Map<String, String> images = {
+    "childcare_tips": "lib/assets/images/mother_home_tips_icon.png",
+    "chatbot": "lib/assets/images/mother_home_chatbot_icon.png",
+    "reminders": "lib/assets/images/mother_home_reminders_icon.png",
+    "forum": "lib/assets/images/mother_home_forum_icon.png"
+  };
 
   @override
   Widget build(BuildContext context) {
+    images.forEach((key, value) => precacheImage(AssetImage(value), context));
+
     return Padding(
       padding: const EdgeInsets.all(8.0 * 2),
       child: Column(
@@ -20,7 +29,7 @@ class HomeView extends StatelessWidget {
             children: [
               CardButton(
                   content: Image.asset(
-                    "lib/assets/images/mother_home_tips_icon.png",
+                    images["childcare_tips"]!,
                     fit: BoxFit.fill,
                     height: 270,
                     width: 180,
@@ -35,13 +44,14 @@ class HomeView extends StatelessWidget {
                               )))),
               CardButton(
                   content: Image.asset(
-                    "lib/assets/images/mother_home_chatbot_icon.png",
+                    images["chatbot"]!,
                     fit: BoxFit.fill,
                     height: 270,
                     width: 180,
                   ),
                   label: "Chatbot",
-                  onPressed: () => Navigator.push(context, MaterialPageRoute(builder: (context) => ChatbotIntro()))),
+                  onPressed: () => Navigator.push(
+                      context, MaterialPageRoute(builder: (context) => ChatbotIntro()))),
             ],
           ),
           const SizedBox(
@@ -52,24 +62,26 @@ class HomeView extends StatelessWidget {
             children: [
               CardButton(
                   content: Image.asset(
-                    "lib/assets/images/mother_home_reminders_icon.png",
+                    images["reminders"]!,
                     fit: BoxFit.fill,
                     height: 270,
                     width: 180,
                   ),
                   notifCount: 3,
                   label: "Reminders",
-                  onPressed: () => Navigator.push(context, MaterialPageRoute(builder: (context) => RemindersPage(label: "Reminders")))),
+                  onPressed: () => Navigator.push(context,
+                      MaterialPageRoute(builder: (context) => RemindersPage(label: "Reminders")))),
               CardButton(
                   content: Image.asset(
-                    "lib/assets/images/mother_home_forum_icon.png",
+                    images["forum"]!,
                     fit: BoxFit.fill,
                     height: 270,
                     width: 190,
                   ),
                   notifCount: 4,
                   label: "Forum",
-                  onPressed: () => Navigator.push(context, MaterialPageRoute(builder: (context) => ForumPage(label: "Forum")))),
+                  onPressed: () => Navigator.push(
+                      context, MaterialPageRoute(builder: (context) => ForumPage(label: "Forum")))),
             ],
           )
         ],
