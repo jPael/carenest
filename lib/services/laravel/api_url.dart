@@ -1,4 +1,4 @@
-Uri get apiURIBase => Uri(scheme: "http", host: "192.168.113.83", port: 8000);
+Uri get apiURIBase => Uri(scheme: "http", host: "192.168.248.83", port: 8000);
 
 class LaravelPaths {
   static String get register => "/api/v1/register";

@@ -5,6 +5,7 @@ import 'package:smartguide_app/error/app_error.dart';
 import 'package:smartguide_app/fields/forum/forum_fields.dart';
 import 'package:smartguide_app/models/forum/author.dart';
 import 'package:smartguide_app/models/forum/reply.dart';
+import 'package:smartguide_app/services/forum/forum_services.dart';
 
 class Forum {
   final String title;
@@ -15,20 +16,25 @@ class Forum {
   Timestamp? createdAt;
   Timestamp? updatedAt;
   Author? author;
-  List<Reply>? replies;
+  int replyCount;
+  bool liked;
+  List<Map<String, dynamic>>? likes;
 
   Forum(
       {required this.title,
       required this.content,
       required this.barangay,
       required this.authorId,
+      this.likes,
       this.createdAt,
       this.updatedAt,
       this.docId,
       this.author,
-      this.replies});
+      this.replyCount = 0,
+      this.liked = false});
 
-  final FirebaseFirestore _firestore = FirebaseFirestore.instance;
+  // final FirebaseFirestore _firestore = FirebaseFirestore.instance;
+  final ForumServices _forumService = ForumServices();
 
   Map<String, dynamic> toMap() => {
         ForumFields.title: title,
@@ -36,21 +42,37 @@ class Forum {
         ForumFields.barangay: barangay,
         ForumFields.updatedAt: updatedAt,
         ForumFields.createdAt: createdAt,
-        ForumFields.authorId: authorId
+        ForumFields.authorId: authorId,
       };
+
+  bool isLiked(String userId) => likes?.any((like) => like[LikeFields.userId] == userId) ?? false;
 
   Future<Map<String, dynamic>> post() async {
     try {
       createdAt = Timestamp.now();
       updatedAt = Timestamp.now();
 
-      final user = await _firestore.collection("users").doc();
+      await _forumService.postForum(toMap());
 
-      await _firestore.collection("forums").add(toMap());
       return {"success": true};
     } catch (e, stackTrace) {
       log("There was an error: ${e.toString()}", stackTrace: stackTrace);
       return {"success": false, "message": errorMessage("Post unsuccessful")};
+    }
+  }
+
+  Future<Map<String, dynamic>> likePost(String userId) async {
+    try {
+      await _forumService.likePost(forumId: docId!, userId: userId);
+      liked = !liked;
+      return {"success": true, "value": liked};
+    } catch (e, stackTrace) {
+      log("There was an error", stackTrace: stackTrace);
+      return {
+        "success": false,
+        "value": liked,
+        "message": "There was an error ${!liked ? "unliking" : "liking"} this post"
+      };
     }
   }
 }
