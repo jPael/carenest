@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:smartguide_app/models/forum/reply.dart';
-import 'package:smartguide_app/pages/mother/forum/forum_reply_page.dart';
 import 'package:timeago/timeago.dart' as timeago;
 
 class ForumMessageBubble extends StatefulWidget {
@@ -25,7 +24,7 @@ class _ForumMessageBubbleState extends State<ForumMessageBubble> {
   Widget build(BuildContext context) {
     final double profileImageSize = 40.0;
 
-    final String timeHumanize = timeago.format(DateTime.now());
+    final String timeHumanize = timeago.format(widget.reply.createdAt!.toDate());
 
     return Column(
       children: [
@@ -46,7 +45,7 @@ class _ForumMessageBubbleState extends State<ForumMessageBubble> {
             ),
             Expanded(
               child: Column(
-                spacing: 8,
+                spacing: 0,
                 children: [
                   Container(
                     padding: const EdgeInsets.all(8),
@@ -82,18 +81,18 @@ class _ForumMessageBubbleState extends State<ForumMessageBubble> {
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: [
                       Text(timeHumanize),
-                      InkWell(
-                        onTap: () => Navigator.push(
-                            context,
-                            MaterialPageRoute(
-                                builder: (context) => ForumReplyPage(
-                                    title:
-                                        "${widget.reply.author!.firstname} ${widget.reply.author!.lastname}"))),
-                        child: Text(
-                          "Reply",
-                          style: TextStyle(fontWeight: FontWeight.w500),
-                        ),
-                      ),
+                      // InkWell(
+                      //   onTap: () => Navigator.push(
+                      //       context,
+                      //       MaterialPageRoute(
+                      //           builder: (context) => ForumReplyPage(
+                      //               title:
+                      //                   "${widget.reply.author!.firstname} ${widget.reply.author!.lastname}"))),
+                      //   child: Text(
+                      //     "Reply",
+                      //     style: TextStyle(fontWeight: FontWeight.w500),
+                      //   ),
+                      // ),
                       // IconButton(
                       //     onPressed: handleLike,
                       //     icon: liked

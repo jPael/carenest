@@ -1,18 +1,13 @@
-import 'dart:convert';
-import 'dart:developer';
-
-import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:ionicons/ionicons.dart';
 import 'package:smartguide_app/components/mother/home/forum/forum_create_post_form.dart';
+import 'package:smartguide_app/components/mother/home/forum/forum_posts_item.dart';
 import 'package:smartguide_app/components/mother/home/forum/forum_toolbar_section.dart';
 import 'package:smartguide_app/components/section/custom_section.dart';
-import 'package:smartguide_app/components/section/custom_section_item.dart';
 import 'package:smartguide_app/models/forum/forum.dart';
 import 'package:smartguide_app/models/user.dart';
-import 'package:smartguide_app/pages/mother/forum/forum_post_page.dart';
-import 'package:smartguide_app/services/forum_services.dart';
+import 'package:smartguide_app/services/forum/forum_services.dart';
 
 class ForumPage extends StatefulWidget {
   const ForumPage({super.key, required this.label});
@@ -129,19 +124,7 @@ class _ForumPageState extends State<ForumPage> {
                       children: forums
                           .map(
                             (forum) => CustomSectionItem(
-                              onTap: () => Navigator.push(
-                                  context,
-                                  MaterialPageRoute(
-                                      builder: (context) => ForumPostPage(
-                                            forum: forum,
-                                            liked: true,
-                                          ))),
-                              title: forum.title,
-                              email: forum.author!.email,
-                              user: "${forum.author!.firstname} ${forum.author!.lastname}",
-                              replyCount: 12,
-                              date: (forum.createdAt as Timestamp).toDate(),
-                              liked: true,
+                              forum: forum,
                             ),
                           )
                           .toList(),

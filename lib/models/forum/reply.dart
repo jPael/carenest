@@ -16,7 +16,13 @@ class Reply {
 
   final FirebaseFirestore _firestore = FirebaseFirestore.instance;
 
-  Reply({required this.content, required this.authorId, required this.forumId, this.author});
+  Reply(
+      {required this.content,
+      required this.authorId,
+      required this.forumId,
+      this.author,
+      this.createdAt,
+      this.updatedAt});
 
   Map<String, dynamic> get toMap => {
         ReplyFields.content: content,

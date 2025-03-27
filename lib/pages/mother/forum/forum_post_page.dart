@@ -5,6 +5,8 @@ import 'package:smartguide_app/components/mother/home/forum/forum_message_input_
 import 'package:smartguide_app/components/mother/home/forum/forum_post_poster_section.dart';
 import 'package:smartguide_app/components/section/custom_section.dart';
 import 'package:smartguide_app/models/forum/forum.dart';
+import 'package:smartguide_app/models/forum/reply.dart';
+import 'package:smartguide_app/services/forum/forum_services.dart';
 
 class ForumPostPage extends StatefulWidget {
   const ForumPostPage({super.key, this.liked, required this.forum});
@@ -17,6 +19,8 @@ class ForumPostPage extends StatefulWidget {
 }
 
 class _ForumPostPageState extends State<ForumPostPage> {
+  final ForumServices forumServices = ForumServices();
+
   final double profileImageSize = 50.0;
 
   bool liked = false;
@@ -38,30 +42,101 @@ class _ForumPostPageState extends State<ForumPostPage> {
         child: Column(
           children: [
             Expanded(
-              child: Padding(
-                padding: const EdgeInsets.symmetric(horizontal: 8 * 3),
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  spacing: 8 * 2,
-                  children: [
-                    Text(
-                      widget.forum.title,
-                      style: TextStyle(fontSize: 8 * 3, fontWeight: FontWeight.w500),
-                    ),
-                    Text(widget.forum.content),
-                    const SizedBox(
-                      height: 4 * 2,
-                    ),
-                    ForumPostPosterSection(
-                      user: "${widget.forum.author!.firstname} ${widget.forum.author!.lastname}",
-                      date: (widget.forum.createdAt as Timestamp).toDate(),
-                      liked: liked,
-                    ),
-                    CustomSection(
-                        children: widget.forum.replies!
-                            .map((reply) => ForumMessageBubble(reply: reply))
-                            .toList()),
-                  ],
+              child: SingleChildScrollView(
+                child: Padding(
+                  padding: const EdgeInsets.symmetric(horizontal: 8 * 2),
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    spacing: 8 * 2,
+                    children: [
+                      Card(
+                        margin: const EdgeInsets.all(0),
+                        child: Padding(
+                          padding: const EdgeInsets.symmetric(
+                            horizontal: 8.0,
+                            vertical: 2 * 8.0,
+                          ),
+                          child: Column(
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: [
+                              Text(
+                                widget.forum.title,
+                                style: TextStyle(fontSize: 8 * 4, fontWeight: FontWeight.w500),
+                              ),
+                              Text(
+                                widget.forum.content,
+                                style: TextStyle(fontSize: 4 * 4),
+                              ),
+                              const SizedBox(
+                                height: 4 * 2,
+                              ),
+                              ForumPostPosterSection(
+                                forum: widget.forum,
+                                user:
+                                    "${widget.forum.author!.firstname} ${widget.forum.author!.lastname}",
+                                date: (widget.forum.createdAt as Timestamp).toDate(),
+                                liked: liked,
+                              ),
+                            ],
+                          ),
+                        ),
+                      ),
+                      StreamBuilder<Object>(
+                          stream: forumServices.getReplyStreamByForumId(widget.forum.docId!),
+                          builder: (context, snapshot) {
+                            if (snapshot.hasError) {
+                              return Padding(
+                                padding: const EdgeInsets.only(top: 10 * 8.0),
+                                child: Column(
+                                  mainAxisAlignment: MainAxisAlignment.center,
+                                  crossAxisAlignment: CrossAxisAlignment.center,
+                                  children: [
+                                    Text(
+                                      textAlign: TextAlign.center,
+                                      "Something went wrong... please try again",
+                                      style: TextStyle(
+                                          fontSize: 4 * 8,
+                                          fontWeight: FontWeight.bold,
+                                          color: Colors.red[900]),
+                                    )
+                                  ],
+                                ),
+                              );
+                            }
+
+                            if (snapshot.connectionState == ConnectionState.waiting) {
+                              return Padding(
+                                padding: const EdgeInsets.only(top: 10 * 8.0),
+                                child: Center(
+                                  child: Column(
+                                    spacing: 4 * 2,
+                                    mainAxisAlignment: MainAxisAlignment.center,
+                                    crossAxisAlignment: CrossAxisAlignment.center,
+                                    children: [
+                                      CircularProgressIndicator(),
+                                      Text(
+                                        "Loading, please wait...",
+                                        style:
+                                            TextStyle(fontSize: 4 * 4, fontWeight: FontWeight.w500),
+                                      )
+                                    ],
+                                  ),
+                                ),
+                              );
+                            }
+
+                            final List<Reply> replies = snapshot.data as List<Reply>;
+
+                            return CustomSection(
+                              children: replies
+                                  .map(
+                                    (reply) => ForumMessageBubble(reply: reply),
+                                  )
+                                  .toList(),
+                            );
+                          })
+                    ],
+                  ),
                 ),
               ),
             ),

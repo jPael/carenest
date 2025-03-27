@@ -39,32 +39,35 @@ class _ForumMessageInputSectionState extends State<ForumMessageInputSection> {
 
   @override
   Widget build(BuildContext context) {
-    return Row(
-      children: [
-        IconButton(
-            onPressed: () {},
-            icon: Icon(
-              Icons.image_outlined,
-              size: 8 * 4,
-            )),
-        Expanded(
-            child: CustomInput.text(
-                context: context, controller: messageController, label: "Comment")),
-        isLoading
-            ? const SizedBox.square(
-                dimension: 8.0 * 7,
-                child: Padding(
-                  padding: EdgeInsets.all(2 * 8.0),
-                  child: CircularProgressIndicator(),
-                ),
-              )
-            : IconButton(
-                onPressed: handleReply,
-                icon: Icon(
-                  Icons.send_rounded,
-                  size: 8 * 4,
-                ))
-      ],
+    return Padding(
+      padding: const EdgeInsets.symmetric(horizontal: 8.0 * 2, vertical: 8.0),
+      child: Row(
+        children: [
+          // IconButton(
+          //     onPressed: () {},
+          //     icon: Icon(
+          //       Icons.image_outlined,
+          //       size: 8 * 4,
+          //     )),
+          Expanded(
+              child: CustomInput.text(
+                  context: context, controller: messageController, label: "Comment")),
+          isLoading
+              ? const SizedBox.square(
+                  dimension: 8.0 * 7,
+                  child: Padding(
+                    padding: EdgeInsets.all(2 * 8.0),
+                    child: CircularProgressIndicator(),
+                  ),
+                )
+              : IconButton(
+                  onPressed: handleReply,
+                  icon: Icon(
+                    Icons.send_rounded,
+                    size: 8 * 4,
+                  ))
+        ],
+      ),
     );
   }
 }
