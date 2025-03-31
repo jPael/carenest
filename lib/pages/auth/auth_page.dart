@@ -42,7 +42,7 @@ class _AuthPageState extends State<AuthPage> {
               );
             } else if (userSnapshot.hasData) {
               final data = userSnapshot.data!;
-              final UserType role = getEnumUserType(data[UserFields.userType]);
+              final UserType role = getUserEnumFromUserTypeString(data[UserFields.userType]);
               log(data[UserFields.token]);
 
               WidgetsBinding.instance.addPostFrameCallback((_) {

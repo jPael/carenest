@@ -37,7 +37,7 @@ class CustomSection extends StatelessWidget {
               Flexible(
                 child: Text(
                   title!,
-                  style: titleStyle ?? TextStyle(fontSize: 8 * 3, fontWeight: FontWeight.w500),
+                  style: titleStyle ?? TextStyle(fontSize: 8 * 3, fontWeight: FontWeight.bold),
                   softWrap: true,
                 ),
               ),

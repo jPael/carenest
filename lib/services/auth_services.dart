@@ -27,7 +27,7 @@ class AuthServices {
         final userData = userDoc.data()!;
         final userDataType = userData[UserFields.userType];
 
-        if (userType != getEnumUserType(userDataType)) {
+        if (userType != getUserEnumFromUserTypeString(userDataType)) {
           await auth.signOut();
           return {"status": false, "message": "User not found"};
         }

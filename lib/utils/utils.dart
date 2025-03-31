@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:smartguide_app/components/prenatal_records/form/prenatal_info_form.dart';
 import 'package:smartguide_app/models/new_user.dart';
 
 class Utils {
@@ -17,7 +18,7 @@ class Utils {
   }
 }
 
-String getUserType(UserType type) {
+String getUserStringFromUserTyeEnum(UserType type) {
   switch (type) {
     case UserType.mother:
       return "MOTHER";
@@ -26,7 +27,7 @@ String getUserType(UserType type) {
   }
 }
 
-UserType getEnumUserType(String type) {
+UserType getUserEnumFromUserTypeString(String type) {
   switch (type) {
     case "MOTHER":
       return UserType.mother;
@@ -34,6 +35,30 @@ UserType getEnumUserType(String type) {
       return UserType.midwife;
     default:
       throw ArgumentError("Invalid user type: $type");
+  }
+}
+
+String getTrimesterStringFromTrimesterEnum(TrimesterEnum t) {
+  switch (t) {
+    case TrimesterEnum.first:
+      return "FIRST";
+    case TrimesterEnum.second:
+      return "SECOND";
+    case TrimesterEnum.third:
+      return "THIRD";
+  }
+}
+
+TrimesterEnum getTrimesterEnumFromTrimesterString(String t) {
+  switch (t) {
+    case "FIRST":
+      return TrimesterEnum.first;
+    case "SECOND":
+      return TrimesterEnum.second;
+    case "THIRD":
+      return TrimesterEnum.third;
+    default:
+      throw ArgumentError("Invalid trimester: $t");
   }
 }
 

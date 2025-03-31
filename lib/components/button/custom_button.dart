@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:smartguide_app/components/button/custom_dropdown_button.dart';
+import 'package:smartguide_app/components/prenatal_records/form/prenatal_info_form.dart';
 import 'package:smartguide_app/utils/utils.dart';
 
 enum SocialButtonType { google }
@@ -52,6 +54,18 @@ class CustomButton extends StatelessWidget {
         strokeWidth: 2,
         valueColor: AlwaysStoppedAnimation<Color>(Colors.white),
       ),
+    );
+  }
+
+  static Widget dropdown({
+    required TrimesterEnum value,
+    required List<Map<String, dynamic>> data,
+    required Function(Object?)? onchange,
+  }) {
+    return CustomDropdownButton(
+      data: data,
+      onChange: onchange,
+      value: value,
     );
   }
 

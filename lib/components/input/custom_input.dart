@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:smartguide_app/components/input/datepicker.dart';
+import 'package:smartguide_app/components/input/inline_input.dart';
 import 'package:smartguide_app/components/input/password.dart';
 
 class CustomInput {
@@ -11,14 +12,19 @@ class CustomInput {
       String? Function(String?)? validator,
       required TextEditingController controller,
       minLines = 1,
-      maxLines = 8}) {
+      maxLines = 8,
+      String? suffixText}) {
     assert(maxLines >= minLines, 'maxLines must be greater than or equal to minLines');
     return TextFormField(
       validator: validator,
       controller: controller,
+      onTapOutside: (event) {
+        FocusManager.instance.primaryFocus?.unfocus();
+      },
       minLines: minLines,
       maxLines: maxLines,
       decoration: InputDecoration(
+          suffixText: suffixText,
           label: Text(label),
           hintText: hint,
           border: OutlineInputBorder(borderRadius: BorderRadius.circular(8 * 2)),
@@ -39,6 +45,21 @@ class CustomInput {
         label: label,
         hint: hint,
         startIcon: startIcon);
+  }
+
+  static Widget inline(
+      {String? label,
+      required TextEditingController controller,
+      String? suffixText,
+      String? hint,
+      bool? isNormal}) {
+    return InlineInput(
+      controller: controller,
+      label: label,
+      suffixText: suffixText,
+      hint: hint,
+      isNormal: isNormal,
+    );
   }
 
   static Widget timepicker(
@@ -62,6 +83,7 @@ class CustomInput {
         decoration: InputDecoration(
           labelText: label,
           hintText: hint,
+          alignLabelWithHint: true,
           border: OutlineInputBorder(borderRadius: BorderRadius.circular(8 * 2)),
         ),
         child: Row(
