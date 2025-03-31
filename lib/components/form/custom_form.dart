@@ -21,17 +21,19 @@ class CustomForm extends StatelessWidget {
     return Column(
       mainAxisSize: MainAxisSize.min,
       children: [
-        Row(
-          children: [
-            Text(
-              label ?? "",
-              style: TextStyle(fontSize: 8 * 3, fontWeight: FontWeight.w500),
-            )
-          ],
-        ),
-        const SizedBox(
-          height: 8 * 3,
-        ),
+        if (label != null) ...[
+          Row(
+            children: [
+              Text(
+                label!,
+                style: TextStyle(fontSize: 8 * 3, fontWeight: FontWeight.w500),
+              )
+            ],
+          ),
+          const SizedBox(
+            height: 8 * 3,
+          )
+        ],
         ...children,
         const SizedBox(
           height: 8 * 3,

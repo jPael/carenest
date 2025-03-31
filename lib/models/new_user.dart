@@ -33,7 +33,7 @@ class NewUser {
         UserFields.address: address,
         UserFields.phoneNumber: phoneNumber,
         UserFields.dateOfBirth: dateOfBirth.toString(),
-        UserFields.userType: getUserType(type),
+        UserFields.userType: getUserStringFromUserTyeEnum(type),
         UserFields.laravelPassword: password,
       };
 
