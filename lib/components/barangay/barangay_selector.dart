@@ -30,6 +30,7 @@ class BarangaySelectorState extends State<BarangaySelector> {
 
     setState(() {
       defaultValue = _barangays.first.name;
+      widget.onChange(defaultValue);
       barangays = _barangays;
     });
 

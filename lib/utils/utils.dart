@@ -62,6 +62,17 @@ TrimesterEnum getTrimesterEnumFromTrimesterString(String t) {
   }
 }
 
+int getIntegerTrimesterEnum(TrimesterEnum t) {
+  switch (t) {
+    case TrimesterEnum.first:
+      return 1;
+    case TrimesterEnum.second:
+      return 2;
+    case TrimesterEnum.third:
+      return 3;
+  }
+}
+
 Color muteColor(Color color) {
   final hslColor = HSLColor.fromColor(color);
 

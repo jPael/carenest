@@ -30,11 +30,13 @@ class _SettingsItemState extends State<SettingsItem> {
           crossAxisAlignment: CrossAxisAlignment.center,
           children: [
             if (widget.icon != null) widget.icon!,
-            Text(
-              widget.title,
-              style: TextStyle(
-                  fontSize: 8 * 3,
-                  fontWeight: widget.isSelected ? FontWeight.bold : FontWeight.normal),
+            Flexible(
+              child: Text(
+                widget.title,
+                style: TextStyle(
+                    fontSize: 8 * 3,
+                    fontWeight: widget.isSelected ? FontWeight.bold : FontWeight.normal),
+              ),
             )
           ],
         ),

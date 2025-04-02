@@ -10,4 +10,5 @@ class UserFields {
   static String get token => "token";
   static String get laravelPassword => "laravelPassword";
   static String get uid => "uid";
+  static String get laravelId => "laravelId";
 }

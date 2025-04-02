@@ -4,7 +4,6 @@ import 'package:smartguide_app/components/checklist/custom_checkbox.dart';
 import 'package:smartguide_app/components/input/custom_input.dart';
 import 'package:smartguide_app/components/prenatal_records/form/prenatal_info_form.dart';
 import 'package:smartguide_app/components/section/custom_section.dart';
-import 'package:smartguide_app/utils/utils.dart';
 
 class CareAndTestsForm extends StatefulWidget {
   const CareAndTestsForm(
@@ -21,14 +20,18 @@ class CareAndTestsForm extends StatefulWidget {
       this.dropdownOnChange,
       required this.trimesters,
       this.introducedBirthPlanOnChange,
-      this.consultWhtOnChange});
+      this.consultWhtOnChange,
+      required this.addAdvices,
+      required this.addServices});
 
   final TextEditingController fundicHeightController;
   final bool isFundicNormal;
   final TextEditingController bloodPressureController;
   final bool isBloodPressureNormal;
   final List<TextEditingController> advicesControllers;
+  final VoidCallback addAdvices;
   final List<TextEditingController> servicesControllers;
+  final VoidCallback addServices;
 
   final Function(bool?)? introducedBirthPlanOnChange;
   final Function(bool?)? consultWhtOnChange;
@@ -105,6 +108,12 @@ class _CareAndTestsFormState extends State<CareAndTestsForm> {
           ),
           headerSpacing: 1,
           childrenSpacing: 1,
+          action: IconButton(
+              onPressed: widget.addAdvices,
+              icon: Icon(
+                Icons.add_circle_outline,
+                color: Theme.of(context).colorScheme.primary,
+              )),
           children: [
             ...widget.advicesControllers.map((controller) => Row(
                   spacing: 4 * 2,
@@ -113,10 +122,6 @@ class _CareAndTestsFormState extends State<CareAndTestsForm> {
                       Icons.circle,
                       size: 4 * 3,
                     ),
-                    // Text(
-                    //   content,
-                    //   style: TextStyle(fontSize: 4 * 4),
-                    // ),
                     CustomInput.inline(
                       hint: "Type the advice here",
                       controller: controller,
@@ -133,6 +138,12 @@ class _CareAndTestsFormState extends State<CareAndTestsForm> {
           ),
           headerSpacing: 1,
           childrenSpacing: 1,
+          action: IconButton(
+              onPressed: widget.addServices,
+              icon: Icon(
+                Icons.add_circle_outline,
+                color: Theme.of(context).colorScheme.primary,
+              )),
           children: [
             ...widget.servicesControllers.map((controller) => Row(
                   spacing: 4 * 2,

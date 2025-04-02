@@ -19,6 +19,7 @@ class User extends ChangeNotifier {
   String? email;
   String? token;
   String? uid;
+  int? laravelId;
 
   Map<String, String?>? prevData;
 
@@ -52,6 +53,7 @@ class User extends ChangeNotifier {
     email = json[UserFields.email];
     token = json[UserFields.token];
     uid = json[UserFields.uid];
+    laravelId = json[UserFields.laravelId];
 
     notifyListeners();
   }

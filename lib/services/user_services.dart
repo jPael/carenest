@@ -36,10 +36,15 @@ Future<Map<String, dynamic>?> getUserByUID(String uid) async {
 
     final data = user.data();
 
-    String token = await loginAccount(
+    Map<String, dynamic> laravelData = await loginAccount(
         email: data![UserFields.email], password: data[UserFields.laravelPassword]);
 
-    return {...data, UserFields.token: token, UserFields.uid: uid};
+    return {
+      ...data,
+      UserFields.token: laravelData[UserFields.token],
+      UserFields.uid: uid,
+      UserFields.laravelId: laravelData[UserFields.laravelId]
+    };
   } catch (e, stackTrace) {
     if (kDebugMode) {
       print("Error fetching user data: $e");
