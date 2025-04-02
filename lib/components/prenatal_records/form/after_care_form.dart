@@ -8,19 +8,20 @@ import 'package:smartguide_app/components/prenatal_records/after_care/after_care
 import 'package:smartguide_app/components/section/custom_section.dart';
 
 class AfterCareForm extends StatefulWidget {
-  AfterCareForm({super.key});
+  final List<Map<String, dynamic>> ttItems;
+  final List<Map<String, dynamic>> ironSuppItems;
+
+  const AfterCareForm({
+    super.key,
+    this.ttItems = const [],
+    this.ironSuppItems = const [],
+  });
 
   @override
   State<AfterCareForm> createState() => _AfterCareFormState();
 }
 
 class _AfterCareFormState extends State<AfterCareForm> {
-  final List<Map<String, dynamic>> ttItems =
-      List.generate(5, (i) => {"description": "TT${i + 1}", "datetime": DateTime.now()});
-
-  final List<Map<String, dynamic>> ironSuppItems =
-      List.generate(5, (i) => {"tabs": Random().nextInt(10) + 1, "datetime": DateTime.now()});
-
   Future<void> showImmunzationFormDialog() async {
     await showDialog(
       context: context,
@@ -33,8 +34,10 @@ class _AfterCareFormState extends State<AfterCareForm> {
               CustomButton(
                 onPress: () {
                   setState(() {
-                    ttItems.add(
-                        {"description": "TT${ttItems.length + 1}", "datetime": DateTime.now()});
+                    widget.ttItems.add({
+                      "description": "TT${widget.ttItems.length + 1}",
+                      "datetime": DateTime.now()
+                    });
                   });
                   Navigator.pop(context);
                 },
@@ -61,7 +64,7 @@ class _AfterCareFormState extends State<AfterCareForm> {
               CustomButton(
                 onPress: () {
                   setState(() {
-                    ironSuppItems
+                    widget.ironSuppItems
                         .add({"tabs": Random().nextInt(10) + 1, "datetime": DateTime.now()});
                   });
                   Navigator.pop(context);
@@ -90,7 +93,7 @@ class _AfterCareFormState extends State<AfterCareForm> {
           action: IconButton(
               onPressed: showImmunzationFormDialog,
               icon: Icon(
-                Icons.add_rounded,
+                Icons.add_circle_outline,
                 color: Theme.of(context).colorScheme.primary,
               )),
           titleStyle: TextStyle(
@@ -107,7 +110,7 @@ class _AfterCareFormState extends State<AfterCareForm> {
                 Expanded(flex: 3, child: Text("Date"))
               ],
             ),
-            ...ttItems.map((e) =>
+            ...widget.ttItems.map((e) =>
                 AfterCareTtImmunizationItem(description: e["description"], date: e["datetime"]))
           ],
         ),
@@ -118,7 +121,7 @@ class _AfterCareFormState extends State<AfterCareForm> {
           action: IconButton(
               onPressed: showIronSupplementFormDialog,
               icon: Icon(
-                Icons.add_rounded,
+                Icons.add_circle_outline,
                 color: Theme.of(context).colorScheme.primary,
               )),
           titleStyle: TextStyle(
@@ -131,7 +134,7 @@ class _AfterCareFormState extends State<AfterCareForm> {
                 Expanded(flex: 2, child: Text("Date"))
               ],
             ),
-            ...ironSuppItems
+            ...widget.ironSuppItems
                 .map((e) => AfterCareIronSupplementItem(date: e["datetime"], tabs: e["tabs"]))
           ],
         )

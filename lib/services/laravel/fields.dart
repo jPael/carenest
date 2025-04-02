@@ -1,4 +1,4 @@
-class Registration {
+class RegistrationFields {
   static String get name => "name";
   static String get email => "email";
   static String get password => "password";

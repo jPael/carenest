@@ -27,10 +27,12 @@ class InlineInput extends StatelessWidget {
           Flexible(
               // flex: 2,
               child: CustomInput.text(
-                  context: context,
-                  controller: controller,
-                  suffixText: suffixText,
-                  hint: hint ?? "")),
+            context: context,
+            controller: controller,
+            suffixText: suffixText,
+            hint: hint ?? "",
+            label: hint ?? "",
+          )),
           if (isNormal != null)
             Expanded(
                 flex: 1,

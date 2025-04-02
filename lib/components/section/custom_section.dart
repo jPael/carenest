@@ -17,7 +17,7 @@ class CustomSection extends StatelessWidget {
   final Widget? description;
   final TextStyle? titleStyle;
   final CrossAxisAlignment? alignment;
-  final List<Widget> children;
+  final List<Widget?> children;
   final Widget? action;
   final Widget? emptyChildrenContent;
   final int headerSpacing;
@@ -33,6 +33,7 @@ class CustomSection extends StatelessWidget {
           Row(
             spacing: 8,
             crossAxisAlignment: CrossAxisAlignment.center,
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
               Flexible(
                 child: Text(
@@ -63,7 +64,7 @@ class CustomSection extends StatelessWidget {
                     ),
                   )
                 ]
-              : children,
+              : children.where((child) => child != null).toList().cast<Widget>(),
         ),
       ],
     );

@@ -1,7 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:ionicons/ionicons.dart';
+import 'package:smartguide_app/components/prenatal_records/form/patient_information_form.dart';
 import 'package:smartguide_app/components/section/custom_section.dart';
 import 'package:smartguide_app/components/settings/settings_item.dart';
+import 'package:smartguide_app/pages/midwife/prenatal_records/patients_info_page.dart';
 import 'package:smartguide_app/pages/mother/settings/settings_language_page.dart';
 import 'package:smartguide_app/pages/mother/settings/settings_prenatal_records_page.dart';
 
@@ -32,6 +34,12 @@ class SettingsView extends StatelessWidget {
               title: "Prenatal Record",
               onTap: () => Navigator.push(
                   context, MaterialPageRoute(builder: (context) => SettingsPrenatalRecordsPage())),
+            ),
+            SettingsItem(
+              icon: Icon(Ionicons.list_outline),
+              title: "PatientInformation Record (delete me)",
+              onTap: () => Navigator.push(
+                  context, MaterialPageRoute(builder: (context) => PatientsInfoPage())),
             ),
           ],
         ),
