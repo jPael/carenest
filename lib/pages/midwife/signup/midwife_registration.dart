@@ -148,7 +148,6 @@ class _MidwifeRegistrationState extends State<MidwifeRegistration> {
                     ),
                     BarangaySelector(
                       onChange: handleBarangaySelection,
-                      value: selectedBarangay,
                     )
                     // CustomInput.text(
                     //     context: context,

@@ -5,19 +5,21 @@ import 'package:smartguide_app/models/barangay.dart';
 import 'package:smartguide_app/services/laravel/barangay_services.dart';
 
 class BarangaySelector extends StatefulWidget {
-  const BarangaySelector({super.key, required this.onChange, required this.value});
+  const BarangaySelector({
+    super.key,
+    required this.onChange,
+  });
 
   final Function(String? value) onChange;
-  final String value;
+  
 
   @override
   BarangaySelectorState createState() => BarangaySelectorState();
 }
 
 class BarangaySelectorState extends State<BarangaySelector> {
-  late String defaultValue;
+  String defaultValue = "";
   bool fetchingBarangay = false;
-
   List<Barangay> barangays = [];
 
   Future<void> _fetchBarangay() async {
@@ -25,7 +27,7 @@ class BarangaySelectorState extends State<BarangaySelector> {
       fetchingBarangay = true;
     });
 
-    await Future.delayed(Duration(seconds: 3));
+    // await Future.delayed(Duration(seconds: 3));
     final _barangays = await BarangayServices().fetchALlBarangays();
 
     setState(() {

@@ -3,6 +3,7 @@ import 'dart:math';
 import 'package:flutter/material.dart';
 import 'package:smartguide_app/components/button/custom_button.dart';
 import 'package:smartguide_app/components/form/custom_form.dart';
+import 'package:smartguide_app/components/input/custom_input.dart';
 import 'package:smartguide_app/components/prenatal_records/after_care/after_care_iron_supplement_item.dart';
 import 'package:smartguide_app/components/prenatal_records/after_care/after_care_tt_immunization_item.dart';
 import 'package:smartguide_app/components/section/custom_section.dart';
@@ -25,63 +26,135 @@ class _AfterCareFormState extends State<AfterCareForm> {
   Future<void> showImmunzationFormDialog() async {
     await showDialog(
       context: context,
-      builder: (BuildContext context) => Dialog(
-        child: Padding(
-          padding: const EdgeInsets.all(4 * 4),
-          child: CustomForm(
-            label: "Add Immunization",
-            actions: [
-              CustomButton(
-                onPress: () {
-                  setState(() {
-                    widget.ttItems.add({
-                      "description": "TT${widget.ttItems.length + 1}",
-                      "datetime": DateTime.now()
+      builder: (BuildContext context) {
+        // Map<String, dynamic> value = {"term": "", "datetime": DateTime.now()};
+        final TextEditingController termController = TextEditingController();
+        DateTime datetime = DateTime.now();
+
+        return Dialog(
+          child: Padding(
+            padding: const EdgeInsets.all(4 * 4),
+            child: CustomForm(
+              label: "Add Immunization",
+              actions: [
+                CustomButton(
+                  onPress: () {
+                    setState(() {
+                      widget.ttItems.add({
+                        "term": "${termController.text}",
+                        "datetime": datetime,
+                      });
                     });
-                  });
-                  Navigator.pop(context);
-                },
-                label: "Add",
-                icon: Icon(Icons.add_rounded),
-              )
-            ],
-            children: [Text("It will auto generate data")],
+                    Navigator.pop(context);
+                  },
+                  label: "Add",
+                  icon: Icon(Icons.add_rounded),
+                )
+              ],
+              children: [
+                Column(
+                  children: [
+                    CustomInput.text(
+                      context: context,
+                      controller: termController,
+                      label: "TT Term",
+                      hint: "Enter TT Term",
+                      validator: (value) {
+                        if (value == null || value.isEmpty) {
+                          return "Please enter a valid term";
+                        }
+                        return null;
+                      },
+                    ),
+                    SizedBox(height: 16),
+                    Row(
+                      children: [
+                        CustomInput.datepicker(
+                          context: context,
+                          onChange: (dateValue) {
+                            datetime = dateValue;
+                          },
+                        ),
+                      ],
+                    )
+                  ],
+                )
+              ],
+            ),
           ),
-        ),
-      ),
+        );
+      },
     );
   }
 
   Future<void> showIronSupplementFormDialog() async {
     await showDialog(
       context: context,
-      builder: (BuildContext context) => Dialog(
-        child: Padding(
-          padding: const EdgeInsets.all(4 * 4),
-          child: CustomForm(
-            label: "Add Iron Supplement",
-            actions: [
-              CustomButton(
-                onPress: () {
-                  setState(() {
-                    widget.ironSuppItems
-                        .add({"tabs": Random().nextInt(10) + 1, "datetime": DateTime.now()});
-                  });
-                  Navigator.pop(context);
-                },
-                label: "Add",
-                icon: Icon(Icons.add_rounded),
-              )
-            ],
-            children: [Text("It will auto generate data")],
+      builder: (BuildContext context) {
+        final TextEditingController tabsController = TextEditingController();
+        DateTime datetime = DateTime.now();
+
+        return Dialog(
+          child: Padding(
+            padding: const EdgeInsets.all(4 * 4),
+            child: CustomForm(
+              label: "Add Iron Supplement",
+              actions: [
+                CustomButton(
+                  onPress: () {
+                    setState(() {
+                      widget.ironSuppItems.add({
+                        "iron_supplement_no_tabs": int.tryParse(tabsController.text) ?? 1,
+                        "datetime": datetime,
+                      });
+                    });
+                    Navigator.pop(context);
+                  },
+                  label: "Add",
+                  icon: Icon(Icons.add_rounded),
+                )
+              ],
+              children: [
+                Column(
+                  children: [
+                    CustomInput.text(
+                      context: context,
+                      controller: tabsController,
+                      label: "Number of Tabs",
+                      hint: "Enter number of tabs",
+                      validator: (value) {
+                        if (value == null || value.isEmpty) {
+                          return "Please enter a valid number";
+                        }
+                        return null;
+                      },
+                    ),
+                    SizedBox(height: 16),
+                    Row(
+                      children: [
+                        CustomInput.datepicker(
+                          context: context,
+                          onChange: (dateValue) {
+                            datetime = dateValue;
+                          },
+                        ),
+                      ],
+                    )
+                  ],
+                )
+              ],
+            ),
           ),
-        ),
-      ),
+        );
+      },
     );
   }
 
   @override
   Widget build(BuildContext context) {
+    print("TT Items: ${widget.ttItems}");
+    print("Iron Supplement Items: ${widget.ironSuppItems}");
+
     return CustomSection(
       title: "After Care",
       childrenSpacing: 3,
@@ -111,7 +184,7 @@ class _AfterCareFormState extends State<AfterCareForm> {
               ],
             ),
             ...widget.ttItems.map((e) =>
-                AfterCareTtImmunizationItem(description: e["description"], date: e["datetime"]))
+                AfterCareTtImmunizationItem(description: "Term " + e["term"], date: e["datetime"]))
           ],
         ),
         CustomSection(
@@ -130,12 +203,12 @@ class _AfterCareFormState extends State<AfterCareForm> {
           children: [
             Row(
               children: [
-                Expanded(flex: 1, child: Text("Tabs")),
-                Expanded(flex: 2, child: Text("Date"))
+                Expanded(flex: 1, child: Text("Date")),
+                Expanded(flex: 2, child: Text("Tabs")),
               ],
             ),
-            ...widget.ironSuppItems
-                .map((e) => AfterCareIronSupplementItem(date: e["datetime"], tabs: e["tabs"]))
+            ...widget.ironSuppItems.map((e) => AfterCareIronSupplementItem(
+                date: e["datetime"], tabs: e["iron_supplement_no_tabs"]))
           ],
         )
       ],

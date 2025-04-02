@@ -50,7 +50,7 @@ class PrenatalServices {
 
       'full_name': prenatal.donorFullname,
       'contact_number': prenatal.donorContact,
-      'blood_type': prenatal.donorBloodType,
+      'blood_type': prenatal.donorBloodTyped ? 1 : 0,
 
       'clinic_visit_trimester': getIntegerTrimesterEnum(prenatal.selectedTrimester),
       'clinic_visit_consul_wht': prenatal.consultWht ? 1 : 0,
@@ -66,6 +66,7 @@ class PrenatalServices {
       'wht_introduced_birth_plan': prenatal.introducedBirthPlan ? 1 : 0,
       'fundic_heigh': prenatal.fundicHeight,
       'patient_information_id': patientInfoId, // This was missing in your payload
+      'accompany_by': prenatal.accompaniedBy,
     };
 
     log('Sending payload: ${jsonEncode(payload)}');

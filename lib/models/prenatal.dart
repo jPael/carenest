@@ -36,7 +36,7 @@ class Prenatal {
     required this.properNutritionForMyself,
     required this.donorFullname,
     required this.donorContact,
-    required this.donorBloodType,
+    required this.donorBloodTyped,
   });
 
   final bool breastFeeding;
@@ -46,7 +46,7 @@ class Prenatal {
   final bool properNutritionForMyself;
   final String donorFullname;
   final String donorContact;
-  final String donorBloodType;
+  final bool donorBloodTyped;
   final String fullname;
   final String age;
   final String obStatus;

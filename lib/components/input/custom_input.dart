@@ -10,7 +10,7 @@ class CustomInput {
       String hint = "",
       Widget? startIcon,
       String? Function(String?)? validator,
-      required TextEditingController controller,
+      TextEditingController? controller,
       minLines = 1,
       maxLines = 8,
       String? suffixText}) {
@@ -49,16 +49,18 @@ class CustomInput {
 
   static Widget inline(
       {String? label,
-      required TextEditingController controller,
+      TextEditingController? controller,
       String? suffixText,
       String? hint,
-      bool? isNormal}) {
+      bool? isNormal,
+      Widget? customInput}) {
     return InlineInput(
       controller: controller,
       label: label,
       suffixText: suffixText,
       hint: hint,
       isNormal: isNormal,
+      customInput: customInput,
     );
   }
 

@@ -1,9 +1,11 @@
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 import 'package:smartguide_app/components/barangay/barangay_selector.dart';
 import 'package:smartguide_app/components/button/custom_button.dart';
 import 'package:smartguide_app/components/checklist/custom_checkbox.dart';
 import 'package:smartguide_app/components/input/custom_input.dart';
 import 'package:smartguide_app/components/section/custom_section.dart';
+import 'package:smartguide_app/models/user.dart';
 
 class PatientInformationForm extends StatefulWidget {
   // const PatientInformationForm({super.key});
@@ -27,7 +29,8 @@ class PatientInformationForm extends StatefulWidget {
     required this.nhtsOnChange,
     required this.donorFullnameController,
     required this.donorContactController,
-    required this.donorBloodTypeController,
+    required this.donorBloodTyped,
+    required this.bloodTypeOnChange,
   });
 
   final TextEditingController fullnameController;
@@ -35,7 +38,8 @@ class PatientInformationForm extends StatefulWidget {
   final TextEditingController obStatusController;
   final TextEditingController donorFullnameController;
   final TextEditingController donorContactController;
-  final TextEditingController donorBloodTypeController;
+  final bool donorBloodTyped;
+  final Function(bool?) bloodTypeOnChange;
   final String barangay;
   final bool philHealth;
   final bool nhts;
@@ -55,6 +59,22 @@ class PatientInformationForm extends StatefulWidget {
 
 class _PatientInformationFormState extends State<PatientInformationForm> {
   bool isExpanded = false;
+  late User user;
+
+  @override
+  void initState() {
+    super.initState();
+    user = context.read<User>();
+
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      widget.fullnameController.text = "${user.firstname!} ${user.lastname!}";
+      widget.ageController.text =
+          ((DateTime.now().difference(DateTime.tryParse(user!.dateOfBirth!)!).inDays / 365.2425))
+              .floor()
+              .toString();
+      widget.onBarangayChange(user.address);
+    });
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -82,7 +102,9 @@ class _PatientInformationFormState extends State<PatientInformationForm> {
               CustomInput.text(context: context, controller: widget.ageController, label: "Age"),
               CustomInput.text(
                   context: context, controller: widget.obStatusController, label: "OB Status"),
-              BarangaySelector(onChange: widget.onBarangayChange, value: widget.barangay),
+              BarangaySelector(
+                onChange: widget.onBarangayChange,
+              ),
               CustomInput.datepicker(
                 context: context,
                 label: "Date of birth",
@@ -124,10 +146,12 @@ class _PatientInformationFormState extends State<PatientInformationForm> {
                       context: context,
                       controller: widget.donorContactController,
                       label: "Contact number"),
-                  CustomInput.text(
-                      context: context,
-                      controller: widget.donorBloodTypeController,
-                      label: "Blood type"),
+                  CustomCheckbox(
+                      label: "Blood type verified",
+                      value: widget.donorBloodTyped,
+                      onChange: widget.bloodTypeOnChange),
+                  // CustomInput.text(
+                  //     context: context, controller: widget.donorBloodTyped, label: "Blood type"),
                 ],
               )
             ],

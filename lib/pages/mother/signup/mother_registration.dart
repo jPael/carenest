@@ -151,7 +151,6 @@ class _MotherRegistrationState extends State<MotherRegistration> {
 
                     BarangaySelector(
                       onChange: handleBarangaySelection,
-                      value: selectedBarangay,
                     )
 
                     // CustomInput.text(

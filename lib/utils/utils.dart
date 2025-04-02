@@ -18,7 +18,7 @@ class Utils {
   }
 }
 
-String getUserStringFromUserTyeEnum(UserType type) {
+String getUserStringFromUserTypeEnum(UserType type) {
   switch (type) {
     case UserType.mother:
       return "MOTHER";
@@ -35,6 +35,15 @@ UserType getUserEnumFromUserTypeString(String type) {
       return UserType.midwife;
     default:
       throw ArgumentError("Invalid user type: $type");
+  }
+}
+
+int getIntegerFromUserTypeEnum(UserType type) {
+  switch (type) {
+    case UserType.mother:
+      return 2;
+    case UserType.midwife:
+      return 1;
   }
 }
 

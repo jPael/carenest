@@ -163,7 +163,7 @@ class _ProfilePersonalInformationItemState extends State<ProfilePersonalInformat
           //     controller: addressController,
           //     label: "Address",
           //     hint: "e.g., 123 Rizal St., Brgy. San Isidro, Makati City, Metro Manila, 1230"),
-          BarangaySelector(onChange: handleBarangaySelection, value: selectedBarangay),
+          BarangaySelector(onChange: handleBarangaySelection),
           Row(mainAxisAlignment: MainAxisAlignment.end, children: [
             CustomButton(
               onPress: () async {

@@ -33,7 +33,7 @@ class NewUser {
         UserFields.address: address,
         UserFields.phoneNumber: phoneNumber,
         UserFields.dateOfBirth: dateOfBirth.toString(),
-        UserFields.userType: getUserStringFromUserTyeEnum(type),
+        UserFields.userType: getUserStringFromUserTypeEnum(type),
         UserFields.laravelPassword: password,
       };
 
@@ -48,7 +48,8 @@ class NewUser {
           .doc(uid)
           .set({UserFields.uid: uid, ...getUserDetails()});
 
-      await registerAccount(name: "$firstname $lastname", email: email, password: password);
+      await registerAccount(
+          name: "$firstname $lastname", email: email, password: password, type: type);
 
       return {"success": "Registered successfully! Continue logging in with your new account"};
     } on FirebaseException catch (e, stackTrace) {

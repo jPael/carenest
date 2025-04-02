@@ -54,6 +54,7 @@ class User extends ChangeNotifier {
     token = json[UserFields.token];
     uid = json[UserFields.uid];
     laravelId = json[UserFields.laravelId];
+    type = json[UserFields.userType];
 
     notifyListeners();
   }

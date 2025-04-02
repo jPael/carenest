@@ -25,7 +25,6 @@ class PrenatalInfoForm extends StatefulWidget {
 }
 
 class _PrenatalInfoFormState extends State<PrenatalInfoForm> {
-  // form data
   late TrimesterEnum selectedTrimester;
   bool consultWht = false;
   bool introducedBirthPlan = false;
@@ -42,8 +41,6 @@ class _PrenatalInfoFormState extends State<PrenatalInfoForm> {
   final TextEditingController birthplaceController = TextEditingController();
   final TextEditingController assignedByController = TextEditingController();
   final TextEditingController accompaniedByController = TextEditingController();
-
-  // form data
 
   void trimesterOnChange(TrimesterEnum value) {
     setState(() {
@@ -95,11 +92,11 @@ class _PrenatalInfoFormState extends State<PrenatalInfoForm> {
 
   final TextEditingController donorFullnameController = TextEditingController();
   final TextEditingController donorContactController = TextEditingController();
-  final TextEditingController donorBloodTypeController = TextEditingController();
+  // final TextEditingController donorBloodTypeController = TextEditingController();
+  bool donorBloodTyped = false;
 
   //  blood donors
 
-  // final TextEditingController addressController = TextEditingController();
   String barangay = "";
   bool philHealth = false;
   bool nhts = false;
@@ -107,11 +104,13 @@ class _PrenatalInfoFormState extends State<PrenatalInfoForm> {
   DateTime birthday = DateTime.now();
   DateTime lastMenstrualPeriod = DateTime.now();
 
-  final List<Map<String, dynamic>> ttItems =
-      List.generate(5, (i) => {"description": "TT${i + 1}", "datetime": DateTime.now()});
+  final List<Map<String, dynamic>> ttItems = [];
+  // final List<Map<String, dynamic>> ttItems =
+  //     List.generate(5, (i) => {"description": "TT${i + 1}", "datetime": DateTime.now()});
 
-  final List<Map<String, dynamic>> ironSuppItems =
-      List.generate(5, (i) => {"tabs": Random().nextInt(10) + 1, "datetime": DateTime.now()});
+  // final List<Map<String, dynamic>> ironSuppItems =
+  //     List.generate(5, (i) => {"tabs": Random().nextInt(10) + 1, "datetime": DateTime.now()});
+  final List<Map<String, dynamic>> ironSuppItems = [];
 
   bool isSubmitting = false;
 
@@ -119,7 +118,7 @@ class _PrenatalInfoFormState extends State<PrenatalInfoForm> {
     final user = context.read<User>();
 
     final Prenatal record = Prenatal(
-        donorBloodType: donorBloodTypeController.text,
+        donorBloodTyped: donorBloodTyped,
         donorContact: donorContactController.text,
         donorFullname: donorFullnameController.text,
         breastFeeding: counselingQuestionaire[0]["value"],
@@ -196,7 +195,7 @@ class _PrenatalInfoFormState extends State<PrenatalInfoForm> {
     accompaniedByController.dispose();
     donorFullnameController.dispose();
     donorContactController.dispose();
-    donorBloodTypeController.dispose();
+    // donorBloodTyped.dispose();
     // forMyChildController.dispose();
     // forMyselfController.dispose();
     fullnameController.dispose();
@@ -230,12 +229,17 @@ class _PrenatalInfoFormState extends State<PrenatalInfoForm> {
             child: Padding(
               padding: const EdgeInsets.all(8.0 * 2),
               child: PatientInformationForm(
+                bloodTypeOnChange: (value) {
+                  setState(() {
+                    donorBloodTyped = value!;
+                  });
+                },
                 fullnameController: fullnameController,
                 ageController: ageController,
                 obStatusController: obStatusController,
                 donorFullnameController: donorFullnameController,
                 donorContactController: donorContactController,
-                donorBloodTypeController: donorBloodTypeController,
+                donorBloodTyped: donorBloodTyped,
                 barangay: barangay,
                 philHealth: philHealth,
                 nhts: nhts,
