@@ -24,8 +24,8 @@ class HomeView extends StatelessWidget {
                     width: 180,
                   ),
                   label: "Prenatal Records",
-                  notifCount: 3,
-                  onPressed: () => Navigator.push(context, MaterialPageRoute(builder: (context) => PrenatalRecordsListPage()))),
+                  onPressed: () => Navigator.push(
+                      context, MaterialPageRoute(builder: (context) => PrenatalRecordsListPage()))),
               CardButton(
                   content: Image.asset(
                     "lib/assets/images/midwife_home_add_reminders_icon.png",
@@ -34,7 +34,8 @@ class HomeView extends StatelessWidget {
                     width: 180,
                   ),
                   label: "Add Reminders",
-                  onPressed: () => Navigator.push(context, MaterialPageRoute(builder: (context) => AddRemindersPage()))),
+                  onPressed: () => Navigator.push(
+                      context, MaterialPageRoute(builder: (context) => AddRemindersPage()))),
             ],
           ),
         ],

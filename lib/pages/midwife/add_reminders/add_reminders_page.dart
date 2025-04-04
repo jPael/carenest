@@ -1,9 +1,11 @@
 import 'package:flutter/material.dart';
-import 'package:intl/intl.dart';
 import 'package:ionicons/ionicons.dart';
-import 'package:smartguide_app/components/input/custom_input.dart';
+import 'package:provider/provider.dart';
 import 'package:smartguide_app/components/midwife/reminders/reminders_item.dart';
 import 'package:smartguide_app/components/section/custom_section.dart';
+import 'package:smartguide_app/models/reminder.dart';
+import 'package:smartguide_app/models/user.dart';
+import 'package:smartguide_app/pages/midwife/add_reminders/add_reminder_form.dart';
 
 class AddRemindersPage extends StatefulWidget {
   const AddRemindersPage({super.key});
@@ -13,156 +15,93 @@ class AddRemindersPage extends StatefulWidget {
 }
 
 class _AddRemindersPageState extends State<AddRemindersPage> {
-  final List<Map<String, dynamic>> reminders = [];
+  List<Reminder> reminders = [];
 
-  void handleAddReminders(Map<String, dynamic> data) {
+  void handleAddReminders(
+      {required String title,
+      required String purpose,
+      required ReminderTypeEnum reminderType,
+      required DateTime date,
+      required TimeOfDay time}) {
+    final User user = context.read<User>();
     setState(() {
-      reminders.add(data);
+      reminders.add(Reminder(
+        userId: user.laravelId!,
+        date: date,
+        purpose: purpose,
+        reminderType: reminderType,
+        time: time,
+        title: title,
+      ));
     });
   }
 
-  void handleDelete(int code) {
-    setState(() {
-      reminders.removeWhere((element) => element['code'] == code);
-    });
-  }
+  void handleDelete(int code) {}
 
   void _showAddReminderDialog(BuildContext context) {
     final formKey = GlobalKey<FormState>();
-    String title = '';
-    String purpose = '';
-    String? selectedPath;
+    ReminderTypeEnum? reminderType;
+
+    final TextEditingController titleController = TextEditingController();
+    final TextEditingController purposeController = TextEditingController();
+
     DateTime date = DateTime.now();
     TimeOfDay time = TimeOfDay.now();
-
-    final List<String> imagePaths = [
-      "lib/assets/images/reminders_card_prenatal_checkup_icon.png",
-      "lib/assets/images/reminders_card_nutrition_seminar_icon.png",
-      "lib/assets/images/reminders_card_vaccination_drive_icon.png"
-    ];
 
     showDialog(
       context: context,
       builder: (BuildContext context) {
         return StatefulBuilder(
-          builder: (BuildContext context, StateSetter setState) {
+          builder: (BuildContext context, StateSetter setDialogState) {
+            void onChangeReminderType(ReminderTypeEnum? type) {
+              titleController.text = type!.name;
+              setDialogState(() {
+                reminderType = type;
+              });
+            }
+
+            void onReminderDateChange(DateTime d) {
+              setState(() {
+                date = d;
+              });
+            }
+
+            void onReminderTimeChange(TimeOfDay t) {
+              setState(() {
+                time = t;
+              });
+            }
+
             return AlertDialog(
               title: Text('Add Reminder'),
-              content: Form(
-                key: formKey,
-                child: SingleChildScrollView(
-                  child: Column(
-                    mainAxisSize: MainAxisSize.min,
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      DropdownButton(
-                        alignment: Alignment.centerLeft,
-                        value: selectedPath,
-                        hint: Text("Set icon"),
-                        items: imagePaths
-                            .map((String i) => DropdownMenuItem(
-                                alignment: Alignment.center,
-                                value: i,
-                                child: Row(
-                                  children: [
-                                    Image.asset(i, width: 50, height: 50, fit: BoxFit.cover),
-                                  ],
-                                )))
-                            .toList(),
-                        onChanged: (e) {
-                          setState(() {
-                            selectedPath = e;
-                          });
-                        },
-                      ),
-                      TextFormField(
-                        decoration: InputDecoration(labelText: 'Title'),
-                        validator: (value) {
-                          if (value == null || value.isEmpty) {
-                            return 'Please enter a title';
-                          }
-                          return null;
-                        },
-                        onSaved: (value) {
-                          title = value!;
-                        },
-                      ),
-                      const SizedBox(
-                        height: 8 * 2,
-                      ),
-                      CustomInput.datepicker(
-                          context: context,
-                          onChange: (d) {
-                            setState(() {
-                              date = d;
-                            });
-                          },
-                          selectedDate: date,
-                          label: "Date"),
-                      const SizedBox(
-                        height: 8 * 2,
-                      ),
-                      CustomInput.timepicker(
-                          context: context,
-                          onChange: (t) {
-                            setState(() {
-                              time = t;
-                            });
-                          },
-                          selectedTime: time,
-                          label: "Time"),
-                      const SizedBox(
-                        height: 8 * 2,
-                      ),
-                      TextFormField(
-                        minLines: 5,
-                        maxLines: 6,
-                        decoration:
-                            InputDecoration(labelText: 'Purpose', border: OutlineInputBorder()),
-                        validator: (value) {
-                          if (value == null || value.isEmpty) {
-                            return 'Please enter a purpose';
-                          }
-                          return null;
-                        },
-                        onSaved: (value) {
-                          purpose = value!;
-                        },
-                      ),
-                    ],
-                  ),
-                ),
+              content: AddReminderForm(
+                date: date,
+                formKey: formKey,
+                onChangeReminderType: onChangeReminderType,
+                onReminderDateChange: onReminderDateChange,
+                onReminderTimeChange: onReminderTimeChange,
+                purposeController: purposeController,
+                reminderType: reminderType,
+                time: time,
+                titleController: titleController,
               ),
               actions: [
                 TextButton(
-                  onPressed: () {
-                    Navigator.of(context).pop(); // Close the dialog
-                  },
+                  onPressed: () => Navigator.of(context).pop(),
                   child: Text('Cancel'),
                 ),
                 TextButton(
                   onPressed: () {
                     if (formKey.currentState!.validate()) {
-                      formKey.currentState!.save(); // Save the form data
+                      formKey.currentState!.save();
 
-                      int? code;
-
-                      while (true) {
-                        code = int.parse(DateFormat('HHmm').format(DateTime.now()));
-
-                        if (!reminders.any((element) => element['code'] == code)) {
-                          break;
-                        }
-                      }
-                      handleAddReminders({
-                        'code': code,
-                        'title': title,
-                        'purpose': purpose,
-                        'icon': selectedPath,
-                        'date': date,
-                        'time': time
-                      });
-                      Navigator.of(context).pop(); // Close the dialog
+                      handleAddReminders(
+                          date: date,
+                          purpose: purposeController.text,
+                          reminderType: reminderType!,
+                          time: time,
+                          title: titleController.text);
+                      Navigator.of(context).pop();
                     }
                   },
                   child: Text('Add'),
@@ -193,10 +132,11 @@ class _AddRemindersPageState extends State<AddRemindersPage> {
             children: [
               CustomSection(
                 headerSpacing: 1,
+                childrenSpacing: 1,
                 children: [
                   ...reminders.map((reminder) {
                     return RemindersItem(
-                        data: reminder, handleDelete: (code) => handleDelete(code));
+                        reminder: reminder, handleDelete: (code) => handleDelete(code));
                   }),
                 ],
               ),

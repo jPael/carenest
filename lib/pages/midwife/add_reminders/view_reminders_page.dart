@@ -1,10 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
+import 'package:smartguide_app/models/reminder.dart';
 
 class ViewRemindersPage extends StatelessWidget {
-  const ViewRemindersPage({super.key, required this.data});
+  const ViewRemindersPage({super.key, required this.reminder});
 
-  final Map<String, dynamic> data;
+  final Reminder reminder;
 
   @override
   Widget build(BuildContext context) {
@@ -24,12 +25,12 @@ class ViewRemindersPage extends StatelessWidget {
                     spacing: 8,
                     children: [
                       Image.asset(
-                        data['icon'],
+                        reminder.reminderType.image,
                         width: 50,
                         height: 50,
                         fit: BoxFit.cover,
                       ),
-                      Text(data["title"],
+                      Text(reminder.title,
                           softWrap: true,
                           style: TextStyle(fontSize: 8 * 4, fontWeight: FontWeight.w500))
                     ],
@@ -46,7 +47,7 @@ class ViewRemindersPage extends StatelessWidget {
                         children: [
                           Flexible(
                             child: Text(
-                              DateFormat("MMMM dd, yyyy").format(data["date"]),
+                              DateFormat("MMMM dd, yyyy").format(reminder.date),
                               softWrap: true,
                               style: TextStyle(
                                 fontSize: 8 * 3,
@@ -70,7 +71,7 @@ class ViewRemindersPage extends StatelessWidget {
                           Flexible(
                             child: Text(
                               DateFormat.jm().format(
-                                  DateTime(2021, 1, 1, data["time"].hour, data["time"].minute)),
+                                  DateTime(2021, 1, 1, reminder.time.hour, reminder.time.minute)),
                               softWrap: true,
                               style: TextStyle(
                                 fontSize: 8 * 3,
@@ -93,7 +94,7 @@ class ViewRemindersPage extends StatelessWidget {
                         children: [
                           Flexible(
                             child: Text(
-                              data["purpose"] + "adtgaukdtuaiytsdyiasdayh",
+                              reminder.purpose,
                               softWrap: true,
                               style: TextStyle(
                                 fontSize: 8 * 3,
