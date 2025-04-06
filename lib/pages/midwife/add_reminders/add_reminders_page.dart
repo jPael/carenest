@@ -179,15 +179,15 @@ class _AddRemindersPageState extends State<AddRemindersPage> {
             isLoading: fetchingReminders,
             headerSpacing: 1,
             childrenSpacing: 1,
-            children: [
-              ...reminders.map((reminder) {
-                return RemindersItem(
-                    key: UniqueKey(),
-                    handleRepaint: updateReminder,
-                    reminder: reminder,
-                    handleDelete: (code) => handleDelete(code));
-              }),
-            ],
+            children: fetchingReminders
+                ? [Center(child: SizedBox(child: CircularProgressIndicator()))]
+                : reminders.map((reminder) {
+                    return RemindersItem(
+                        key: UniqueKey(),
+                        handleRepaint: updateReminder,
+                        reminder: reminder,
+                        handleDelete: (code) => handleDelete(code));
+                  }).toList(),
           ),
         ),
       ),
