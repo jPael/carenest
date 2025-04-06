@@ -1,25 +1,27 @@
 import 'dart:developer';
 
-import 'package:flutter/material.dart';
+import 'package:smartguide_app/fields/reminder_fields.dart';
 import 'package:smartguide_app/services/laravel/reminder_services.dart';
 
 class Reminder {
-  final String title;
-  final String purpose;
-  final ReminderTypeEnum reminderType;
-  final DateTime date;
-  final TimeOfDay time;
+  final int? id;
+  String title;
+  String? purpose;
+  ReminderTypeEnum reminderType;
+  DateTime? date;
+  // final TimeOfDay time;
   bool isFresh;
   final int userId;
 
   Reminder({
+    this.id,
     required this.title,
     required this.userId,
-    required this.purpose,
+    this.purpose,
     required this.reminderType,
     required this.date,
-    required this.time,
-    this.isFresh = false,
+    // required this.time,
+    this.isFresh = true,
   });
 
   final ReminderServices reminderServices = ReminderServices();
@@ -27,6 +29,60 @@ class Reminder {
   Future<bool> storeReminder(String token) async {
     final bool res = await reminderServices.storeReminder(this, token);
     return res;
+  }
+
+  Future<int> removeReminder(String token) async {
+    final int res = await reminderServices.removeReminder(this, token);
+
+    return res;
+  }
+
+  void fromJson(Map<String, dynamic> json) {
+    title = json[ReminderFields.name];
+    reminderType = json[ReminderFields.type];
+    date = json[ReminderFields.reminderDate];
+  }
+
+  Map<String, dynamic> toJson() => {
+        ReminderFields.name: title,
+        ReminderFields.icon: reminderType.code,
+        ReminderFields.reminderDate: date.toString(),
+        ReminderFields.userId: userId,
+      };
+
+  Reminder toCopy() {
+    return Reminder(
+      id: id,
+      title: title,
+      userId: userId,
+      purpose: purpose,
+      reminderType: reminderType,
+      date: date,
+      isFresh: isFresh,
+    );
+  }
+
+  Future<Reminder> updateReminder({
+    required String title,
+    required ReminderTypeEnum type,
+    required String userId,
+    required DateTime date,
+    required String token,
+  }) async {
+    final bool res = await reminderServices.updateReminder(id!, title, type, date, token, userId);
+
+    if (res) {
+      return Reminder(
+          date: date,
+          reminderType: type,
+          title: title,
+          userId: int.parse(userId),
+          id: id,
+          isFresh: isFresh,
+          purpose: purpose);
+    } else {
+      throw Exception("There was an error updating your reminder");
+    }
   }
 }
 

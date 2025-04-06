@@ -4,27 +4,24 @@ import 'package:smartguide_app/fields/reminder_fields.dart';
 import 'package:smartguide_app/models/reminder.dart';
 
 class AddReminderForm extends StatefulWidget {
-  const AddReminderForm(
-      {super.key,
-      required this.formKey,
-      required this.titleController,
-      required this.purposeController,
-      required this.date,
-      required this.time,
-      required this.reminderType,
-      required this.onChangeReminderType,
-      required this.onReminderDateChange,
-      required this.onReminderTimeChange});
+  const AddReminderForm({
+    super.key,
+    required this.formKey,
+    required this.titleController,
+    required this.purposeController,
+    required this.date,
+    required this.reminderType,
+    required this.onChangeReminderType,
+    required this.onReminderDateChange,
+  });
 
   final GlobalKey<FormState> formKey;
   final TextEditingController titleController;
   final TextEditingController purposeController;
   final DateTime date;
-  final TimeOfDay time;
   final ReminderTypeEnum? reminderType;
   final Function(ReminderTypeEnum?) onChangeReminderType;
   final Function(DateTime) onReminderDateChange;
-  final Function(TimeOfDay) onReminderTimeChange;
 
   @override
   AddReminderFormState createState() => AddReminderFormState();
@@ -77,26 +74,26 @@ class AddReminderFormState extends State<AddReminderForm> {
             const SizedBox(
               height: 8 * 2,
             ),
-            CustomInput.timepicker(
-                context: context,
-                onChange: widget.onReminderTimeChange,
-                selectedTime: widget.time,
-                label: "Time"),
+            // CustomInput.timepicker(
+            //     context: context,
+            //     onChange: widget.onReminderTimeChange,
+            //     selectedTime: widget.time,
+            //     label: "Time"),
             const SizedBox(
               height: 8 * 2,
             ),
-            TextFormField(
-              controller: widget.purposeController,
-              minLines: 5,
-              maxLines: 6,
-              decoration: InputDecoration(labelText: 'Purpose', border: OutlineInputBorder()),
-              validator: (value) {
-                if (value == null || value.isEmpty) {
-                  return 'Please enter a purpose';
-                }
-                return null;
-              },
-            ),
+            // TextFormField(
+            //   controller: widget.purposeController,
+            //   minLines: 5,
+            //   maxLines: 6,
+            //   decoration: InputDecoration(labelText: 'Purpose', border: OutlineInputBorder()),
+            //   validator: (value) {
+            //     if (value == null || value.isEmpty) {
+            //       return 'Please enter a purpose';
+            //     }
+            //     return null;
+            //   },
+            // ),
           ],
         ),
       ),

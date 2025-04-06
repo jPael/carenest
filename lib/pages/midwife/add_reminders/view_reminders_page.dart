@@ -21,18 +21,18 @@ class ViewRemindersPage extends StatelessWidget {
                 spacing: 8 * 2,
                 children: [
                   Row(
-                    crossAxisAlignment: CrossAxisAlignment.end,
+                    crossAxisAlignment: CrossAxisAlignment.center,
                     spacing: 8,
                     children: [
-                      Image.asset(
-                        reminder.reminderType.image,
-                        width: 50,
-                        height: 50,
-                        fit: BoxFit.cover,
+                      CircleAvatar(
+                        backgroundColor: Colors.transparent,
+                        child: Image.asset(reminder.reminderType.image),
                       ),
-                      Text(reminder.title,
-                          softWrap: true,
-                          style: TextStyle(fontSize: 8 * 4, fontWeight: FontWeight.w500))
+                      Flexible(
+                        child: Text(reminder.title,
+                            softWrap: true,
+                            style: TextStyle(fontSize: 8 * 4, fontWeight: FontWeight.w500)),
+                      )
                     ],
                   ),
                   Column(
@@ -47,7 +47,9 @@ class ViewRemindersPage extends StatelessWidget {
                         children: [
                           Flexible(
                             child: Text(
-                              DateFormat("MMMM dd, yyyy").format(reminder.date),
+                              reminder.date != null
+                                  ? DateFormat("MMMM dd, yyyy").format(reminder.date!)
+                                  : "Date is not set",
                               softWrap: true,
                               style: TextStyle(
                                 fontSize: 8 * 3,
@@ -61,50 +63,50 @@ class ViewRemindersPage extends StatelessWidget {
                   Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
-                      Text(
-                        "Time: ",
-                        softWrap: true,
-                        style: TextStyle(fontSize: 8 * 3, fontWeight: FontWeight.w500),
-                      ),
-                      Row(
-                        children: [
-                          Flexible(
-                            child: Text(
-                              DateFormat.jm().format(
-                                  DateTime(2021, 1, 1, reminder.time.hour, reminder.time.minute)),
-                              softWrap: true,
-                              style: TextStyle(
-                                fontSize: 8 * 3,
-                              ),
-                            ),
-                          ),
-                        ],
-                      ),
+                      // Text(
+                      //   "Time: ",
+                      //   softWrap: true,
+                      //   style: TextStyle(fontSize: 8 * 3, fontWeight: FontWeight.w500),
+                      // ),
+                      // Row(
+                      //   children: [
+                      //     Flexible(
+                      //       child: Text(
+                      //         DateFormat.jm().format(
+                      //             DateTime(2021, 1, 1, reminder.time.hour, reminder.time.minute)),
+                      //         softWrap: true,
+                      //         style: TextStyle(
+                      //           fontSize: 8 * 3,
+                      //         ),
+                      //       ),
+                      //     ),
+                      //   ],
+                      // ),
                     ],
                   ),
-                  Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      Text(
-                        "Purpose: ",
-                        softWrap: true,
-                        style: TextStyle(fontSize: 8 * 3, fontWeight: FontWeight.w500),
-                      ),
-                      Row(
-                        children: [
-                          Flexible(
-                            child: Text(
-                              reminder.purpose,
-                              softWrap: true,
-                              style: TextStyle(
-                                fontSize: 8 * 3,
-                              ),
-                            ),
-                          ),
-                        ],
-                      ),
-                    ],
-                  )
+                  // Column(
+                  //   crossAxisAlignment: CrossAxisAlignment.start,
+                  //   children: [
+                  //     Text(
+                  //       "Purpose: ",
+                  //       softWrap: true,
+                  //       style: TextStyle(fontSize: 8 * 3, fontWeight: FontWeight.w500),
+                  //     ),
+                  //     Row(
+                  //       children: [
+                  //         Flexible(
+                  //           child: Text(
+                  //             reminder.purpose ?? "",
+                  //             softWrap: true,
+                  //             style: TextStyle(
+                  //               fontSize: 8 * 3,
+                  //             ),
+                  //           ),
+                  //         ),
+                  //       ],
+                  //     ),
+                  //   ],
+                  // )
                 ],
               ),
             ),

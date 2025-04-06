@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:smartguide_app/components/prenatal_records/form/prenatal_info_form.dart';
 import 'package:smartguide_app/models/new_user.dart';
+import 'package:smartguide_app/models/reminder.dart';
 
 class Utils {
   static String formatDayLeft(Duration difference) {
@@ -15,6 +16,19 @@ class Utils {
     } else {
       return "${(difference.inDays / 7).floor()} weeks left";
     }
+  }
+}
+
+ReminderTypeEnum? getReminderTypeEnumFromReminderInt(int i) {
+  switch (i) {
+    case 1:
+      return ReminderTypeEnum.prenatalCheckup;
+    case 2:
+      return ReminderTypeEnum.nutritionSeminar;
+    case 3:
+      return ReminderTypeEnum.vaccinationDrive;
+    default:
+      return null;
   }
 }
 

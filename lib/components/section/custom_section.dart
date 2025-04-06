@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:skeletonizer/skeletonizer.dart';
 
 class CustomSection extends StatelessWidget {
   const CustomSection(
@@ -11,6 +12,7 @@ class CustomSection extends StatelessWidget {
       this.alignment,
       this.description,
       this.headerSpacing = 2,
+      this.isLoading = false,
       this.action});
 
   final String? title;
@@ -22,6 +24,7 @@ class CustomSection extends StatelessWidget {
   final Widget? emptyChildrenContent;
   final int headerSpacing;
   final int childrenSpacing;
+  final bool? isLoading;
 
   @override
   Widget build(BuildContext context) {
@@ -49,22 +52,25 @@ class CustomSection extends StatelessWidget {
         SizedBox(
           height: 8.0 * headerSpacing,
         ),
-        Column(
-          mainAxisSize: MainAxisSize.min,
-          spacing: 8.0 * childrenSpacing,
-          children: children.isEmpty
-              ? [
-                  Padding(
-                    padding: const EdgeInsets.all(8.0 * 4),
-                    child: Center(
-                      child: Column(
-                        mainAxisAlignment: MainAxisAlignment.center,
-                        children: [emptyChildrenContent ?? Text("Empty")],
+        Skeletonizer(
+          enabled: isLoading ?? false,
+          child: Column(
+            mainAxisSize: MainAxisSize.min,
+            spacing: 8.0 * childrenSpacing,
+            children: children.isEmpty
+                ? [
+                    Padding(
+                      padding: const EdgeInsets.all(8.0 * 4),
+                      child: Center(
+                        child: Column(
+                          mainAxisAlignment: MainAxisAlignment.center,
+                          children: [emptyChildrenContent ?? Text("Empty")],
+                        ),
                       ),
-                    ),
-                  )
-                ]
-              : children.where((child) => child != null).toList().cast<Widget>(),
+                    )
+                  ]
+                : children.where((child) => child != null).toList().cast<Widget>(),
+          ),
         ),
       ],
     );

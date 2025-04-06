@@ -1,4 +1,4 @@
-Uri get apiURIBase => Uri(scheme: "http", host: "192.168.254.191", port: 8000);
+Uri get apiURIBase => Uri(scheme: "http", host: "192.168.43.186", port: 8000);
 
 class LaravelPaths {
   static const String register = "/api/v1/register";
@@ -7,4 +7,7 @@ class LaravelPaths {
   static const String prenatal = "/api/v1/prenatal";
   static const String midwife = "/api/v1/midwife";
   static const String reminder = "/api/v1/reminder";
+  static const String allReminders = "/api/v1/reminders";
+
+  static String specificReminder(int i) => "/api/v1/reminder/$i";
 }

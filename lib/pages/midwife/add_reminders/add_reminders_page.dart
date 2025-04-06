@@ -1,3 +1,5 @@
+import 'dart:developer';
+
 import 'package:flutter/material.dart';
 import 'package:ionicons/ionicons.dart';
 import 'package:provider/provider.dart';
@@ -6,6 +8,7 @@ import 'package:smartguide_app/components/section/custom_section.dart';
 import 'package:smartguide_app/models/reminder.dart';
 import 'package:smartguide_app/models/user.dart';
 import 'package:smartguide_app/pages/midwife/add_reminders/add_reminder_form.dart';
+import 'package:smartguide_app/services/laravel/reminder_services.dart';
 
 class AddRemindersPage extends StatefulWidget {
   const AddRemindersPage({super.key});
@@ -15,14 +18,15 @@ class AddRemindersPage extends StatefulWidget {
 }
 
 class _AddRemindersPageState extends State<AddRemindersPage> {
+  bool fetchingReminders = true;
   List<Reminder> reminders = [];
 
-  void handleAddReminders(
-      {required String title,
-      required String purpose,
-      required ReminderTypeEnum reminderType,
-      required DateTime date,
-      required TimeOfDay time}) {
+  void handleAddReminders({
+    required String title,
+    required String purpose,
+    required ReminderTypeEnum reminderType,
+    required DateTime date,
+  }) {
     final User user = context.read<User>();
     setState(() {
       reminders.add(Reminder(
@@ -30,13 +34,18 @@ class _AddRemindersPageState extends State<AddRemindersPage> {
         date: date,
         purpose: purpose,
         reminderType: reminderType,
-        time: time,
         title: title,
       ));
     });
   }
 
-  void handleDelete(int code) {}
+  void handleDelete(int id) {
+    final List<Reminder> r = reminders.where((e) => e.id! != id).toList();
+
+    setState(() {
+      reminders = r;
+    });
+  }
 
   void _showAddReminderDialog(BuildContext context) {
     final formKey = GlobalKey<FormState>();
@@ -79,10 +88,10 @@ class _AddRemindersPageState extends State<AddRemindersPage> {
                 formKey: formKey,
                 onChangeReminderType: onChangeReminderType,
                 onReminderDateChange: onReminderDateChange,
-                onReminderTimeChange: onReminderTimeChange,
+                // onReminderTimeChange: onReminderTimeChange,
                 purposeController: purposeController,
                 reminderType: reminderType,
-                time: time,
+                // time: time,
                 titleController: titleController,
               ),
               actions: [
@@ -99,7 +108,6 @@ class _AddRemindersPageState extends State<AddRemindersPage> {
                           date: date,
                           purpose: purposeController.text,
                           reminderType: reminderType!,
-                          time: time,
                           title: titleController.text);
                       Navigator.of(context).pop();
                     }
@@ -112,6 +120,45 @@ class _AddRemindersPageState extends State<AddRemindersPage> {
         );
       },
     );
+  }
+
+  void fetchReminders() async {
+    final ReminderServices reminderServices = ReminderServices();
+    final User user = context.read<User>();
+
+    try {
+      final List<Reminder> r = await reminderServices.fetchAllReminderByUserId(
+              user.laravelId!.toString(), user.token!) ??
+          [];
+
+      setState(() {
+        reminders = r;
+      });
+    } catch (e, stackTrace) {
+      log("There was an error fetching you reminders: $e", stackTrace: stackTrace);
+    } finally {
+      setState(() {
+        fetchingReminders = false;
+      });
+    }
+  }
+
+  void updateReminder(Reminder newReminder) {
+    setState(() {
+      final index = reminders.indexWhere((r) => r.id == newReminder.id);
+      if (index != -1) {
+        // Create a new list and replace the item
+        reminders = List.from(reminders)
+          ..removeAt(index)
+          ..insert(index, newReminder);
+      }
+    });
+  }
+
+  @override
+  void initState() {
+    super.initState();
+    fetchReminders();
   }
 
   @override
@@ -128,18 +175,18 @@ class _AddRemindersPageState extends State<AddRemindersPage> {
       body: SingleChildScrollView(
         child: Padding(
           padding: const EdgeInsets.symmetric(horizontal: 16.0),
-          child: Column(
+          child: CustomSection(
+            isLoading: fetchingReminders,
+            headerSpacing: 1,
+            childrenSpacing: 1,
             children: [
-              CustomSection(
-                headerSpacing: 1,
-                childrenSpacing: 1,
-                children: [
-                  ...reminders.map((reminder) {
-                    return RemindersItem(
-                        reminder: reminder, handleDelete: (code) => handleDelete(code));
-                  }),
-                ],
-              ),
+              ...reminders.map((reminder) {
+                return RemindersItem(
+                    key: UniqueKey(),
+                    handleRepaint: updateReminder,
+                    reminder: reminder,
+                    handleDelete: (code) => handleDelete(code));
+              }),
             ],
           ),
         ),
