@@ -29,7 +29,7 @@ class ConversationItemChatbot extends StatelessWidget {
               padding: const EdgeInsets.all(8),
               decoration: BoxDecoration(
                   color: Colors.grey[200],
-                  borderRadius: BorderRadius.only(
+                  borderRadius: const BorderRadius.only(
                       bottomLeft: Radius.circular(8 * 2),
                       bottomRight: Radius.circular(8 * 2),
                       topRight: Radius.circular(8 * 2))),
@@ -38,7 +38,7 @@ class ConversationItemChatbot extends StatelessWidget {
                   Flexible(
                     child: Text(
                       message,
-                      style: TextStyle(fontSize: 8 * 3),
+                      style: const TextStyle(fontSize: 8 * 3),
                       softWrap: true,
                     ),
                   ),

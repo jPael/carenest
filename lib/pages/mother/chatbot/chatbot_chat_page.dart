@@ -12,13 +12,13 @@ class ChatbotChatPage extends StatelessWidget {
       appBar: AppBar(
         centerTitle: true,
         foregroundColor: Colors.white,
-        title: Text(
+        title: const Text(
           "MOMI AI",
           style: TextStyle(color: Colors.white, fontWeight: FontWeight.w500),
         ),
         backgroundColor: Colors.blue[700],
       ),
-      body: Column(
+      body: const Column(
         children: [
           Expanded(child: SingleChildScrollView(child: Conversation())),
           ChatbotInputField()

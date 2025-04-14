@@ -69,7 +69,7 @@ class _ForumCreatePostFormState extends State<ForumCreatePostForm> {
               onPress: handlePost,
               label: "Post",
               isLoading: isPosting,
-              icon: Icon(Ionicons.send),
+              icon: const Icon(Ionicons.send),
               radius: 3,
             )
           ],

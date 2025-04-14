@@ -6,7 +6,7 @@ class FeedSection extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Column(
+    return const Column(
       children: [
         FeedItem(
           title: "How to Help Your Baby Sleep Through the Night.",

@@ -8,7 +8,7 @@ ScaffoldFeatureController<SnackBar, SnackBarClosedReason> showErrorMessage(
     SnackBar(
       content: Text(
         message,
-        style: TextStyle(fontWeight: FontWeight.w500),
+        style: const TextStyle(fontWeight: FontWeight.w500),
       ),
       duration: duration,
       action: SnackBarAction(
@@ -26,7 +26,7 @@ ScaffoldFeatureController<SnackBar, SnackBarClosedReason> showSuccessMessage(
     SnackBar(
       content: Text(
         message,
-        style: TextStyle(fontWeight: FontWeight.w500),
+        style: const TextStyle(fontWeight: FontWeight.w500),
       ),
       duration: duration,
       action: SnackBarAction(

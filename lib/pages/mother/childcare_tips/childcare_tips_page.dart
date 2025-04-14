@@ -23,7 +23,7 @@ class ChildcareTipsPage extends StatelessWidget {
             ),
             SizedBox(
                 height: MediaQuery.of(context).size.height * 0.7,
-                child: SingleChildScrollView(child: FeedSection()))
+                child: const SingleChildScrollView(child: FeedSection()))
           ],
         ),
       ),

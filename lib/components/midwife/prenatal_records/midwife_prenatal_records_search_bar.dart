@@ -8,23 +8,29 @@ class MidwifePrenatalRecordsSearchBar extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Row(
-      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-      children: [
-        Expanded(
-          child: CustomInput.text(
+    return Padding(
+      padding: const EdgeInsets.symmetric(vertical: 4.0),
+      child: Row(
+        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+        children: [
+          Expanded(
+            child: CustomInput.text(
               context: context,
+              maxLines: 1,
+              minLines: 1,
               controller: searchController,
               label: "Search",
-              startIcon: Icon(Icons.search_rounded)),
-        ),
-        IconButton(
-            onPressed: () {},
-            icon: Icon(
-              Icons.more_vert_rounded,
-              size: 8 * 4,
-            ))
-      ],
+              startIcon: const Icon(Icons.search_rounded),
+            ),
+          ),
+          // IconButton(
+          //     onPressed: () {},
+          //     icon: Icon(
+          //       Icons.more_vert_rounded,
+          //       size: 8 * 4,
+          //     ))
+        ],
+      ),
     );
   }
 }

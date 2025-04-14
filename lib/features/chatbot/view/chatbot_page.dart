@@ -14,7 +14,7 @@ class ChatbotPage extends StatelessWidget {
         create: (context) => ChatBloc(
           chatRepository: context.read<ChatRepository>(),
         ),
-        child: ChatPage(),
+        child: const ChatPage(),
       ),
     );
   }

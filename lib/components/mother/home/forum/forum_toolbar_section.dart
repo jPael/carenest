@@ -23,11 +23,11 @@ class _ForumToolbarSectionState extends State<ForumToolbarSection> {
                 context: context,
                 controller: searchController,
                 label: "Search",
-                startIcon: Icon(Icons.search_rounded)),
+                startIcon: const Icon(Icons.search_rounded)),
           ),
           IconButton(
               onPressed: () {},
-              icon: Icon(
+              icon: const Icon(
                 Icons.more_vert_rounded,
                 size: 8 * 4,
               ))

@@ -14,14 +14,14 @@ class AfterCare extends StatelessWidget {
         title: "After Care",
         action: IconButton(
             onPressed: () {},
-            icon: Icon(
+            icon: const Icon(
               Icons.edit,
               size: 4 * 5,
             )),
         children: [
           CustomSection(
             title: "TT Immunization",
-            titleStyle: TextStyle(fontSize: 4 * 5, fontWeight: FontWeight.w500),
+            titleStyle: const TextStyle(fontSize: 4 * 5, fontWeight: FontWeight.w500),
             children: [
               AfterCareTtImmunizationItem.header(
                   context: context, description: "TT term", value: "Date"),
@@ -44,7 +44,7 @@ class AfterCare extends StatelessWidget {
           ),
           CustomSection(
             title: "Iron Supplement",
-            titleStyle: TextStyle(fontSize: 4 * 5, fontWeight: FontWeight.w500),
+            titleStyle: const TextStyle(fontSize: 4 * 5, fontWeight: FontWeight.w500),
             children: [
               AfterCareIronSupplementItem.header(
                   context: context, description: "Date", value: "Tabs"),

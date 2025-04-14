@@ -42,7 +42,7 @@ class _ProfileMenuItemState extends State<ProfileMenuItem> {
                     children: [
                       Text(
                         widget.title,
-                        style: TextStyle(fontSize: 8 * 3, fontWeight: FontWeight.w500),
+                        style: const TextStyle(fontSize: 8 * 3, fontWeight: FontWeight.w500),
                       ),
                       if (widget.endIcon != null) widget.endIcon!,
                     ],

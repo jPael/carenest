@@ -4,7 +4,6 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:smartguide_app/error/app_error.dart';
 import 'package:smartguide_app/fields/forum/forum_fields.dart';
 import 'package:smartguide_app/models/forum/author.dart';
-import 'package:smartguide_app/models/forum/reply.dart';
 import 'package:smartguide_app/services/forum/forum_services.dart';
 
 class Forum {

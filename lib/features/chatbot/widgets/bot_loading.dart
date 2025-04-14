@@ -30,8 +30,8 @@ class BotLoading extends StatelessWidget {
               decoration: BoxDecoration(
                   color: Colors.grey[200],
                   borderRadius:
-                      BorderRadius.only(bottomLeft: Radius.circular(8 * 2), bottomRight: Radius.circular(8 * 2), topRight: Radius.circular(8 * 2))),
-              child: Row(
+                      const BorderRadius.only(bottomLeft: Radius.circular(8 * 2), bottomRight: Radius.circular(8 * 2), topRight: Radius.circular(8 * 2))),
+              child: const Row(
                 children: [
                   Flexible(
                     child: Thinking(),

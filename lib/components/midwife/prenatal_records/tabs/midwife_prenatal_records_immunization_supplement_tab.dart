@@ -34,7 +34,7 @@ class MidwifePrenatalRecordsImmunizationSupplementTab extends StatelessWidget {
             padding: const EdgeInsets.symmetric(horizontal: 2 * 8.0),
             child: Row(
               children: [
-                Icon(
+                const Icon(
                   Icons.circle,
                   size: 8 * 1.5,
                 ),
@@ -43,17 +43,17 @@ class MidwifePrenatalRecordsImmunizationSupplementTab extends StatelessWidget {
                 ),
                 Text(
                   "TT${i + 1}: ",
-                  style: TextStyle(fontWeight: FontWeight.bold, fontSize: 8 * 2),
+                  style: const TextStyle(fontWeight: FontWeight.bold, fontSize: 8 * 2),
                 ),
                 Text(
                   DateFormat("MMMM d, y").format(ttDates[i]),
-                  style: TextStyle(fontSize: 8 * 2),
+                  style: const TextStyle(fontSize: 8 * 2),
                 )
               ],
             ),
           ),
         CustomInput.text(context: context, controller: fimController, label: "FIM"),
-        Row(
+        const Row(
           children: [
             Text(
               "Iron Supplementation",

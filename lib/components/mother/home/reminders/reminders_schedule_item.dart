@@ -24,11 +24,11 @@ class RemindersScheduleItem extends StatelessWidget {
     final String time = DateFormat("hh:mm a").format(datetime);
 
     Map<ScheduleItemStatusType, Widget> statusIcon = {
-      ScheduleItemStatusType.done: Icon(
+      ScheduleItemStatusType.done: const Icon(
         Icons.check,
         color: Colors.green,
       ),
-      ScheduleItemStatusType.missed: Text(
+      ScheduleItemStatusType.missed: const Text(
         "Missed",
         style: TextStyle(color: Colors.red),
       )
@@ -54,7 +54,7 @@ class RemindersScheduleItem extends StatelessWidget {
                 children: [
                   Text(
                     title,
-                    style: TextStyle(fontWeight: FontWeight.w600, fontSize: 8 * 2),
+                    style: const TextStyle(fontWeight: FontWeight.w600, fontSize: 8 * 2),
                   ),
                   Text(date),
                   Text(time)

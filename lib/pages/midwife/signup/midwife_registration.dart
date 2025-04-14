@@ -51,7 +51,18 @@ class _MidwifeRegistrationState extends State<MidwifeRegistration> {
   }
 
   @override
+  void dispose() {
+    firstnameController.dispose();
+    lastnameController.dispose();
+    phoneNumberController.dispose();
+    // addressController.dispose();
+    super.dispose();
+  }
+
+  @override
   Widget build(BuildContext context) {
+    precacheImage(const AssetImage("lib/assets/images/midwife_signin_hero.png"), context);
+
     return Scaffold(
       backgroundColor: Colors.white,
       appBar: AppBar(
@@ -68,15 +79,18 @@ class _MidwifeRegistrationState extends State<MidwifeRegistration> {
                 Row(
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
-                    Flexible(
+                    const Flexible(
                         child: Text(
                       "Midwife registration",
                       style: TextStyle(fontSize: 8 * 6, fontWeight: FontWeight.w500),
                       softWrap: true,
                     )),
-                    Image.asset(
-                      "lib/assets/images/midwife_signin_hero.png",
-                      scale: 1.8,
+                    Hero(
+                      tag: "Midwife",
+                      child: Image.asset(
+                        "lib/assets/images/midwife_signin_hero.png",
+                        scale: 2.5,
+                      ),
                     )
                   ],
                 ),
@@ -85,7 +99,7 @@ class _MidwifeRegistrationState extends State<MidwifeRegistration> {
                   actions: [
                     CustomButton(
                       label: "Next",
-                      icon: Icon(Icons.arrow_forward_outlined),
+                      icon: const Icon(Icons.arrow_forward_outlined),
                       onPress: handleNext,
                     )
                   ],

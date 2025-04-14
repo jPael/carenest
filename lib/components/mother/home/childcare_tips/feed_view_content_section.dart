@@ -7,7 +7,7 @@ class FeedViewContentSection extends StatelessWidget {
   Widget build(BuildContext context) {
     return Column(
       children: [
-        Row(
+        const Row(
           children: [
             Flexible(
                 child: Text(
@@ -31,7 +31,7 @@ Step 3: Avoid over stimulation before bedtime.''',
           width: 250,
           decoration: BoxDecoration(
               borderRadius: BorderRadius.circular(8 * 3), border: Border.all(width: 2)),
-          child: Center(
+          child: const Center(
             child: Column(
               mainAxisAlignment: MainAxisAlignment.center,
               children: [

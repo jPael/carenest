@@ -21,11 +21,11 @@ class ChatUserDetailsSection extends StatelessWidget {
         children: [
           CircleAvatar(
             foregroundImage: NetworkImage("https://i.pravatar.cc/200?u=$email"),
-            backgroundImage: AssetImage("lib/assets/images/profile_fallback.png"),
+            backgroundImage: const AssetImage("lib/assets/images/profile_fallback.png"),
           ),
           Text(
             name,
-            style: TextStyle(fontSize: 8 * 3, fontWeight: FontWeight.w500),
+            style: const TextStyle(fontSize: 8 * 3, fontWeight: FontWeight.w500),
           ),
           Text(address),
           Text(type),

@@ -9,8 +9,6 @@ class PrenatalCareGroup extends StatelessWidget {
 
   final String title;
 
-  // TODO:: edit the prenatal care group into something in the notepad
-
   @override
   Widget build(BuildContext context) {
     return CustomSection(
@@ -20,13 +18,13 @@ class PrenatalCareGroup extends StatelessWidget {
           context: context,
           onPressed: () {},
           label: "Edit",
-          icon: Icon(
+          icon: const Icon(
             Ionicons.pencil_outline,
             size: 8 * 2,
           )),
-      titleStyle: TextStyle(fontSize: 8 * 2.5, fontWeight: FontWeight.w500),
+      titleStyle: const TextStyle(fontSize: 8 * 2.5, fontWeight: FontWeight.w500),
       headerSpacing: 2,
-      children: [
+      children: const [
         PrenatalCareItem(
           description:
               "The women’s Health team WHT will help me in my Pregnancy if there’s anything I want to know I will consult",

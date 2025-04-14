@@ -22,7 +22,7 @@ class _ProfileUserSectionState extends State<ProfileUserSection> {
 
   void handleLogout() {
     FirebaseAuth.instance.signOut();
-    Navigator.pushReplacement(context, MaterialPageRoute(builder: (context) => AuthPage()));
+    Navigator.pushReplacement(context, MaterialPageRoute(builder: (context) => const AuthPage()));
   }
 
   void selectImage() async {
@@ -61,7 +61,7 @@ class _ProfileUserSectionState extends State<ProfileUserSection> {
                 width: 70,
                 child: CircleAvatar(
                   foregroundImage: NetworkImage("https://i.pravatar.cc/200?u=${widget.email}"),
-                  backgroundImage: AssetImage("lib/assets/images/profile_fallback.png"),
+                  backgroundImage: const AssetImage("lib/assets/images/profile_fallback.png"),
                 ),
               ),
               // !updatingProfile
@@ -77,7 +77,7 @@ class _ProfileUserSectionState extends State<ProfileUserSection> {
           Expanded(
             child: Text(
               "Hi ${widget.firstname}",
-              style: TextStyle(fontSize: 8 * 3, fontWeight: FontWeight.w500, color: Colors.white),
+              style: const TextStyle(fontSize: 8 * 3, fontWeight: FontWeight.w500, color: Colors.white),
             ),
           ),
           CustomButton.ghost(
@@ -85,7 +85,7 @@ class _ProfileUserSectionState extends State<ProfileUserSection> {
               onPressed: handleLogout,
               label: "Log out",
               horizontalPadding: 1.5,
-              icon: Icon(Ionicons.log_out))
+              icon: const Icon(Ionicons.log_out))
         ],
       ),
     );

@@ -16,7 +16,7 @@ class ProfileSection extends StatelessWidget {
             height: 80,
             width: 80,
             clipBehavior: Clip.antiAlias,
-            decoration: BoxDecoration(shape: BoxShape.circle),
+            decoration: const BoxDecoration(shape: BoxShape.circle),
             child: OverflowBox(
               minHeight: 50,
               minWidth: 50,
@@ -30,7 +30,7 @@ class ProfileSection extends StatelessWidget {
         const SizedBox(
           width: 8 * 3,
         ),
-        Column(
+        const Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             Text(

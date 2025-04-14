@@ -23,7 +23,7 @@ class CareAndTestsFindingsItem extends StatelessWidget {
             flex: 2,
             child: Text(
               "$description: ",
-              style: TextStyle(fontSize: 4 * 4, fontWeight: FontWeight.w500),
+              style: const TextStyle(fontSize: 4 * 4, fontWeight: FontWeight.w500),
             )),
         Expanded(flex: 1, child: Text("$value $unit")),
         Expanded(
@@ -33,7 +33,7 @@ class CareAndTestsFindingsItem extends StatelessWidget {
               children: [
                 Text(
                   "$remarksDescription: ",
-                  style: TextStyle(fontWeight: FontWeight.w500),
+                  style: const TextStyle(fontWeight: FontWeight.w500),
                 ),
                 Text(remarksValue),
               ],

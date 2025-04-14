@@ -7,7 +7,7 @@ class SettingsPrenatalRecordsPrenatalCareTabView extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return SingleChildScrollView(
+    return const SingleChildScrollView(
       child: CustomSection(
         childrenSpacing: 8,
         title: "Prenatal Care",

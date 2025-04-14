@@ -29,7 +29,7 @@ class InlineInput extends StatelessWidget {
                 flex: 1,
                 child: Text(
                   "$label: ",
-                  style: TextStyle(fontSize: 4 * 4, fontWeight: FontWeight.w500),
+                  style: const TextStyle(fontSize: 4 * 4, fontWeight: FontWeight.w500),
                 )),
           Flexible(
               flex: 3,
@@ -47,7 +47,7 @@ class InlineInput extends StatelessWidget {
                 child: Row(
                   spacing: 4,
                   children: [
-                    Text(
+                    const Text(
                       "Normal: ",
                       style: TextStyle(fontWeight: FontWeight.w500),
                     ),

@@ -2,13 +2,15 @@ import 'package:flutter/material.dart';
 import 'package:smartguide_app/components/button/custom_button.dart';
 import 'package:smartguide_app/pages/midwife/signin/midwife_signin_page.dart';
 import 'package:smartguide_app/pages/midwife/signup/midwife_registration.dart';
-import 'package:smartguide_app/pages/mother/signup/mother_registration.dart';
 
 class WelcomePage extends StatelessWidget {
   const WelcomePage({super.key});
 
   @override
   Widget build(BuildContext context) {
+    precacheImage(
+        const AssetImage("lib/assets/images/midwife_welcome_hero.png"), context);
+
     return Scaffold(
       appBar: AppBar(
         forceMaterialTransparency: true,
@@ -19,7 +21,7 @@ class WelcomePage extends StatelessWidget {
             child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
-            Text(
+            const Text(
               "Welcome!",
               style: TextStyle(fontSize: 8 * 6),
             ),
@@ -39,7 +41,9 @@ class WelcomePage extends StatelessWidget {
                 context: context,
                 label: "Go to Sign in",
                 onPressed: () => Navigator.push(
-                    context, MaterialPageRoute(builder: (context) => MidwifeSigninPage())),
+                    context,
+                    MaterialPageRoute(
+                        builder: (context) => const MidwifeSigninPage())),
               ),
             ),
             const SizedBox(
@@ -48,7 +52,7 @@ class WelcomePage extends StatelessWidget {
             Row(
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
-                Text(
+                const Text(
                   "No account yet?",
                   style: TextStyle(fontSize: 8 * 3),
                 ),
@@ -58,8 +62,10 @@ class WelcomePage extends StatelessWidget {
                 CustomButton.link(
                     context: context,
                     label: "Sign up",
-                    onPressed: () => Navigator.push(context,
-                        MaterialPageRoute(builder: (context) => const MidwifeRegistration())),
+                    onPressed: () => Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                            builder: (context) => const MidwifeRegistration())),
                     fontSize: 8 * 3)
               ],
             ),

@@ -21,11 +21,9 @@ class ForumServices {
         // Convert documents to forums with author information
         final forums = await Future.wait(docs.map((forumDoc) async {
           final data = forumDoc.data();
-          data[ForumFields.docId] = forumDoc.id; // Add document ID
+          data[ForumFields.docId] = forumDoc.id;
 
           final int replyCount = await getReplyCountByForumId(forumDoc.id);
-
-          // data['replies'] = replies;
 
           final authorId = data[ForumFields.authorId];
           final author = await getAuthorByAuthorId(authorId);

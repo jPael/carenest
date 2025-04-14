@@ -45,7 +45,7 @@ class _ForumPostPosterSectionState extends State<ForumPostPosterSection> {
           children: [
             Text(
               widget.user,
-              style: TextStyle(
+              style: const TextStyle(
                 fontSize: 8 * 2,
                 fontWeight: FontWeight.w500,
               ),
@@ -53,7 +53,7 @@ class _ForumPostPosterSectionState extends State<ForumPostPosterSection> {
             ),
             Text(
               timeHumanize,
-              style: TextStyle(
+              style: const TextStyle(
                 fontSize: 8 * 1.5,
               ),
               softWrap: true,

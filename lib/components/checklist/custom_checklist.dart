@@ -19,7 +19,7 @@ class CustomChecklist extends StatelessWidget {
           child: Text(
             label,
             softWrap: true,
-            style: labelStyle ?? TextStyle(fontSize: 8 * 3),
+            style: labelStyle ?? const TextStyle(fontSize: 8 * 3),
           ),
         ),
         checked

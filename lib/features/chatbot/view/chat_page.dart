@@ -21,7 +21,7 @@ class _ChatPageState extends State<ChatPage> {
       appBar: AppBar(
         centerTitle: true,
         foregroundColor: Colors.white,
-        title: Text(
+        title: const Text(
           AppConstants.chatbotName,
           style: TextStyle(color: Colors.white, fontWeight: FontWeight.w500),
         ),
@@ -55,7 +55,7 @@ class _ChatPageState extends State<ChatPage> {
                 itemCount: _messages.length + (_isLoading ? 1 : 0),
                 itemBuilder: (context, index) {
                   if (index == _messages.length) {
-                    return BotLoading();
+                    return const BotLoading();
                   }
                   final message = _messages[index];
                   if (message.role == 'user') {
@@ -63,7 +63,7 @@ class _ChatPageState extends State<ChatPage> {
                   } else if (message.role == 'assistant') {
                     return BotMessage(message: message.content);
                   }
-                  return SizedBox();
+                  return const SizedBox();
                 },
               ),
             ),

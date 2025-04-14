@@ -32,7 +32,7 @@ class ChatItem extends StatelessWidget {
             CircleAvatar(
               foregroundImage:
                   NetworkImage("https://i.pravatar.cc/200?u=${user[UserFields.email]}"),
-              backgroundImage: AssetImage("lib/assets/images/profile_fallback.png"),
+              backgroundImage: const AssetImage("lib/assets/images/profile_fallback.png"),
             ),
             Expanded(
               child: Column(
@@ -41,8 +41,8 @@ class ChatItem extends StatelessWidget {
                   Row(
                     children: [
                       Text(
-                        "${user[UserFields.firstname]} ${user[UserFields.lastname]}",
-                        style: TextStyle(fontWeight: FontWeight.w500, fontSize: 8 * 3),
+                        "${user[UserFields.firstname]} ${user[UserFields.lastname]} | ${user[UserFields.userType]}",
+                        style: const TextStyle(fontWeight: FontWeight.w500, fontSize: 8 * 3),
                       ),
                     ],
                   ),
@@ -53,7 +53,7 @@ class ChatItem extends StatelessWidget {
                         Flexible(
                           child: Text(
                             message!,
-                            style: TextStyle(fontSize: 8 * 2),
+                            style: const TextStyle(fontSize: 8 * 2),
                             softWrap: true,
                             overflow: TextOverflow.ellipsis,
                           ),

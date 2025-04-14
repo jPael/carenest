@@ -35,6 +35,7 @@ class PasswordState extends State<Password> {
           hintText: widget.hint,
           border: OutlineInputBorder(borderRadius: BorderRadius.circular(8 * 2)),
           prefixIcon: widget.startIcon,
+          contentPadding: const EdgeInsets.symmetric(vertical: 4 * 2, horizontal: 4 * 4),
           suffixIcon: IconButton(
               onPressed: () {
                 setState(() {

@@ -22,7 +22,7 @@ class _ForumMessageBubbleState extends State<ForumMessageBubble> {
 
   @override
   Widget build(BuildContext context) {
-    final double profileImageSize = 40.0;
+    const double profileImageSize = 40.0;
 
     final String timeHumanize = timeago.format(widget.reply.createdAt!.toDate());
 
@@ -35,7 +35,7 @@ class _ForumMessageBubbleState extends State<ForumMessageBubble> {
             Container(
               height: profileImageSize,
               width: profileImageSize,
-              decoration: BoxDecoration(
+              decoration: const BoxDecoration(
                 shape: BoxShape.circle,
               ),
               clipBehavior: Clip.antiAlias,
@@ -50,7 +50,7 @@ class _ForumMessageBubbleState extends State<ForumMessageBubble> {
                   Container(
                     padding: const EdgeInsets.all(8),
                     decoration: BoxDecoration(
-                        color: Color(
+                        color: const Color(
                           0xFFEDEDED,
                         ),
                         borderRadius: BorderRadius.circular(8)),
@@ -59,7 +59,7 @@ class _ForumMessageBubbleState extends State<ForumMessageBubble> {
                       children: [
                         Text(
                           "${widget.reply.author!.firstname} ${widget.reply.author!.lastname}",
-                          style: TextStyle(
+                          style: const TextStyle(
                             fontSize: 8 * 2.5,
                             fontWeight: FontWeight.w500,
                           ),
@@ -69,7 +69,7 @@ class _ForumMessageBubbleState extends State<ForumMessageBubble> {
                             Flexible(
                                 child: Text(
                               widget.reply.content,
-                              style: TextStyle(fontSize: 8 * 2),
+                              style: const TextStyle(fontSize: 8 * 2),
                               softWrap: true,
                             )),
                           ],

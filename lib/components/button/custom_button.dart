@@ -14,7 +14,8 @@ class CustomButton extends StatelessWidget {
       this.radius = 1,
       this.horizontalPadding = 4,
       this.verticalPadding = 2,
-      this.isLoading = false});
+      this.isLoading = false,
+      this.buttonStyle});
 
   final VoidCallback onPress;
   final String label;
@@ -26,11 +27,12 @@ class CustomButton extends StatelessWidget {
 
   final bool isLoading;
 
+  final ButtonStyle? buttonStyle;
+
   @override
   Widget build(BuildContext context) {
-    return ElevatedButton.icon(
-        icon: isLoading ? loadingIndicator() : icon,
-        style: ButtonStyle(
+    final ButtonStyle defaultButtonStyle = buttonStyle ??
+        ButtonStyle(
             elevation: WidgetStateProperty.all(isLoading ? 0 : null),
             iconColor: WidgetStateProperty.all(Colors.white),
             shape: WidgetStateProperty.all(
@@ -38,16 +40,20 @@ class CustomButton extends StatelessWidget {
             padding: WidgetStateProperty.all(EdgeInsets.symmetric(
                 horizontal: 8.0 * horizontalPadding, vertical: 8.0 * verticalPadding)),
             backgroundColor: WidgetStateProperty.all(
-                Theme.of(context).colorScheme.primary.withValues(alpha: isLoading ? 0.5 : 1.0))),
+                Theme.of(context).colorScheme.primary.withValues(alpha: isLoading ? 0.5 : 1.0)));
+
+    return ElevatedButton.icon(
+        icon: isLoading ? loadingIndicator() : icon,
+        style: defaultButtonStyle,
         onPressed: onPress,
         label: Text(
           label,
-          style: TextStyle(color: Colors.white, fontSize: 8 * 2),
+          style: const TextStyle(color: Colors.white, fontSize: 8 * 2),
         ));
   }
 
   Widget loadingIndicator() {
-    return SizedBox(
+    return const SizedBox(
       height: 8 * 2,
       width: 8 * 2,
       child: CircularProgressIndicator(
@@ -89,7 +95,7 @@ class CustomButton extends StatelessWidget {
         onPressed: onPressed,
         label: Text(
           label,
-          style: TextStyle(fontSize: 8 * 2),
+          style: const TextStyle(fontSize: 8 * 2),
         ));
   }
 
@@ -100,7 +106,7 @@ class CustomButton extends StatelessWidget {
       Color? color,
       bool isLoading = false,
       double? radius}) {
-    final padding = EdgeInsets.symmetric(vertical: 8 * 2, horizontal: 4 * 16);
+    const padding = EdgeInsets.symmetric(vertical: 8 * 2, horizontal: 4 * 16);
     final borderRadius = BorderRadius.circular(radius != null ? 8 * radius : 8 * 1);
     final bgColor = isLoading
         ? muteColor(Theme.of(context).colorScheme.primary)
@@ -117,7 +123,7 @@ class CustomButton extends StatelessWidget {
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
             isLoading
-                ? SizedBox.square(
+                ? const SizedBox.square(
                     dimension: 4 * 7,
                     child: CircularProgressIndicator(
                       color: Colors.white,
@@ -125,7 +131,7 @@ class CustomButton extends StatelessWidget {
                   )
                 : Text(
                     label,
-                    style: TextStyle(fontSize: 8 * 3, color: Colors.white),
+                    style: const TextStyle(fontSize: 8 * 3, color: Colors.white),
                   ),
           ],
         ));
@@ -140,13 +146,13 @@ class CustomButton extends StatelessWidget {
     late TextStyle textStyle;
     late Image img;
 
-    bool isHidden = true;
+    // bool isHidden = true;
 
     switch (buttonType) {
       case SocialButtonType.google:
         buttonStyle = ButtonStyle(
             elevation: WidgetStateProperty.all(1),
-            padding: WidgetStateProperty.all(EdgeInsets.symmetric(vertical: 8 * 2)),
+            padding: WidgetStateProperty.all(const EdgeInsets.symmetric(vertical: 8 * 2)),
             shape: WidgetStateProperty.all(
                 RoundedRectangleBorder(borderRadius: BorderRadius.circular(8 * 4))),
             backgroundColor: WidgetStateProperty.all(Colors.white));
@@ -207,7 +213,11 @@ class CustomButton extends StatelessWidget {
       {required BuildContext context,
       required Image content,
       required VoidCallback onPressed,
-      String? label}) {
+      String? label,
+      TextStyle? textStyle}) {
+    final TextStyle defaultTextStyle =
+        textStyle ?? const TextStyle(fontSize: 8 * 3, fontWeight: FontWeight.w500, color: Colors.white);
+
     return Column(
       children: [
         ElevatedButton(
@@ -216,15 +226,15 @@ class CustomButton extends StatelessWidget {
             style: ElevatedButton.styleFrom(
                 elevation: 3,
                 shape:
-                    RoundedRectangleBorder(borderRadius: BorderRadius.all(Radius.circular(8 * 2))),
+                    const RoundedRectangleBorder(borderRadius: BorderRadius.all(Radius.circular(8 * 2))),
                 padding: EdgeInsets.zero),
-            child: content),
+            child: Hero(tag: label ?? "", child: content)),
         const SizedBox(
           height: 8 * 2,
         ),
         Text(
           label ?? "",
-          style: TextStyle(fontSize: 8 * 3, fontWeight: FontWeight.w500, color: Colors.white),
+          style: defaultTextStyle,
         )
       ],
     );

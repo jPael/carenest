@@ -53,7 +53,17 @@ class _MotherRegistrationState extends State<MotherRegistration> {
   // typedef MenuEntry = DropdownMenuItem<String>;
 
   @override
+  void dispose() {
+    super.dispose();
+
+    firstnameController.dispose();
+    lastnameController.dispose();
+    phoneNumberController.dispose();
+  }
+
+  @override
   Widget build(BuildContext context) {
+    precacheImage(const AssetImage("lib/assets/images/mothers_registration_hero.png"), context);
     return Scaffold(
       backgroundColor: Colors.white,
       appBar: AppBar(
@@ -70,15 +80,18 @@ class _MotherRegistrationState extends State<MotherRegistration> {
                 Row(
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
-                    Flexible(
+                    const Flexible(
                         child: Text(
                       "Mother registration",
                       style: TextStyle(fontSize: 8 * 6, fontWeight: FontWeight.w500),
                       softWrap: true,
                     )),
-                    Image.asset(
-                      "lib/assets/images/mothers_registration_hero.png",
-                      scale: 1.8,
+                    Hero(
+                      tag: "Mother",
+                      child: Image.asset(
+                        "lib/assets/images/mothers_registration_hero.png",
+                        scale: 1.8,
+                      ),
                     )
                   ],
                 ),
@@ -87,7 +100,7 @@ class _MotherRegistrationState extends State<MotherRegistration> {
                   actions: [
                     CustomButton(
                       label: "Next",
-                      icon: Icon(Icons.arrow_forward_outlined),
+                      icon: const Icon(Icons.arrow_forward_outlined),
                       onPress: handleNext,
                     )
                   ],

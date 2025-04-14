@@ -15,7 +15,7 @@ class AfterCareTtImmunizationItem extends StatelessWidget {
             flex: 1,
             child: Text(
               "$description: ",
-              style: TextStyle(fontSize: 4 * 4, fontWeight: FontWeight.bold),
+              style: const TextStyle(fontSize: 4 * 4, fontWeight: FontWeight.bold),
             )),
         Expanded(flex: 3, child: Text(DateFormat("MMMM dd, yyyy").format(date)))
       ],

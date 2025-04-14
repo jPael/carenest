@@ -5,7 +5,7 @@ import 'package:flutter/material.dart';
 enum MessageType { outgoing, incoming }
 
 class ChatConversationMessage extends StatelessWidget {
-  ChatConversationMessage(
+  const ChatConversationMessage(
       {super.key, required this.type, required this.content, required this.userEmail});
 
   final String content;
@@ -28,7 +28,7 @@ class ChatConversationMessage extends StatelessWidget {
             children: [
               CircleAvatar(
                 foregroundImage: NetworkImage("https://i.pravatar.cc/200?u=$userEmail"),
-                backgroundImage: AssetImage("lib/assets/images/profile_fallback.png"),
+                backgroundImage: const AssetImage("lib/assets/images/profile_fallback.png"),
               ),
               const SizedBox(
                 width: 8,
@@ -40,16 +40,16 @@ class ChatConversationMessage extends StatelessWidget {
                 child: Container(
                   padding: const EdgeInsets.all(8 * 2),
                   decoration: BoxDecoration(
-                      color: Color(0xffA0E9E0),
+                      color: const Color(0xffA0E9E0),
                       boxShadow: [
                         BoxShadow(
                           color: Colors.black.withValues(alpha: 0.1),
                           spreadRadius: 1,
                           blurRadius: 2,
-                          offset: Offset(0, 0),
+                          offset: const Offset(0, 0),
                         ),
                       ],
-                      borderRadius: BorderRadius.only(
+                      borderRadius: const BorderRadius.only(
                           topLeft: Radius.circular(8 * 2),
                           bottomRight: Radius.circular(8 * 2),
                           topRight: Radius.circular(8 * 2))),
@@ -58,7 +58,7 @@ class ChatConversationMessage extends StatelessWidget {
                       Flexible(
                         child: Text(
                           content,
-                          style: TextStyle(fontSize: 8 * 2),
+                          style: const TextStyle(fontSize: 8 * 2),
                           softWrap: true,
                         ),
                       ),
@@ -89,10 +89,10 @@ class ChatConversationMessage extends StatelessWidget {
                           color: Colors.black.withValues(alpha: 0.1),
                           spreadRadius: 1,
                           blurRadius: 2,
-                          offset: Offset(0, 0),
+                          offset: const Offset(0, 0),
                         ),
                       ],
-                      borderRadius: BorderRadius.only(
+                      borderRadius: const BorderRadius.only(
                           topLeft: Radius.circular(8 * 2),
                           bottomLeft: Radius.circular(8 * 2),
                           topRight: Radius.circular(8 * 2))),
@@ -116,7 +116,7 @@ class ChatConversationMessage extends StatelessWidget {
               ),
               CircleAvatar(
                 foregroundImage: NetworkImage("https://i.pravatar.cc/200?u=$userEmail"),
-                backgroundImage: AssetImage("lib/assets/images/profile_fallback.png"),
+                backgroundImage: const AssetImage("lib/assets/images/profile_fallback.png"),
               ),
             ],
           ),

@@ -13,7 +13,7 @@ class FeedViewTitleSection extends StatelessWidget {
             child: Text(
           title,
           softWrap: true,
-          style: TextStyle(fontSize: 8 * 4, fontWeight: FontWeight.w500),
+          style: const TextStyle(fontSize: 8 * 4, fontWeight: FontWeight.w500),
         ))
       ],
     );

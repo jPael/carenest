@@ -7,7 +7,7 @@ class RemindersMissedSchedule extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Column(children: [
-      Row(
+      const Row(
         children: [
           Text(
             "Missed Schedule",

@@ -1,6 +1,7 @@
 import 'dart:convert';
 import 'dart:developer';
 
+import 'package:flutter/foundation.dart';
 import 'package:http/http.dart' as http;
 import 'package:smartguide_app/models/midwife.dart';
 import 'package:smartguide_app/services/laravel/api_url.dart';
@@ -14,7 +15,9 @@ class MidwifeServices {
 
     final data = jsonDecode(res.body) as List<dynamic>;
 
-    print(data);
+    if (kDebugMode) {
+      print(data);
+    }
 
     final List<Midwife> midwife = data.map((d) {
       final Midwife m = Midwife();

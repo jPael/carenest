@@ -26,7 +26,7 @@ class MidwifePrenatalRecordsHealthCenterVisitsTab extends StatelessWidget {
             selectedDate: dateOfLastDelivery),
         CustomSection(
           title: "Visits",
-          titleStyle: TextStyle(fontWeight: FontWeight.normal, fontSize: 8 * 3),
+          titleStyle: const TextStyle(fontWeight: FontWeight.normal, fontSize: 8 * 3),
           children: [
             ...dateOfVisits.map((d) => CustomInput.datepicker(
                   context: context,

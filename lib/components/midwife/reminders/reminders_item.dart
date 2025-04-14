@@ -140,12 +140,13 @@ class _RemindersItemState extends State<RemindersItem> {
                       token: user.token!);
 
                   repaint(res);
+                  // ignore: use_build_context_synchronously
                   showSuccessMessage(context: context, message: "Reminder updated successfully");
                 } catch (e, stackTrace) {
                   log("$e", stackTrace: stackTrace);
 
-                  if (!mounted) return;
                   showErrorMessage(
+                      // ignore: use_build_context_synchronously
                       context: context,
                       message: "Unable to update your reminder. Please try again later");
                 } finally {
@@ -153,14 +154,15 @@ class _RemindersItemState extends State<RemindersItem> {
                     isUpdating = false;
                   });
 
-                  if (!mounted) return;
+                  // if (!mounted) return;
+                  // ignore: use_build_context_synchronously
                   Navigator.pop(context);
                 }
               }
             }
 
             return AlertDialog(
-              title: Text('Update reminder'),
+              title: const Text('Update reminder'),
               content: AddReminderForm(
                 date: date,
                 formKey: formKey,
@@ -176,17 +178,17 @@ class _RemindersItemState extends State<RemindersItem> {
                 if (!isUpdating)
                   TextButton(
                     onPressed: () => Navigator.of(context).pop(),
-                    child: Text('Cancel'),
+                    child: const Text('Cancel'),
                   ),
                 isUpdating
-                    ? SizedBox(
+                    ? const SizedBox(
                         height: 4 * 5,
                         width: 4 * 5,
                         child: CircularProgressIndicator(),
                       )
                     : TextButton(
                         onPressed: handleUpdate,
-                        child: Text('Add'),
+                        child: const Text('Add'),
                       ),
               ],
             );
@@ -230,7 +232,7 @@ class _RemindersItemState extends State<RemindersItem> {
                       child: Text(
                         widget.reminder.title,
                         softWrap: true,
-                        style: TextStyle(fontSize: 4 * 5, fontWeight: FontWeight.w500),
+                        style: const TextStyle(fontSize: 4 * 5, fontWeight: FontWeight.w500),
                       ),
                     ),
                     const Spacer(),
@@ -244,7 +246,7 @@ class _RemindersItemState extends State<RemindersItem> {
                                   borderRadius: BorderRadius.circular(4 * 2),
                                 ),
                                 padding: const EdgeInsets.all(4),
-                                child: Row(
+                                child: const Row(
                                   children: [
                                     SizedBox.square(
                                       dimension: 4 * 4,
@@ -284,9 +286,9 @@ class _RemindersItemState extends State<RemindersItem> {
                       height: 4 * 4,
                       width: 4 * 4,
                       margin: const EdgeInsets.all(4 * 4),
-                      child: CircularProgressIndicator(),
+                      child: const CircularProgressIndicator(),
                     )
-                  : IconButton(onPressed: handleRemove, icon: Icon(Ionicons.trash))
+                  : IconButton(onPressed: handleRemove, icon: const Icon(Ionicons.trash))
             ],
           )
         ],

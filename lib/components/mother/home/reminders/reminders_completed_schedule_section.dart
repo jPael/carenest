@@ -8,7 +8,7 @@ class RemindersCompletedScheduleSection extends StatelessWidget {
   Widget build(BuildContext context) {
     return Column(
       children: [
-        Row(
+        const Row(
           children: [
             Text(
               "Completed Schedule",

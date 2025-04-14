@@ -1,5 +1,3 @@
-import 'package:smartguide_app/fields/barangay_fields.dart';
-
 class Barangay {
   final String id;
   final String name;

@@ -1,9 +1,8 @@
 import 'dart:convert';
 import 'dart:developer';
 import 'dart:io';
-import 'package:http/http.dart' as http;
-import 'package:smartguide_app/constants/api_paths.dart';
 
+import 'package:http/http.dart' as http;
 import 'package:smartguide_app/fields/reminder_fields.dart';
 import 'package:smartguide_app/models/reminder.dart';
 import 'package:smartguide_app/services/laravel/api_url.dart';
@@ -22,7 +21,7 @@ class ReminderServices {
 
     final cleanReminder = data.where((r) => r[ReminderFields.userId].toString() == laravelId);
 
-    await Future.delayed(Duration(seconds: 5));
+    await Future.delayed(const Duration(seconds: 5));
 
     final List<Reminder> reminders = cleanReminder
         .map((r) => Reminder(
@@ -43,7 +42,7 @@ class ReminderServices {
 
     log(LaravelPaths.specificReminder(reminder.id!));
 
-    await Future.delayed(Duration(seconds: 5));
+    await Future.delayed(const Duration(seconds: 5));
 
     final url = apiURIBase.replace(path: LaravelPaths.specificReminder(reminder.id!));
 
@@ -57,6 +56,7 @@ class ReminderServices {
 
     if (res.statusCode != HttpStatus.ok) {
       throw Exception("Unabled to delete reminder");
+      
     }
 
     return reminder.id!;

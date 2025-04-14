@@ -1,5 +1,3 @@
-import 'dart:developer';
-
 import 'package:smartguide_app/fields/reminder_fields.dart';
 import 'package:smartguide_app/services/laravel/reminder_services.dart';
 

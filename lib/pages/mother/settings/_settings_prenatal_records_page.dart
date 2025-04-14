@@ -15,7 +15,7 @@ class _SettingsPrenatalRecordsPageState extends State<SettingsPrenatalRecordsPag
     with TickerProviderStateMixin {
   final List<String> tabs = ["Care and Tests", "Birth Plan", "After Care", "Counseling"];
 
-  final List<Widget> tabViews = [CareAndTests(), BirthPlan(), AfterCare(), Counseling()];
+  final List<Widget> tabViews = [const CareAndTests(), const BirthPlan(), const AfterCare(), const Counseling()];
 
   late final TabController tabController;
 
@@ -35,11 +35,11 @@ class _SettingsPrenatalRecordsPageState extends State<SettingsPrenatalRecordsPag
   Widget build(BuildContext context) {
     return Scaffold(
         appBar: AppBar(
-          title: Text("Prenatal Record"),
+          title: const Text("Prenatal Record"),
           centerTitle: true,
           bottom: TabBar(
             labelPadding: const EdgeInsets.all(8),
-            labelStyle: TextStyle(fontSize: 8 * 2),
+            labelStyle: const TextStyle(fontSize: 8 * 2),
             controller: tabController,
             tabs: tabs.map((t) => Text(t)).toList(),
             isScrollable: true,
@@ -47,7 +47,7 @@ class _SettingsPrenatalRecordsPageState extends State<SettingsPrenatalRecordsPag
         ),
         body: TabBarView(
           controller: tabController,
-          physics: RangeMaintainingScrollPhysics(),
+          physics: const RangeMaintainingScrollPhysics(),
           children: tabViews,
         ));
   }

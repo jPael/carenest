@@ -16,18 +16,18 @@ class PatientsInfoBloodDonorsItem extends StatelessWidget {
       children: [
         Text(
           fullname,
-          style: TextStyle(fontWeight: FontWeight.w500, fontSize: 4 * 6),
+          style: const TextStyle(fontWeight: FontWeight.w500, fontSize: 4 * 6),
         ),
         Text(
           phoneNumber,
-          style: TextStyle(fontSize: 4 * 5),
+          style: const TextStyle(fontSize: 4 * 5),
         ),
         const SizedBox(
           height: 4 * 1,
         ),
         CustomChecklist(
           label: "Blood type verified",
-          labelStyle: TextStyle(fontSize: 4 * 4, fontWeight: FontWeight.w500),
+          labelStyle: const TextStyle(fontSize: 4 * 4, fontWeight: FontWeight.w500),
           checked: verified,
           iconSize: 4 * 5,
         )

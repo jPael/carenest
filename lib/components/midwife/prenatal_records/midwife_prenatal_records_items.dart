@@ -20,7 +20,7 @@ class MidwifePrenatalRecordsItems extends StatelessWidget {
           Container(
             height: profileImageSize,
             width: profileImageSize,
-            decoration: BoxDecoration(
+            decoration: const BoxDecoration(
               shape: BoxShape.circle,
             ),
             clipBehavior: Clip.antiAlias,
@@ -36,11 +36,11 @@ class MidwifePrenatalRecordsItems extends StatelessWidget {
             children: [
               Text(
                 user,
-                style: TextStyle(fontSize: 8 * 3, fontWeight: FontWeight.w500),
+                style: const TextStyle(fontSize: 8 * 3, fontWeight: FontWeight.w500),
               ),
               Row(
                 children: [
-                  Text(
+                  const Text(
                     "Last visit: ",
                     style: TextStyle(fontWeight: FontWeight.w500),
                   ),

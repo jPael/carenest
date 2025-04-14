@@ -38,8 +38,8 @@ class ChatView extends StatelessWidget {
                 }
 
                 if (snapshot.connectionState == ConnectionState.waiting) {
-                  return Padding(
-                    padding: const EdgeInsets.only(top: 10 * 8.0),
+                  return const Padding(
+                    padding: EdgeInsets.only(top: 10 * 8.0),
                     child: Column(
                       spacing: 4 * 2,
                       mainAxisAlignment: MainAxisAlignment.center,
@@ -67,7 +67,7 @@ class ChatView extends StatelessWidget {
                 ];
 
                 return CustomSection(
-                    emptyChildrenContent: Text("No Users available"),
+                    emptyChildrenContent: const Text("No Users available"),
                     childrenSpacing: 0,
                     children: items.where((child) => child != null).cast<Widget>().toList());
               })),

@@ -13,12 +13,12 @@ class BirthPlanItem extends StatelessWidget {
       children: [
         Text(
           "$description: ",
-          style: TextStyle(fontSize: 4 * 4, fontWeight: FontWeight.w500),
+          style: const TextStyle(fontSize: 4 * 4, fontWeight: FontWeight.w500),
         ),
         Flexible(
           child: Text(
             value,
-            style: TextStyle(fontSize: 4 * 4),
+            style: const TextStyle(fontSize: 4 * 4),
           ),
         )
       ],

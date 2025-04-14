@@ -38,7 +38,7 @@ class HomeView extends StatelessWidget {
                   onPressed: () => Navigator.push(
                       context,
                       MaterialPageRoute(
-                          builder: (context) => ChildcareTipsPage(
+                          builder: (context) => const ChildcareTipsPage(
                                 label: "Childcare tips",
                               )))),
               CardButton(
@@ -50,7 +50,7 @@ class HomeView extends StatelessWidget {
                   ),
                   label: "Chatbot",
                   onPressed: () => Navigator.push(
-                      context, MaterialPageRoute(builder: (context) => ChatbotIntro()))),
+                      context, MaterialPageRoute(builder: (context) => const ChatbotIntro()))),
             ],
           ),
           const SizedBox(
@@ -68,7 +68,7 @@ class HomeView extends StatelessWidget {
                   ),
                   label: "Reminders",
                   onPressed: () => Navigator.push(context,
-                      MaterialPageRoute(builder: (context) => RemindersPage(label: "Reminders")))),
+                      MaterialPageRoute(builder: (context) => const RemindersPage(label: "Reminders")))),
               CardButton(
                   content: Image.asset(
                     images["forum"]!,
@@ -79,7 +79,7 @@ class HomeView extends StatelessWidget {
                   notifCount: 4,
                   label: "Forum",
                   onPressed: () => Navigator.push(
-                      context, MaterialPageRoute(builder: (context) => ForumPage(label: "Forum")))),
+                      context, MaterialPageRoute(builder: (context) => const ForumPage(label: "Forum")))),
             ],
           )
         ],

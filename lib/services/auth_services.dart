@@ -1,15 +1,12 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/foundation.dart';
-import 'package:smartguide_app/fields/user_fields.dart';
-import 'package:smartguide_app/models/new_user.dart';
-import 'package:smartguide_app/utils/utils.dart';
 
 class AuthServices {
   final FirebaseAuth auth = FirebaseAuth.instance;
   final FirebaseFirestore firestore = FirebaseFirestore.instance;
 
-  Future<Map<String, dynamic>> signIn(String email, String password, UserType userType) async {
+  Future<Map<String, dynamic>> signIn(String email, String password) async {
     try {
       UserCredential userCredential = await auth.signInWithEmailAndPassword(
         email: email,
@@ -24,13 +21,13 @@ class AuthServices {
           return {"status": false, "message": "User not found"};
         }
 
-        final userData = userDoc.data()!;
-        final userDataType = userData[UserFields.userType];
+        // final userData = userDoc.data()!;
+        // final userDataType = userData[UserFields.userType];
 
-        if (userType != getUserEnumFromUserTypeString(userDataType)) {
-          await auth.signOut();
-          return {"status": false, "message": "User not found"};
-        }
+        // if (userType != getUserEnumFromUserTypeString(userDataType)) {
+        //   await auth.signOut();
+        //   return {"status": false, "message": "User not found"};
+        // }
 
         return {"status": true};
       } else {

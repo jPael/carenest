@@ -8,6 +8,9 @@ class WelcomePage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    precacheImage(
+        const AssetImage("lib/assets/images/mother_welcome_hero.png"), context);
+
     return Scaffold(
       extendBodyBehindAppBar: true,
       appBar: AppBar(
@@ -20,7 +23,7 @@ class WelcomePage extends StatelessWidget {
           child: Column(
             mainAxisAlignment: MainAxisAlignment.end,
             children: [
-              Text(
+              const Text(
                 "Welcome!",
                 style: TextStyle(fontSize: 8 * 6),
               ),
@@ -43,7 +46,9 @@ class WelcomePage extends StatelessWidget {
                         context: context,
                         label: "Get started",
                         onPressed: () => Navigator.push(
-                            context, MaterialPageRoute(builder: (context) => MotherSigninPage())),
+                            context,
+                            MaterialPageRoute(
+                                builder: (context) => const MotherSigninPage())),
                       ),
                     ),
                   ],
@@ -55,7 +60,7 @@ class WelcomePage extends StatelessWidget {
               Row(
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
-                  Text(
+                  const Text(
                     "No account yet?",
                     style: TextStyle(fontSize: 8 * 3),
                   ),
@@ -65,8 +70,11 @@ class WelcomePage extends StatelessWidget {
                   CustomButton.link(
                       context: context,
                       label: "Sign up",
-                      onPressed: () => Navigator.push(context,
-                          MaterialPageRoute(builder: (context) => const MotherRegistration())),
+                      onPressed: () => Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                              builder: (context) =>
+                                  const MotherRegistration())),
                       fontSize: 8 * 3)
                 ],
               ),

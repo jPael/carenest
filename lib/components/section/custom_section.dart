@@ -41,7 +41,7 @@ class CustomSection extends StatelessWidget {
               Flexible(
                 child: Text(
                   title!,
-                  style: titleStyle ?? TextStyle(fontSize: 8 * 3, fontWeight: FontWeight.bold),
+                  style: titleStyle ?? const TextStyle(fontSize: 8 * 3, fontWeight: FontWeight.bold),
                   softWrap: true,
                 ),
               ),
@@ -64,7 +64,7 @@ class CustomSection extends StatelessWidget {
                       child: Center(
                         child: Column(
                           mainAxisAlignment: MainAxisAlignment.center,
-                          children: [emptyChildrenContent ?? Text("Empty")],
+                          children: [emptyChildrenContent ?? const Text("Empty")],
                         ),
                       ),
                     )

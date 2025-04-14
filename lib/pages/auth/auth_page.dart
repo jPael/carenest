@@ -49,7 +49,7 @@ class _AuthPageState extends State<AuthPage> {
                 context.read<current_user.User>().setUser(data);
               });
 
-              return role == UserType.mother ? mother.HomeLayoutPage() : midwife.HomeLayoutPage();
+              return role == UserType.mother ? const mother.HomeLayoutPage() : const midwife.HomeLayoutPage();
             } else {
               return const LandingPage();
             }
@@ -60,7 +60,7 @@ class _AuthPageState extends State<AuthPage> {
   }
 
   Widget _loadingScreen() {
-    return Scaffold(
+    return const Scaffold(
       body: Center(
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
@@ -73,7 +73,7 @@ class _AuthPageState extends State<AuthPage> {
               "Please wait...",
               style: TextStyle(fontSize: 24),
             ),
-            const SizedBox(height: 8),
+            SizedBox(height: 8),
             CircularProgressIndicator(),
           ],
         ),

@@ -1,5 +1,3 @@
-import 'dart:math';
-
 import 'package:flutter/material.dart';
 import 'package:smartguide_app/components/button/custom_button.dart';
 import 'package:smartguide_app/components/form/custom_form.dart';
@@ -41,14 +39,14 @@ class _AfterCareFormState extends State<AfterCareForm> {
                   onPress: () {
                     setState(() {
                       widget.ttItems.add({
-                        "term": "${termController.text}",
+                        "term": termController.text,
                         "datetime": datetime,
                       });
                     });
                     Navigator.pop(context);
                   },
                   label: "Add",
-                  icon: Icon(Icons.add_rounded),
+                  icon: const Icon(Icons.add_rounded),
                 )
               ],
               children: [
@@ -66,7 +64,7 @@ class _AfterCareFormState extends State<AfterCareForm> {
                         return null;
                       },
                     ),
-                    SizedBox(height: 16),
+                    const SizedBox(height: 16),
                     Row(
                       children: [
                         CustomInput.datepicker(
@@ -111,7 +109,7 @@ class _AfterCareFormState extends State<AfterCareForm> {
                     Navigator.pop(context);
                   },
                   label: "Add",
-                  icon: Icon(Icons.add_rounded),
+                  icon: const Icon(Icons.add_rounded),
                 )
               ],
               children: [
@@ -129,7 +127,7 @@ class _AfterCareFormState extends State<AfterCareForm> {
                         return null;
                       },
                     ),
-                    SizedBox(height: 16),
+                    const SizedBox(height: 16),
                     Row(
                       children: [
                         CustomInput.datepicker(
@@ -152,9 +150,6 @@ class _AfterCareFormState extends State<AfterCareForm> {
 
   @override
   Widget build(BuildContext context) {
-    print("TT Items: ${widget.ttItems}");
-    print("Iron Supplement Items: ${widget.ironSuppItems}");
-
     return CustomSection(
       title: "After Care",
       childrenSpacing: 3,
@@ -169,11 +164,11 @@ class _AfterCareFormState extends State<AfterCareForm> {
                 Icons.add_circle_outline,
                 color: Theme.of(context).colorScheme.primary,
               )),
-          titleStyle: TextStyle(
+          titleStyle: const TextStyle(
             fontSize: 8 * 3,
           ),
           children: [
-            Row(
+            const Row(
               children: [
                 Expanded(
                     flex: 1,
@@ -184,7 +179,7 @@ class _AfterCareFormState extends State<AfterCareForm> {
               ],
             ),
             ...widget.ttItems.map((e) =>
-                AfterCareTtImmunizationItem(description: "Term " + e["term"], date: e["datetime"]))
+                AfterCareTtImmunizationItem(description: "Term ${e["term"]}", date: e["datetime"]))
           ],
         ),
         CustomSection(
@@ -197,11 +192,11 @@ class _AfterCareFormState extends State<AfterCareForm> {
                 Icons.add_circle_outline,
                 color: Theme.of(context).colorScheme.primary,
               )),
-          titleStyle: TextStyle(
+          titleStyle: const TextStyle(
             fontSize: 8 * 3,
           ),
           children: [
-            Row(
+            const Row(
               children: [
                 Expanded(flex: 1, child: Text("Date")),
                 Expanded(flex: 2, child: Text("Tabs")),

@@ -1,17 +1,13 @@
-import 'package:firebase_auth/firebase_auth.dart';
-import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:smartguide_app/components/alert/alert.dart';
 import 'package:smartguide_app/components/button/custom_button.dart';
 import 'package:smartguide_app/components/form/custom_form.dart';
 import 'package:smartguide_app/components/input/custom_input.dart';
-import 'package:smartguide_app/models/new_user.dart';
 import 'package:smartguide_app/pages/auth/auth_page.dart';
-import 'package:smartguide_app/pages/midwife/home/home_layout_page.dart';
 import 'package:smartguide_app/services/auth_services.dart';
 
 class MidwifeSigninPage extends StatefulWidget {
-  MidwifeSigninPage({super.key});
+  const MidwifeSigninPage({super.key});
 
   @override
   State<MidwifeSigninPage> createState() => _MidwifeSigninPageState();
@@ -35,8 +31,10 @@ class _MidwifeSigninPageState extends State<MidwifeSigninPage> {
       loggingIn = true;
     });
 
-    final Map<String, dynamic> result =
-        await _auth.signIn(emailController.text, passwordController.text, UserType.midwife);
+    final Map<String, dynamic> result = await _auth.signIn(
+      emailController.text,
+      passwordController.text,
+    );
 
     if (result['status'] == false) {
       if (!mounted) return;
@@ -45,7 +43,7 @@ class _MidwifeSigninPageState extends State<MidwifeSigninPage> {
       if (!mounted) return;
       Navigator.pushAndRemoveUntil(
         context,
-        MaterialPageRoute(builder: (context) => AuthPage()),
+        MaterialPageRoute(builder: (context) => const AuthPage()),
         (route) => false,
       );
     }
@@ -153,7 +151,7 @@ class _MidwifeSigninPageState extends State<MidwifeSigninPage> {
               mainAxisAlignment: MainAxisAlignment.center,
               crossAxisAlignment: CrossAxisAlignment.center,
               children: [
-                Text(
+                const Text(
                   "Welcome back!",
                   style: TextStyle(fontSize: 8 * 6),
                 ),
@@ -191,7 +189,7 @@ class _MidwifeSigninPageState extends State<MidwifeSigninPage> {
 
                               return null;
                             },
-                            startIcon: Icon(Icons.email_outlined)),
+                            startIcon: const Icon(Icons.email_outlined)),
                         const SizedBox(
                           height: 8 * 2,
                         ),
@@ -199,7 +197,7 @@ class _MidwifeSigninPageState extends State<MidwifeSigninPage> {
                           context: context,
                           controller: passwordController,
                           label: "Password",
-                          startIcon: Icon(Icons.password_outlined),
+                          startIcon: const Icon(Icons.password_outlined),
                           validator: (v) {
                             if (v == null || v.isEmpty) {
                               return "Password is required";

@@ -5,15 +5,15 @@ class RemindersTodaysScheduleSection extends StatefulWidget {
   const RemindersTodaysScheduleSection({super.key});
 
   @override
-  _RemindersTodaysScheduleSectionState createState() => _RemindersTodaysScheduleSectionState();
+  RemindersTodaysScheduleSectionState createState() => RemindersTodaysScheduleSectionState();
 }
 
-class _RemindersTodaysScheduleSectionState extends State<RemindersTodaysScheduleSection> {
+class RemindersTodaysScheduleSectionState extends State<RemindersTodaysScheduleSection> {
   @override
   Widget build(BuildContext context) {
     return Column(
       children: [
-        Row(
+        const Row(
           children: [
             Text(
               "Today’s Schedule",

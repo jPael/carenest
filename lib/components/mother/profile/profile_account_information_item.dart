@@ -48,7 +48,7 @@ class _ProfileAccountInformationItemState extends State<ProfileAccountInformatio
         isLoading = true;
       });
 
-      await Future.delayed(Duration(seconds: 5));
+      await Future.delayed(const Duration(seconds: 5));
 
       if (!mounted) return;
 
@@ -86,7 +86,7 @@ class _ProfileAccountInformationItemState extends State<ProfileAccountInformatio
     return ProfileMenuItem(
       onTap: setOpen,
       isOpen: isOpen(),
-      startIcon: Icon(Icons.security),
+      startIcon: const Icon(Icons.security),
       title: "Account Information",
       form: Column(
         spacing: 8,

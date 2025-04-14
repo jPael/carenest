@@ -57,7 +57,7 @@ class _RemindersCardState extends State<RemindersCard> with TickerProviderStateM
               ),
               Text(
                 widget.title,
-                style: TextStyle(fontSize: 8 * 2, fontWeight: FontWeight.w500),
+                style: const TextStyle(fontSize: 8 * 2, fontWeight: FontWeight.w500),
               ),
               const SizedBox(
                 height: 8,
@@ -72,10 +72,10 @@ class _RemindersCardState extends State<RemindersCard> with TickerProviderStateM
                 children: [
                   Text(
                     dayLeftReadable,
-                    style: TextStyle(fontWeight: FontWeight.w500),
+                    style: const TextStyle(fontWeight: FontWeight.w500),
                   ),
                   Text("$percentage%",
-                      style: TextStyle(fontWeight: FontWeight.w500), textAlign: TextAlign.right),
+                      style: const TextStyle(fontWeight: FontWeight.w500), textAlign: TextAlign.right),
                 ],
               ),
               const SizedBox(

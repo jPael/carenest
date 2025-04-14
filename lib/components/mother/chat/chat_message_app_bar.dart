@@ -1,12 +1,12 @@
 import 'package:flutter/material.dart';
 
 class ChatMessageAppBar extends StatelessWidget implements PreferredSizeWidget {
-  const ChatMessageAppBar({Key? key, required this.email, required this.name}) : super(key: key);
+  const ChatMessageAppBar({super.key, required this.email, required this.name});
   final String email;
   final String name;
 
   @override
-  Size get preferredSize => Size.fromHeight(kToolbarHeight);
+  Size get preferredSize => const Size.fromHeight(kToolbarHeight);
 
   @override
   Widget build(BuildContext context) {
@@ -18,7 +18,7 @@ class ChatMessageAppBar extends StatelessWidget implements PreferredSizeWidget {
         children: [
           CircleAvatar(
             foregroundImage: NetworkImage("https://i.pravatar.cc/200?u=$email"),
-            backgroundImage: AssetImage("lib/assets/images/profile_fallback.png"),
+            backgroundImage: const AssetImage("lib/assets/images/profile_fallback.png"),
           ),
           Column(
             crossAxisAlignment: CrossAxisAlignment.start,

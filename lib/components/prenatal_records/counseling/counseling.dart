@@ -6,8 +6,8 @@ class Counseling extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Padding(
-      padding: const EdgeInsets.all(2 * 8.0),
+    return const Padding(
+      padding: EdgeInsets.all(2 * 8.0),
       child: CustomSection(
         title: "Counseling",
         children: [],

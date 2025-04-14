@@ -51,26 +51,26 @@ class _RemindersCalendarSectionState extends State<RemindersCalendarSection> {
                 defaultBuilder: (context, date, _) {
                   return Center(
                     child: Text(date.day.toString(),
-                        style: TextStyle(fontSize: 16, color: Colors.black)),
+                        style: const TextStyle(fontSize: 16, color: Colors.black)),
                   );
                 },
                 todayBuilder: (context, date, _) {
                   return Center(
                     child: Container(
-                      padding: EdgeInsets.symmetric(horizontal: 8 * 2, vertical: 8),
+                      padding: const EdgeInsets.symmetric(horizontal: 8 * 2, vertical: 8),
                       decoration: BoxDecoration(
                         color: Colors.green.shade300,
                         borderRadius: BorderRadius.circular(12),
                       ),
                       child: Text(
                         "${date.day}",
-                        style: TextStyle(color: Colors.white, fontWeight: FontWeight.bold),
+                        style: const TextStyle(color: Colors.white, fontWeight: FontWeight.bold),
                       ),
                     ),
                   );
                 },
               ),
-              daysOfWeekStyle: DaysOfWeekStyle(
+              daysOfWeekStyle: const DaysOfWeekStyle(
                 weekdayStyle: TextStyle(fontWeight: FontWeight.bold),
                 weekendStyle: TextStyle(fontWeight: FontWeight.bold),
               ),

@@ -58,11 +58,11 @@ class _CareAndTestsFormState extends State<CareAndTestsForm> {
           data: widget.trimesters,
           onChange: widget.dropdownOnChange,
         ),
-        SizedBox(),
+        const SizedBox(),
         // checkbox
         CustomSection(
           alignment: CrossAxisAlignment.start,
-          description: Text("Check the item if it applies to your current prenatal care status",
+          description: const Text("Check the item if it applies to your current prenatal care status",
               style: TextStyle(fontStyle: FontStyle.italic)),
           headerSpacing: 1,
           childrenSpacing: 1,
@@ -81,7 +81,7 @@ class _CareAndTestsFormState extends State<CareAndTestsForm> {
         // findings section
         CustomSection(
           title: "Findings",
-          titleStyle: TextStyle(
+          titleStyle: const TextStyle(
             fontSize: 8 * 3,
           ),
           headerSpacing: 1,
@@ -99,11 +99,11 @@ class _CareAndTestsFormState extends State<CareAndTestsForm> {
                 suffixText: "mmHg"),
           ],
         ),
-        SizedBox(),
+        const SizedBox(),
         // advice section
         CustomSection(
           title: "Advice",
-          titleStyle: TextStyle(
+          titleStyle: const TextStyle(
             fontSize: 8 * 3,
           ),
           headerSpacing: 1,
@@ -118,7 +118,7 @@ class _CareAndTestsFormState extends State<CareAndTestsForm> {
             ...widget.advicesControllers.map((controller) => Row(
                   spacing: 4 * 2,
                   children: [
-                    Icon(
+                    const Icon(
                       Icons.circle,
                       size: 4 * 3,
                     ),
@@ -133,7 +133,7 @@ class _CareAndTestsFormState extends State<CareAndTestsForm> {
         // Services section
         CustomSection(
           title: "Services",
-          titleStyle: TextStyle(
+          titleStyle: const TextStyle(
             fontSize: 8 * 3,
           ),
           headerSpacing: 1,
@@ -148,7 +148,7 @@ class _CareAndTestsFormState extends State<CareAndTestsForm> {
             ...widget.servicesControllers.map((controller) => Row(
                   spacing: 4 * 2,
                   children: [
-                    Icon(
+                    const Icon(
                       Icons.circle,
                       size: 4 * 3,
                     ),

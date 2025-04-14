@@ -14,10 +14,10 @@ class MidwifePrenatalRecordsCounselingTopicTab extends StatelessWidget {
     return CustomSection(
       headerSpacing: 1,
       children: [
-        PrenatalCareItem(description: "Breastfeeding", checked: true),
-        PrenatalCareItem(description: "Family Planning", checked: false),
-        PrenatalCareItem(description: "Proper Nutrition", checked: true),
-        PrenatalCareItem(description: "Breastfeeding", checked: true),
+        const PrenatalCareItem(description: "Breastfeeding", checked: true),
+        const PrenatalCareItem(description: "Family Planning", checked: false),
+        const PrenatalCareItem(description: "Proper Nutrition", checked: true),
+        const PrenatalCareItem(description: "Breastfeeding", checked: true),
         CustomInput.text(context: context, controller: forMyChildController, label: "For My Child"),
         CustomInput.text(context: context, controller: forMyselfController, label: "For Myself"),
       ],

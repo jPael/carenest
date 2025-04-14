@@ -1,10 +1,7 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
-import 'package:provider/provider.dart';
-import 'package:smartguide_app/components/alert/alert.dart';
 import 'package:smartguide_app/components/mother/home/forum/forum_like_button.dart';
 import 'package:smartguide_app/models/forum/forum.dart';
-import 'package:smartguide_app/models/user.dart';
 import 'package:smartguide_app/pages/mother/forum/forum_post_page.dart';
 import 'package:timeago/timeago.dart' as timeago;
 
@@ -42,7 +39,7 @@ class _CustomSectionItemState extends State<CustomSectionItem> {
           CircleAvatar(
             foregroundImage:
                 NetworkImage("https://i.pravatar.cc/200?u=${widget.forum.author!.email}"),
-            backgroundImage: AssetImage("lib/assets/images/profile_fallback.png"),
+            backgroundImage: const AssetImage("lib/assets/images/profile_fallback.png"),
           ),
           const SizedBox(
             width: 8,
@@ -57,7 +54,7 @@ class _CustomSectionItemState extends State<CustomSectionItem> {
                     Flexible(
                         child: Text(
                       widget.forum.title,
-                      style: TextStyle(
+                      style: const TextStyle(
                         fontSize: 4 * 6,
                         fontWeight: FontWeight.w500,
                       ),
@@ -88,7 +85,7 @@ class _CustomSectionItemState extends State<CustomSectionItem> {
                         Flexible(
                             child: Text(
                           "${widget.forum.replyCount} replies",
-                          style: TextStyle(
+                          style: const TextStyle(
                             fontSize: 8 * 2,
                             fontWeight: FontWeight.w600,
                           ),

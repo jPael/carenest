@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:smartguide_app/components/mother/home/forum/forum_message_bubble.dart';
 
 class ForumReplyPage extends StatelessWidget {
   const ForumReplyPage({super.key, required this.title});
@@ -14,9 +13,9 @@ class ForumReplyPage extends StatelessWidget {
         forceMaterialTransparency: true,
         title: Text("Reply to $title"),
       ),
-      body: SingleChildScrollView(
+      body: const SingleChildScrollView(
         child: Padding(
-          padding: const EdgeInsets.symmetric(vertical: 8 * 2, horizontal: 8 * 3),
+          padding: EdgeInsets.symmetric(vertical: 8 * 2, horizontal: 8 * 3),
           child: Column(
             children: [
               // ForumMessageBubble(

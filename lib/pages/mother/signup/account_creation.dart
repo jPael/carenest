@@ -32,7 +32,8 @@ class AccountCreationState extends State<AccountCreation> {
 
   final TextEditingController emailController = TextEditingController();
   final TextEditingController passwordController = TextEditingController();
-  final TextEditingController confirmPasswordController = TextEditingController();
+  final TextEditingController confirmPasswordController =
+      TextEditingController();
 
   bool isLoading = false;
   bool isPasswordStrongEnough = false;
@@ -59,7 +60,8 @@ class AccountCreationState extends State<AccountCreation> {
 
       if (result["error"] != null) {
         if (mounted) {
-          showErrorMessage(context: context, message: errorMessage(result["error"]!));
+          showErrorMessage(
+              context: context, message: errorMessage(result["error"]!));
         }
 
         setState(() {
@@ -69,10 +71,11 @@ class AccountCreationState extends State<AccountCreation> {
       }
 
       if (!mounted) return;
-      showSuccessMessage(context: context, message: errorMessage(result["success"]!));
+      showSuccessMessage(
+          context: context, message: errorMessage(result["success"]!));
       Navigator.pushAndRemoveUntil(
         context,
-        MaterialPageRoute(builder: (context) => AuthPage()),
+        MaterialPageRoute(builder: (context) => const AuthPage()),
         (route) => false,
       );
       setState(() {
@@ -85,6 +88,21 @@ class AccountCreationState extends State<AccountCreation> {
     setState(() {
       isPasswordStrongEnough = b;
     });
+  }
+
+  @override
+  void dispose() {
+    super.dispose();
+    emailController.dispose();
+    passwordController.dispose();
+    confirmPasswordController.dispose();
+  }
+
+  @override
+  void initState() {
+    super.initState();
+    precacheImage(
+        const AssetImage("lib/assets/images/mothers_registration_hero.png"), context);
   }
 
   @override
@@ -105,10 +123,11 @@ class AccountCreationState extends State<AccountCreation> {
                 Row(
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
-                    Flexible(
+                    const Flexible(
                         child: Text(
                       "Create your account",
-                      style: TextStyle(fontSize: 8 * 6, fontWeight: FontWeight.w500),
+                      style: TextStyle(
+                          fontSize: 8 * 6, fontWeight: FontWeight.w500),
                       softWrap: true,
                     )),
                     Image.asset(
@@ -122,7 +141,7 @@ class AccountCreationState extends State<AccountCreation> {
                   actions: [
                     CustomButton(
                         label: "Create account",
-                        icon: Icon(Icons.arrow_forward_outlined),
+                        icon: const Icon(Icons.arrow_forward_outlined),
                         isLoading: isLoading,
                         onPress: createAccount)
                   ],
@@ -140,7 +159,7 @@ class AccountCreationState extends State<AccountCreation> {
                           return null;
                         },
                         controller: emailController,
-                        startIcon: Icon(Icons.email_outlined),
+                        startIcon: const Icon(Icons.email_outlined),
                         label: "Email",
                         hint: "e.g. example@email.com"),
                     const SizedBox(
@@ -160,7 +179,7 @@ class AccountCreationState extends State<AccountCreation> {
                           return null;
                         },
                         controller: passwordController,
-                        startIcon: Icon(Icons.password_outlined),
+                        startIcon: const Icon(Icons.password_outlined),
                         label: "Password",
                         hint: "******"),
                     const SizedBox(
@@ -178,7 +197,7 @@ class AccountCreationState extends State<AccountCreation> {
                           return null;
                         },
                         controller: confirmPasswordController,
-                        startIcon: Icon(Icons.password_outlined),
+                        startIcon: const Icon(Icons.password_outlined),
                         label: "Confirm password",
                         hint: "******"),
                     const SizedBox(

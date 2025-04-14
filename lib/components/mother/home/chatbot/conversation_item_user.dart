@@ -20,7 +20,7 @@ class ConversationItemUser extends StatelessWidget {
               padding: const EdgeInsets.all(8),
               decoration: BoxDecoration(
                   color: Colors.blue[700],
-                  borderRadius: BorderRadius.only(
+                  borderRadius: const BorderRadius.only(
                       bottomLeft: Radius.circular(8 * 2),
                       bottomRight: Radius.circular(8 * 2),
                       topLeft: Radius.circular(8 * 2))),
@@ -29,7 +29,7 @@ class ConversationItemUser extends StatelessWidget {
                   Flexible(
                     child: Text(
                       message,
-                      style: TextStyle(color: Colors.white, fontSize: 8 * 3),
+                      style: const TextStyle(color: Colors.white, fontSize: 8 * 3),
                       softWrap: true,
                     ),
                   ),

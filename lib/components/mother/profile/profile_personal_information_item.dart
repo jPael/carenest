@@ -65,7 +65,7 @@ class _ProfilePersonalInformationItemState extends State<ProfilePersonalInformat
         isLoading = true;
       });
 
-      await Future.delayed(Duration(seconds: 3));
+      await Future.delayed(const Duration(seconds: 3));
 
       if (!mounted) {
         return;
@@ -132,7 +132,7 @@ class _ProfilePersonalInformationItemState extends State<ProfilePersonalInformat
     return ProfileMenuItem(
       onTap: setOpen,
       isOpen: isOpen(),
-      startIcon: Icon(Icons.person),
+      startIcon: const Icon(Icons.person),
       title: "Personal Information",
       form: Column(
         mainAxisSize: MainAxisSize.min,

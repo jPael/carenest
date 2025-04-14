@@ -31,14 +31,14 @@ class ViewRemindersPage extends StatelessWidget {
                       Flexible(
                         child: Text(reminder.title,
                             softWrap: true,
-                            style: TextStyle(fontSize: 8 * 4, fontWeight: FontWeight.w500)),
+                            style: const TextStyle(fontSize: 8 * 4, fontWeight: FontWeight.w500)),
                       )
                     ],
                   ),
                   Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
-                      Text(
+                      const Text(
                         "Date: ",
                         softWrap: true,
                         style: TextStyle(fontSize: 8 * 3, fontWeight: FontWeight.w500),
@@ -51,7 +51,7 @@ class ViewRemindersPage extends StatelessWidget {
                                   ? DateFormat("MMMM dd, yyyy").format(reminder.date!)
                                   : "Date is not set",
                               softWrap: true,
-                              style: TextStyle(
+                              style: const TextStyle(
                                 fontSize: 8 * 3,
                               ),
                             ),
@@ -60,7 +60,7 @@ class ViewRemindersPage extends StatelessWidget {
                       ),
                     ],
                   ),
-                  Column(
+                  const Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
                       // Text(

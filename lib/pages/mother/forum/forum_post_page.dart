@@ -61,11 +61,11 @@ class _ForumPostPageState extends State<ForumPostPage> {
                             children: [
                               Text(
                                 widget.forum.title,
-                                style: TextStyle(fontSize: 8 * 4, fontWeight: FontWeight.w500),
+                                style: const TextStyle(fontSize: 8 * 4, fontWeight: FontWeight.w500),
                               ),
                               Text(
                                 widget.forum.content,
-                                style: TextStyle(fontSize: 4 * 4),
+                                style: const TextStyle(fontSize: 4 * 4),
                               ),
                               const SizedBox(
                                 height: 4 * 2,
@@ -105,8 +105,8 @@ class _ForumPostPageState extends State<ForumPostPage> {
                             }
 
                             if (snapshot.connectionState == ConnectionState.waiting) {
-                              return Padding(
-                                padding: const EdgeInsets.only(top: 10 * 8.0),
+                              return const Padding(
+                                padding: EdgeInsets.only(top: 10 * 8.0),
                                 child: Center(
                                   child: Column(
                                     spacing: 4 * 2,

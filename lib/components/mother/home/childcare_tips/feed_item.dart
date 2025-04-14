@@ -21,7 +21,7 @@ class FeedItem extends StatelessWidget {
                   child: Text(
                     title,
                     softWrap: true,
-                    style: TextStyle(fontSize: 8 * 3),
+                    style: const TextStyle(fontSize: 8 * 3),
                   ),
                 ),
               ],

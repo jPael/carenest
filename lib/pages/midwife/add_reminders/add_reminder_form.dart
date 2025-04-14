@@ -40,7 +40,7 @@ class AddReminderFormState extends State<AddReminderForm> {
             DropdownButton(
               alignment: Alignment.centerLeft,
               value: widget.reminderType,
-              hint: Text("Set icon"),
+              hint: const Text("Set icon"),
               items: imagePaths
                   .map((Map<String, dynamic> i) => DropdownMenuItem(
                       alignment: Alignment.center,
@@ -55,7 +55,7 @@ class AddReminderFormState extends State<AddReminderForm> {
             ),
             TextFormField(
               controller: widget.titleController,
-              decoration: InputDecoration(labelText: 'Title'),
+              decoration: const InputDecoration(labelText: 'Title'),
               validator: (value) {
                 if (value == null || value.isEmpty) {
                   return 'Please enter a title';

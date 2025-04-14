@@ -15,15 +15,15 @@ void main() async {
   await dotenv.load(fileName: ".env");
 
   runApp(MultiProvider(
-      providers: [ChangeNotifierProvider(create: (context) => User())], child: MyApp()));
+      providers: [ChangeNotifierProvider(create: (context) => User())], child: const MyApp()));
 }
 
 GlobalKey<NavigatorState> navigatorKey = GlobalKey<NavigatorState>();
 
 class MyApp extends StatelessWidget {
-  MyApp({super.key});
+  const MyApp({super.key});
 
-  final Color primaryColor = Color(0xFF696CFF);
+  final Color primaryColor = const Color(0xFF235ee8);
 
   // This widget is the root of your application.
   @override

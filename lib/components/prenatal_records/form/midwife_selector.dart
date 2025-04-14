@@ -1,6 +1,5 @@
 import 'dart:developer';
 
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:smartguide_app/models/midwife.dart';
 import 'package:smartguide_app/services/laravel/midwife_services.dart';
@@ -43,7 +42,7 @@ class MidwifeSelectorState extends State<MidwifeSelector> {
   @override
   Widget build(BuildContext context) {
     return fetchingMidwife
-        ? Row(
+        ? const Row(
             spacing: 4 * 2,
             children: [
               SizedBox.square(

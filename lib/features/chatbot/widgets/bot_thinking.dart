@@ -35,7 +35,7 @@ class _ThinkingState extends State<Thinking> with SingleTickerProviderStateMixin
         String dots = '.' * (_animation.value + 1);
         return Text(
           'Thinking$dots',
-          style: TextStyle(fontSize: 16, color: Colors.black),
+          style: const TextStyle(fontSize: 16, color: Colors.black),
         );
       },
     );

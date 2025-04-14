@@ -26,7 +26,7 @@ class CustomForm extends StatelessWidget {
             children: [
               Text(
                 label!,
-                style: TextStyle(fontSize: 8 * 3, fontWeight: FontWeight.w500),
+                style: const TextStyle(fontSize: 8 * 3, fontWeight: FontWeight.w500),
               )
             ],
           ),
@@ -46,7 +46,7 @@ class CustomForm extends StatelessWidget {
           height: 8 * 2,
         ),
         if (socials.isNotEmpty) ...[
-          Divider(),
+          const Divider(),
           const SizedBox(
             height: 8,
           ),

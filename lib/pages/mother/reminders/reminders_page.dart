@@ -25,30 +25,30 @@ class _RemindersPageState extends State<RemindersPage> {
           label: widget.label,
         ),
       ),
-      body: SingleChildScrollView(
+      body: const SingleChildScrollView(
         child: Column(
           mainAxisSize: MainAxisSize.min,
           children: [
             // separated the header section because the image has its own margin due to image's dimention
 
             Padding(
-                padding: const EdgeInsets.symmetric(horizontal: 8.0 * 2),
+                padding: EdgeInsets.symmetric(horizontal: 8.0 * 2),
                 child: Column(
                   children: [
                     RemindersCalendarSection(),
-                    const SizedBox(
+                    SizedBox(
                       height: 8 * 3,
                     ),
                     RemindersUpcomingScheduleSection(),
-                    const SizedBox(
+                    SizedBox(
                       height: 8 * 3,
                     ),
                     RemindersTodaysScheduleSection(),
-                    const SizedBox(
+                    SizedBox(
                       height: 8 * 3,
                     ),
                     RemindersCompletedScheduleSection(),
-                    const SizedBox(
+                    SizedBox(
                       height: 8 * 3,
                     ),
                     RemindersMissedSchedule(),

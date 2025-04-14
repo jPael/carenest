@@ -7,7 +7,7 @@ class NewChatPage extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text("New chat"),
+        title: const Text("New chat"),
       ),
     );
   }

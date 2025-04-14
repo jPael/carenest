@@ -24,7 +24,7 @@ class SettingsPrenatalRecordsPersonalInformationTabView extends StatelessWidget 
       CustomInput.datepicker(
           context: context, onChange: (date) {}, selectedDate: birthday, label: "Birthday"),
       CustomInput.text(context: context, controller: addressController, label: "Address"),
-      Row(
+      const Row(
         mainAxisAlignment: MainAxisAlignment.spaceAround,
         children: [
           CustomChecklist(

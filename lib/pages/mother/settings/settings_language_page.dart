@@ -24,14 +24,14 @@ class _SettingsLanguagePageState extends State<SettingsLanguagePage> {
         builder: (BuildContext context) => AlertDialog(
               title: Text("Change language to $language?"),
               actions: [
-                TextButton(onPressed: () => Navigator.pop(context), child: Text("No")),
+                TextButton(onPressed: () => Navigator.pop(context), child: const Text("No")),
                 TextButton(
                     onPressed: () async {
                       if (!mounted) return;
                       handleSelectedLanguage(id);
                       Navigator.pop(context);
                     },
-                    child: Text("Yes"))
+                    child: const Text("Yes"))
               ],
             ));
   }
@@ -40,7 +40,7 @@ class _SettingsLanguagePageState extends State<SettingsLanguagePage> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text("Change Language"),
+        title: const Text("Change Language"),
       ),
       body: Padding(
         padding: const EdgeInsets.all(8.0 * 2),

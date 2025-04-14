@@ -24,7 +24,7 @@ class ChatbotIntro extends StatelessWidget {
                   height: 240,
                   width: 240,
                   clipBehavior: Clip.antiAlias,
-                  decoration: BoxDecoration(shape: BoxShape.circle),
+                  decoration: const BoxDecoration(shape: BoxShape.circle),
                   child: OverflowBox(
                     minHeight: 50,
                     minWidth: 50,
@@ -37,7 +37,7 @@ class ChatbotIntro extends StatelessWidget {
               const SizedBox(
                 height: 8 * 3,
               ),
-              Text(
+              const Text(
                 "Hi!👋 How can i help you today?",
                 style: TextStyle(fontSize: 8 * 3.5),
                 textAlign: TextAlign.center,
@@ -45,7 +45,7 @@ class ChatbotIntro extends StatelessWidget {
               const SizedBox(
                 height: 8 * 2,
               ),
-              Row(
+              const Row(
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
                   Flexible(
@@ -64,7 +64,7 @@ class ChatbotIntro extends StatelessWidget {
                 padding: const EdgeInsets.symmetric(horizontal: 8.0 * 3),
                 child: CustomButton.large(
                     context: context,
-                    onPressed: () => Navigator.push(context, MaterialPageRoute(builder: (context) => ChatbotPage())),
+                    onPressed: () => Navigator.push(context, MaterialPageRoute(builder: (context) => const ChatbotPage())),
                     label: "Start Chat",
                     radius: 3,
                     color: Colors.blueAccent[700]),

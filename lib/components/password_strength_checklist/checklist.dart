@@ -23,14 +23,14 @@ class Checklist extends StatelessWidget {
   }
 
   Widget checkIcon() {
-    return Icon(
+    return const Icon(
       Icons.check,
       color: Colors.greenAccent,
     );
   }
 
   Widget wrongIcon() {
-    return Icon(
+    return const Icon(
       Icons.close,
       color: Colors.redAccent,
     );

@@ -1,8 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:smartguide_app/components/prenatal_records/after_care/after_care.dart';
-import 'package:smartguide_app/components/prenatal_records/birth_plan/birth_plan.dart';
-import 'package:smartguide_app/components/prenatal_records/care_and_tests/care_and_tests.dart';
-import 'package:smartguide_app/components/prenatal_records/counseling/counseling.dart';
 import 'package:smartguide_app/components/prenatal_records/form/prenatal_info_form.dart';
 
 class SettingsPrenatalRecordsPage extends StatefulWidget {
@@ -36,9 +32,9 @@ class _SettingsPrenatalRecordsPageState extends State<SettingsPrenatalRecordsPag
   Widget build(BuildContext context) {
     return Scaffold(
         appBar: AppBar(
-          title: Text("Prenatal Record"),
+          title: const Text("Prenatal Record"),
           centerTitle: true,
         ),
-        body: PrenatalInfoForm());
+        body: const PrenatalInfoForm());
   }
 }

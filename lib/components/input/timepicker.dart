@@ -17,8 +17,7 @@ class Timepicker extends StatelessWidget {
   Widget build(BuildContext context) {
     return GestureDetector(
       onTap: () async {
-        final TimeOfDay? picked =
-            await showTimePicker(context: context, initialTime: selectedTime ?? TimeOfDay.now());
+        final TimeOfDay? picked = await showTimePicker(context: context, initialTime: selectedTime);
 
         if (picked != null && picked != selectedTime) {
           onChange(picked);
@@ -34,8 +33,8 @@ class Timepicker extends StatelessWidget {
         child: Row(
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
           children: <Widget>[
-            Text(selectedTime!.format(context)),
-            Icon(Icons.access_time),
+            Text(selectedTime.format(context)),
+            const Icon(Icons.access_time),
           ],
         ),
       ),

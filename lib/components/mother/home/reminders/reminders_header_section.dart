@@ -14,7 +14,7 @@ class RemindersHeaderSection extends StatelessWidget {
           height: 40,
           width: 40,
           clipBehavior: Clip.antiAlias,
-          decoration: BoxDecoration(
+          decoration: const BoxDecoration(
             shape: BoxShape.circle,
           ),
           child: OverflowBox(
@@ -29,7 +29,7 @@ class RemindersHeaderSection extends StatelessWidget {
       ),
       Text(
         label,
-        style: TextStyle(fontSize: 8 * 4, fontWeight: FontWeight.w500),
+        style: const TextStyle(fontSize: 8 * 4, fontWeight: FontWeight.w500),
       )
     ]);
   }

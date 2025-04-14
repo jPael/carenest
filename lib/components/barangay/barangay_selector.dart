@@ -1,5 +1,3 @@
-import 'dart:developer';
-
 import 'package:flutter/material.dart';
 import 'package:smartguide_app/models/barangay.dart';
 import 'package:smartguide_app/services/laravel/barangay_services.dart';
@@ -11,7 +9,6 @@ class BarangaySelector extends StatefulWidget {
   });
 
   final Function(String? value) onChange;
-  
 
   @override
   BarangaySelectorState createState() => BarangaySelectorState();
@@ -51,7 +48,7 @@ class BarangaySelectorState extends State<BarangaySelector> {
   @override
   Widget build(BuildContext context) {
     return fetchingBarangay
-        ? Row(
+        ? const Row(
             spacing: 4 * 2,
             children: [
               SizedBox.square(

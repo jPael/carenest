@@ -21,7 +21,7 @@ class PatientsInfoPage extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text("Patients information"),
+        title: const Text("Patients information"),
       ),
       body: SingleChildScrollView(
         child: Padding(
@@ -32,7 +32,7 @@ class PatientsInfoPage extends StatelessWidget {
             CustomInput.datepicker(
                 context: context, onChange: (date) {}, selectedDate: birthday, label: "Birthday"),
             CustomInput.text(context: context, controller: addressController, label: "Address"),
-            Row(
+            const Row(
               mainAxisAlignment: MainAxisAlignment.spaceAround,
               children: [
                 Flexible(
@@ -60,7 +60,7 @@ class PatientsInfoPage extends StatelessWidget {
                 selectedDate: expectedDateOfConfinement,
                 onChange: (e) {},
                 label: "I am expected to Give Birth to my Child (EDC) on"),
-            CustomSection(
+            const CustomSection(
               title: "In case of emergency, my blood donors are",
               headerSpacing: 1,
               titleStyle: TextStyle(fontSize: 4 * 4, fontWeight: FontWeight.w500),

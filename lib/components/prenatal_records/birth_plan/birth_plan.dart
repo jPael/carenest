@@ -14,11 +14,11 @@ class BirthPlan extends StatelessWidget {
         action: IconButton(
             onPressed: () {},
             tooltip: "Edit",
-            icon: Icon(
+            icon: const Icon(
               Icons.edit,
               size: 4 * 5,
             )),
-        children: [
+        children: const [
           BirthPlanItem(
             description: "Birth will take place at",
             value: "ASTMMC, Tandag City",

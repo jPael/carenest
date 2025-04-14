@@ -20,7 +20,7 @@ class _ChatInputFieldState extends State<ChatInputField> {
         crossAxisAlignment: CrossAxisAlignment.center,
         mainAxisAlignment: MainAxisAlignment.center,
         children: [
-          IconButton(onPressed: () {}, icon: Icon(Icons.multitrack_audio_outlined)),
+          IconButton(onPressed: () {}, icon: const Icon(Icons.multitrack_audio_outlined)),
           Expanded(
             child: CustomInput.text(context: context, controller: messageController, label: "Write your message..."),
           ),
@@ -30,7 +30,7 @@ class _ChatInputFieldState extends State<ChatInputField> {
               messageController.clear();
               FocusScope.of(context).unfocus();
             },
-            icon: Icon(
+            icon: const Icon(
               Icons.send_rounded,
             ),
             iconSize: 8 * 4,

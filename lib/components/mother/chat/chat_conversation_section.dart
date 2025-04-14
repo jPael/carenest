@@ -36,8 +36,8 @@ class ChatConversationSection extends StatelessWidget {
           }
 
           if (snapshot.connectionState == ConnectionState.waiting) {
-            return Padding(
-              padding: const EdgeInsets.only(top: 10 * 8.0),
+            return const Padding(
+              padding: EdgeInsets.only(top: 10 * 8.0),
               child: CustomSection(
                 children: [CircularProgressIndicator()],
               ),

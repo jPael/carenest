@@ -55,7 +55,7 @@ class _AddRemindersPageState extends State<AddRemindersPage> {
     final TextEditingController purposeController = TextEditingController();
 
     DateTime date = DateTime.now();
-    TimeOfDay time = TimeOfDay.now();
+    // TimeOfDay time = TimeOfDay.now();
 
     showDialog(
       context: context,
@@ -75,14 +75,14 @@ class _AddRemindersPageState extends State<AddRemindersPage> {
               });
             }
 
-            void onReminderTimeChange(TimeOfDay t) {
-              setState(() {
-                time = t;
-              });
-            }
+            // void onReminderTimeChange(TimeOfDay t) {
+            //   setState(() {
+            //     time = t;
+            //   });
+            // }
 
             return AlertDialog(
-              title: Text('Add Reminder'),
+              title: const Text('Add Reminder'),
               content: AddReminderForm(
                 date: date,
                 formKey: formKey,
@@ -97,7 +97,7 @@ class _AddRemindersPageState extends State<AddRemindersPage> {
               actions: [
                 TextButton(
                   onPressed: () => Navigator.of(context).pop(),
-                  child: Text('Cancel'),
+                  child: const Text('Cancel'),
                 ),
                 TextButton(
                   onPressed: () {
@@ -112,7 +112,7 @@ class _AddRemindersPageState extends State<AddRemindersPage> {
                       Navigator.of(context).pop();
                     }
                   },
-                  child: Text('Add'),
+                  child: const Text('Add'),
                 ),
               ],
             );
@@ -165,12 +165,12 @@ class _AddRemindersPageState extends State<AddRemindersPage> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text('Reminders'),
+        title: const Text('Reminders'),
       ),
       floatingActionButton: FloatingActionButton.extended(
         onPressed: () => _showAddReminderDialog(context),
-        label: Text("Add Reminder"),
-        icon: Icon(Ionicons.pencil_outline),
+        label: const Text("Add Reminder"),
+        icon: const Icon(Ionicons.pencil_outline),
       ),
       body: SingleChildScrollView(
         child: Padding(
@@ -180,7 +180,7 @@ class _AddRemindersPageState extends State<AddRemindersPage> {
             headerSpacing: 1,
             childrenSpacing: 1,
             children: fetchingReminders
-                ? [Center(child: SizedBox(child: CircularProgressIndicator()))]
+                ? [const Center(child: SizedBox(child: CircularProgressIndicator()))]
                 : reminders.map((reminder) {
                     return RemindersItem(
                         key: UniqueKey(),

@@ -9,7 +9,7 @@ class RemindersUpcomingScheduleSection extends StatelessWidget {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
-        Row(
+        const Row(
           children: [
             Text(
               "Upcoming schedules",

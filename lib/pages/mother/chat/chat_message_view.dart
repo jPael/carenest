@@ -4,7 +4,6 @@ import 'package:smartguide_app/components/mother/chat/chat_conversation_section.
 import 'package:smartguide_app/components/mother/chat/chat_message_app_bar.dart';
 import 'package:smartguide_app/components/mother/chat/chat_user_details_section.dart';
 import 'package:smartguide_app/fields/user_fields.dart';
-import 'package:smartguide_app/utils/utils.dart';
 
 class ChatMessageView extends StatefulWidget {
   const ChatMessageView({super.key, required this.receiver});
@@ -28,6 +27,8 @@ class _ChatMessageViewState extends State<ChatMessageView> {
 
   @override
   Widget build(BuildContext context) {
+    precacheImage(const AssetImage("lib/assets/images/mother_chat_bg.png"), context);
+
     return Stack(children: [
       Image.asset(
         "lib/assets/images/mother_chat_bg.png",

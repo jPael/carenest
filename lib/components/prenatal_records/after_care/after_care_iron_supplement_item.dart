@@ -15,14 +15,14 @@ class AfterCareIronSupplementItem extends StatelessWidget {
           flex: 1,
           child: Text(
             DateFormat("MMMM dd, yyyy").format(date),
-            style: TextStyle(fontSize: 4 * 4, fontWeight: FontWeight.bold),
+            style: const TextStyle(fontSize: 4 * 4, fontWeight: FontWeight.bold),
           ),
         ),
         Expanded(
             flex: 2,
             child: Text(
               tabs.toString(),
-              style: TextStyle(fontSize: 4 * 4),
+              style: const TextStyle(fontSize: 4 * 4),
             ))
       ],
     );

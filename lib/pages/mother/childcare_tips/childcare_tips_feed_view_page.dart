@@ -39,7 +39,7 @@ class _ChildcareTipsFeedViewPageState extends State<ChildcareTipsFeedViewPage> {
         actions: [
           IconButton(
             onPressed: handleBookmark,
-            icon: Icon(Icons.bookmark_outline_rounded),
+            icon: const Icon(Icons.bookmark_outline_rounded),
             isSelected: isFavorite,
             selectedIcon: Icon(
               Icons.bookmark,
@@ -56,7 +56,7 @@ class _ChildcareTipsFeedViewPageState extends State<ChildcareTipsFeedViewPage> {
             const SizedBox(
               height: 8 * 3,
             ),
-            FeedViewContentSection()
+            const FeedViewContentSection()
           ],
         ),
       ),

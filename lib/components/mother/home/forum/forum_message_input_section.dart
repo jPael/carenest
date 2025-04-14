@@ -62,7 +62,7 @@ class _ForumMessageInputSectionState extends State<ForumMessageInputSection> {
                 )
               : IconButton(
                   onPressed: handleReply,
-                  icon: Icon(
+                  icon: const Icon(
                     Icons.send_rounded,
                     size: 8 * 4,
                   ))

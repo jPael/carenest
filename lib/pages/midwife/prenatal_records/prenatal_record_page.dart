@@ -18,7 +18,7 @@ class PrenatalRecordPage extends StatefulWidget {
 class _PrenatalRecordPageState extends State<PrenatalRecordPage> with TickerProviderStateMixin {
   final List<String> tabs = ["Care and Tests", "Birth Plan", "After Care", "Counseling"];
 
-  final List<Widget> tabViews = [CareAndTests(), BirthPlan(), AfterCare(), Counseling()];
+  final List<Widget> tabViews = [const CareAndTests(), const BirthPlan(), const AfterCare(), const Counseling()];
 
   late final TabController tabController;
 

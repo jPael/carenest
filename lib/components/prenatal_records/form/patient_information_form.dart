@@ -69,7 +69,7 @@ class _PatientInformationFormState extends State<PatientInformationForm> {
     WidgetsBinding.instance.addPostFrameCallback((_) {
       widget.fullnameController.text = "${user.firstname!} ${user.lastname!}";
       widget.ageController.text =
-          ((DateTime.now().difference(DateTime.tryParse(user!.dateOfBirth!)!).inDays / 365.2425))
+          ((DateTime.now().difference(DateTime.tryParse(user.dateOfBirth!)!).inDays / 365.2425))
               .floor()
               .toString();
       widget.onBarangayChange(user.address);
@@ -132,7 +132,7 @@ class _PatientInformationFormState extends State<PatientInformationForm> {
               ),
               CustomSection(
                 title: "Blood Donor",
-                titleStyle: TextStyle(
+                titleStyle: const TextStyle(
                   fontSize: 8 * 3,
                 ),
                 // headerSpacing: 1,
@@ -175,7 +175,7 @@ class _PatientInformationFormState extends State<PatientInformationForm> {
             ],
           ),
           crossFadeState: isExpanded ? CrossFadeState.showFirst : CrossFadeState.showSecond,
-          duration: Duration(milliseconds: 300),
+          duration: const Duration(milliseconds: 300),
         )
       ],
     );

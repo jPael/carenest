@@ -6,19 +6,6 @@ import 'package:smartguide_app/components/section/custom_section.dart';
 class SettingsPrenatalRecordsImmunizationSupplementsTabView extends StatelessWidget {
   SettingsPrenatalRecordsImmunizationSupplementsTabView({super.key});
 
-  /*
-
-TT Immunization Status: (text input)
-TT1: (Date given: DD/MM/YYYY)
-TT2: (Date given: DD/MM/YYYY)
-TT3: (Date given: DD/MM/YYYY)
-TT4: (Date given: DD/MM/YYYY)
-TT5: (Date given: DD/MM/YYYY)
-FIM: (text input)
-Iron Supplementation: (Date: DD/MM/YYYY, Tabs given: mg)
-
-  */
-
   final TextEditingController ttImmunizationStatusController = TextEditingController();
   final List<DateTime> ttDates = [
     DateTime.now(),
@@ -47,7 +34,7 @@ Iron Supplementation: (Date: DD/MM/YYYY, Tabs given: mg)
             padding: const EdgeInsets.symmetric(horizontal: 2 * 8.0),
             child: Row(
               children: [
-                Icon(
+                const Icon(
                   Icons.circle,
                   size: 8 * 1.5,
                 ),
@@ -56,17 +43,17 @@ Iron Supplementation: (Date: DD/MM/YYYY, Tabs given: mg)
                 ),
                 Text(
                   "TT${i + 1}: ",
-                  style: TextStyle(fontWeight: FontWeight.bold, fontSize: 8 * 2),
+                  style: const TextStyle(fontWeight: FontWeight.bold, fontSize: 8 * 2),
                 ),
                 Text(
                   DateFormat("MMMM d, y").format(ttDates[i]),
-                  style: TextStyle(fontSize: 8 * 2),
+                  style: const TextStyle(fontSize: 8 * 2),
                 )
               ],
             ),
           ),
         CustomInput.text(context: context, controller: fimController, label: "FIM"),
-        Row(
+        const Row(
           children: [
             Text(
               "Iron Supplementation",

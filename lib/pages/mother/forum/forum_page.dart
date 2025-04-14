@@ -36,9 +36,9 @@ class _ForumPageState extends State<ForumPage> {
             decoration: BoxDecoration(
               color: Colors.white,
               border: Border.all(),
-              borderRadius: BorderRadius.vertical(top: Radius.circular(20)),
+              borderRadius: const BorderRadius.vertical(top: Radius.circular(20)),
             ),
-            child: ForumCreatePostForm());
+            child: const ForumCreatePostForm());
       },
     );
   }
@@ -54,17 +54,17 @@ class _ForumPageState extends State<ForumPage> {
         backgroundColor: Colors.white,
         title: Text(
           widget.label,
-          style: TextStyle(fontWeight: FontWeight.w500),
+          style: const TextStyle(fontWeight: FontWeight.w500),
         ),
-        bottom: PreferredSize(
+        bottom: const PreferredSize(
           preferredSize: Size.fromHeight(48 + 8 * 2), // example height
           child: ForumToolbarSection(),
         ),
       ),
       floatingActionButton: FloatingActionButton.extended(
         onPressed: () => showPostButton(context),
-        label: Text("Create a post"),
-        icon: Icon(Ionicons.pencil),
+        label: const Text("Create a post"),
+        icon: const Icon(Ionicons.pencil),
       ),
       body: SingleChildScrollView(
         child: Padding(
@@ -96,8 +96,8 @@ class _ForumPageState extends State<ForumPage> {
                     }
 
                     if (snapshot.connectionState == ConnectionState.waiting) {
-                      return Padding(
-                        padding: const EdgeInsets.only(top: 10 * 8.0),
+                      return const Padding(
+                        padding: EdgeInsets.only(top: 10 * 8.0),
                         child: Center(
                           child: Column(
                             spacing: 4 * 2,

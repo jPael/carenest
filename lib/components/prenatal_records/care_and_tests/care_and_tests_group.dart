@@ -21,11 +21,11 @@ class CareAndTestsGroup extends StatelessWidget {
             context: context,
             onPressed: () {},
             label: "Edit",
-            icon: Icon(
+            icon: const Icon(
               Ionicons.pencil_outline,
               size: 8 * 2,
             )),
-        titleStyle: TextStyle(fontSize: 8 * 2.5, fontWeight: FontWeight.w500),
+        titleStyle: const TextStyle(fontSize: 8 * 2.5, fontWeight: FontWeight.w500),
         headerSpacing: 2,
         childrenSpacing: 1,
         children: [
@@ -49,7 +49,7 @@ class CareAndTestsGroup extends StatelessWidget {
           const SizedBox(
             height: 4 * 2,
           ),
-          Row(
+          const Row(
             children: [
               Text(
                 "Findings",
@@ -59,14 +59,14 @@ class CareAndTestsGroup extends StatelessWidget {
               ),
             ],
           ),
-          CareAndTestsFindingsItem(
+          const CareAndTestsFindingsItem(
             description: "Fundic height",
             value: "26",
             unit: "cm",
             remarksDescription: "Normal",
             remarksValue: "Yes",
           ),
-          CareAndTestsFindingsItem(
+          const CareAndTestsFindingsItem(
             description: "Blood pressure",
             value: "120/80 ",
             unit: "mmHg",
@@ -76,7 +76,7 @@ class CareAndTestsGroup extends StatelessWidget {
           const SizedBox(
             height: 4 * 2,
           ),
-          Row(
+          const Row(
             children: [
               Text(
                 "Advice",
@@ -86,13 +86,13 @@ class CareAndTestsGroup extends StatelessWidget {
               ),
             ],
           ),
-          CareAndTestsAdviceItem(content: "Maintain a healthy diet with reduced salt intake"),
-          CareAndTestsAdviceItem(content: "Monitor blood sugar levels daily"),
-          CareAndTestsAdviceItem(content: "Increase physical activity with light exercises"),
+          const CareAndTestsAdviceItem(content: "Maintain a healthy diet with reduced salt intake"),
+          const CareAndTestsAdviceItem(content: "Monitor blood sugar levels daily"),
+          const CareAndTestsAdviceItem(content: "Increase physical activity with light exercises"),
           const SizedBox(
             height: 4 * 2,
           ),
-          Row(
+          const Row(
             children: [
               Text(
                 "Services",
@@ -102,13 +102,13 @@ class CareAndTestsGroup extends StatelessWidget {
               ),
             ],
           ),
-          CareAndTestsAdviceItem(content: "Routine ultrasound scan"),
-          CareAndTestsAdviceItem(content: "Blood pressure monitoring"),
-          CareAndTestsAdviceItem(content: "Iron and folic acid supplementation"),
+          const CareAndTestsAdviceItem(content: "Routine ultrasound scan"),
+          const CareAndTestsAdviceItem(content: "Blood pressure monitoring"),
+          const CareAndTestsAdviceItem(content: "Iron and folic acid supplementation"),
           const SizedBox(
             height: 4 * 10,
           ),
-          Column(
+          const Column(
             children: [
               Text(
                 "Maria Dela Cruz",

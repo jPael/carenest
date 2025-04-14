@@ -37,11 +37,11 @@ class CareAndTestItem extends StatelessWidget {
             SizedBox(
                 width: 40,
                 child: isTrue
-                    ? Icon(
+                    ? const Icon(
                         Ionicons.checkmark_circle,
                         color: Colors.green,
                       )
-                    : Icon(
+                    : const Icon(
                         Ionicons.close_circle,
                         color: Colors.red,
                       )),
@@ -74,12 +74,12 @@ class CareAndTestItem extends StatelessWidget {
             Text(
               "$description: ",
               softWrap: true,
-              style: TextStyle(fontSize: 4 * 4, fontWeight: FontWeight.w500),
+              style: const TextStyle(fontSize: 4 * 4, fontWeight: FontWeight.w500),
             ),
             Text(
               DateFormat("MMMM dd, yyyy").format(date),
               softWrap: true,
-              style: TextStyle(fontSize: 4 * 4),
+              style: const TextStyle(fontSize: 4 * 4),
             ),
           ],
         ),

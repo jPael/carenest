@@ -54,13 +54,13 @@ class _ForumLikeButtonState extends State<ForumLikeButton> {
 
   @override
   Widget build(BuildContext context) {
-    final TextStyle textStyle = TextStyle(fontSize: 4 * 4, fontWeight: FontWeight.w500);
+    const TextStyle textStyle = TextStyle(fontSize: 4 * 4, fontWeight: FontWeight.w500);
 
     return StreamBuilder<Object>(
       stream: forumServices.getLikeStreamByForumId(widget.forum.docId!, user.uid!),
       builder: (context, snapshot) {
         if (snapshot.connectionState == ConnectionState.waiting) {
-          return SizedBox();
+          return const SizedBox();
         }
 
         int realLikeCount =
@@ -75,19 +75,19 @@ class _ForumLikeButtonState extends State<ForumLikeButton> {
             crossAxisAlignment: CrossAxisAlignment.center,
             children: [
               SizedBox.fromSize(
-                size: Size.square(4 * 9),
+                size: const Size.square(4 * 9),
                 child: IconButton(
                     padding: EdgeInsets.zero,
-                    style: ButtonStyle(
+                    style: const ButtonStyle(
                       iconSize: WidgetStatePropertyAll(4 * 8),
                     ),
                     onPressed: handleLike,
                     icon: like
-                        ? Icon(
+                        ? const Icon(
                             Icons.favorite,
                             color: Colors.red,
                           )
-                        : Icon(Icons.favorite_border)),
+                        : const Icon(Icons.favorite_border)),
               ),
               widget.showLikeCount
                   ? Text(
@@ -107,11 +107,11 @@ class _ForumLikeButtonState extends State<ForumLikeButton> {
                   iconSize: 8 * 4,
                   onPressed: handleLike,
                   icon: like
-                      ? Icon(
+                      ? const Icon(
                           Icons.favorite,
                           color: Colors.red,
                         )
-                      : Icon(Icons.favorite_border)),
+                      : const Icon(Icons.favorite_border)),
               widget.showLikeCount
                   ? Text(
                       realLikeCount.toString(),

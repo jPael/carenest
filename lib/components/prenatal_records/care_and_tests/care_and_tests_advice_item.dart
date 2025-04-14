@@ -10,13 +10,13 @@ class CareAndTestsAdviceItem extends StatelessWidget {
     return Row(
       spacing: 4 * 2,
       children: [
-        Icon(
+        const Icon(
           Icons.circle,
           size: 4 * 3,
         ),
         Text(
           content,
-          style: TextStyle(fontSize: 4 * 4),
+          style: const TextStyle(fontSize: 4 * 4),
         ),
       ],
     );

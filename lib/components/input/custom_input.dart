@@ -13,8 +13,10 @@ class CustomInput {
       TextEditingController? controller,
       minLines = 1,
       maxLines = 8,
-      String? suffixText}) {
+      String? suffixText,
+      Widget? suffixWidget}) {
     assert(maxLines >= minLines, 'maxLines must be greater than or equal to minLines');
+
     return TextFormField(
       validator: validator,
       controller: controller,
@@ -24,9 +26,11 @@ class CustomInput {
       minLines: minLines,
       maxLines: maxLines,
       decoration: InputDecoration(
+          suffix: suffixWidget,
           suffixText: suffixText,
           label: Text(label),
           hintText: hint,
+          contentPadding: const EdgeInsets.symmetric(vertical: 4 * 2, horizontal: 4 * 4),
           border: OutlineInputBorder(borderRadius: BorderRadius.circular(8 * 2)),
           prefixIcon: startIcon),
     );
@@ -92,7 +96,7 @@ class CustomInput {
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
           children: <Widget>[
             Text(selectedTime.format(context)),
-            Icon(Icons.access_time),
+            const Icon(Icons.access_time),
           ],
         ),
       ),

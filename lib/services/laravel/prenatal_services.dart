@@ -26,7 +26,7 @@ class PrenatalServices {
     final adviceContent = prenatal.advices.isNotEmpty ? prenatal.advices.join(', ') : 'None';
 
     // Add the patient_information_id field that was missing
-    final int patientInfoId = 1; // You may need to get this from somewhere
+    const int patientInfoId = 1; // You may need to get this from somewhere
 
     // Prepare request payload
     final Map<String, dynamic> payload = {

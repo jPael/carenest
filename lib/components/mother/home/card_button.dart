@@ -22,7 +22,7 @@ class CardButton extends StatelessWidget {
         isLabelVisible: notifCount != 0,
         count: 3,
         largeSize: 8 * 4,
-        textStyle: TextStyle(fontSize: 8 * 3),
+        textStyle: const TextStyle(fontSize: 8 * 3),
         child: Column(
           children: [
             Container(
@@ -35,7 +35,7 @@ class CardButton extends StatelessWidget {
                   BoxShadow(
                     color: Colors.black.withValues(alpha: 0.2), // Match button shadow
                     blurRadius: 4,
-                    offset: Offset(2, 2),
+                    offset: const Offset(2, 2),
                   ),
                 ],
               ),
@@ -53,7 +53,7 @@ class CardButton extends StatelessWidget {
             ),
             Text(
               label,
-              style: TextStyle(fontSize: 8 * 3, fontWeight: FontWeight.w500),
+              style: const TextStyle(fontSize: 8 * 3, fontWeight: FontWeight.w500),
             )
           ],
         ),

@@ -19,10 +19,10 @@ class _HomeLayoutPageState extends State<HomeLayoutPage> {
   List<int> navigationStack = [0];
 
   final List<Widget> views = [
-    HomeView(),
+    const HomeView(),
     ChatView(),
-    ProfileView(),
-    SettingsView(),
+    const ProfileView(),
+    const SettingsView(),
   ];
 
   final List<String> titles = ["CareNest", "Chat", "", "Settings"];
@@ -77,43 +77,43 @@ class _HomeLayoutPageState extends State<HomeLayoutPage> {
           automaticallyImplyLeading: false,
           title: Text(
             titles[selectedView],
-            style: TextStyle(color: Colors.white, fontWeight: FontWeight.w900, fontSize: 8 * 3),
+            style: const TextStyle(color: Colors.white, fontWeight: FontWeight.w900, fontSize: 8 * 3),
           ),
         ),
         extendBodyBehindAppBar: extendBehindAppbar,
         body: PageView(
           controller: _pageController,
-          physics: NeverScrollableScrollPhysics(), // Disable swipe to change page
+          physics: const NeverScrollableScrollPhysics(), // Disable swipe to change page
           children: views,
         ),
         bottomNavigationBar: BottomNavigationBar(
           currentIndex: selectedView,
           onTap: _onItemTapped,
-          selectedItemColor: Color(0xffe0f0de),
+          selectedItemColor: const Color(0xffe0f0de),
           backgroundColor: Theme.of(context).colorScheme.primary,
           iconSize: 8 * 4,
           items: [
             BottomNavigationBarItem(
-              icon: Icon(Ionicons.home_outline),
-              activeIcon: Icon(Ionicons.home),
+              icon: const Icon(Ionicons.home_outline),
+              activeIcon: const Icon(Ionicons.home),
               label: "Home",
               backgroundColor: Theme.of(context).colorScheme.primary,
             ),
             BottomNavigationBarItem(
-              icon: Icon(Ionicons.chatbubble_outline),
-              activeIcon: Icon(Ionicons.chatbubble),
+              icon: const Icon(Ionicons.chatbubble_outline),
+              activeIcon: const Icon(Ionicons.chatbubble),
               label: "Chats",
               backgroundColor: Theme.of(context).colorScheme.primary,
             ),
             BottomNavigationBarItem(
-              icon: Icon(Ionicons.person_outline),
-              activeIcon: Icon(Ionicons.person),
+              icon: const Icon(Ionicons.person_outline),
+              activeIcon: const Icon(Ionicons.person),
               label: "Profile",
               backgroundColor: Theme.of(context).colorScheme.primary,
             ),
             BottomNavigationBarItem(
-              icon: Icon(Ionicons.settings_outline),
-              activeIcon: Icon(Ionicons.settings),
+              icon: const Icon(Ionicons.settings_outline),
+              activeIcon: const Icon(Ionicons.settings),
               label: "Settings",
               backgroundColor: Theme.of(context).colorScheme.primary,
             ),

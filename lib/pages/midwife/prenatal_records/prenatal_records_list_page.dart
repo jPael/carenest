@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:smartguide_app/components/midwife/prenatal_records/midwife_prenatal_records_items.dart';
 import 'package:smartguide_app/components/midwife/prenatal_records/midwife_prenatal_records_search_bar.dart';
 import 'package:smartguide_app/components/section/custom_section.dart';
+import 'package:smartguide_app/pages/midwife/prenatal_records/patients_history_list_page.dart';
 import 'package:smartguide_app/pages/midwife/prenatal_records/prenatal_record_page.dart';
 
 class PrenatalRecordsListPage extends StatelessWidget {
@@ -12,24 +13,20 @@ class PrenatalRecordsListPage extends StatelessWidget {
     return Scaffold(
       appBar: AppBar(
         centerTitle: true,
-        title: Text("Prenatal Record List"),
+        title: const Text("Prenatal Record List"),
       ),
       body: SingleChildScrollView(
         child: Padding(
           padding: const EdgeInsets.symmetric(horizontal: 8.0 * 2),
           child: CustomSection(
             description: MidwifePrenatalRecordsSearchBar(),
-            emptyChildrenContent: Text("No records found."),
+            emptyChildrenContent: const Text("No records found."),
             children: [
               MidwifePrenatalRecordsItems(
                 user: "Marry",
                 lastVisit: DateTime.now(),
                 onTap: () => Navigator.push(
-                    context,
-                    MaterialPageRoute(
-                        builder: (context) => PrenatalRecordPage(
-                              user: "Marry",
-                            ))),
+                    context, MaterialPageRoute(builder: (context) => PatientsHistoryListPage())),
               ),
               MidwifePrenatalRecordsItems(
                 user: "Rose",
@@ -37,7 +34,7 @@ class PrenatalRecordsListPage extends StatelessWidget {
                 onTap: () => Navigator.push(
                     context,
                     MaterialPageRoute(
-                        builder: (context) => PrenatalRecordPage(
+                        builder: (context) => const PrenatalRecordPage(
                               user: "Rose",
                             ))),
               ),
@@ -47,7 +44,7 @@ class PrenatalRecordsListPage extends StatelessWidget {
                 onTap: () => Navigator.push(
                     context,
                     MaterialPageRoute(
-                        builder: (context) => PrenatalRecordPage(
+                        builder: (context) => const PrenatalRecordPage(
                               user: "Ann",
                             ))),
               ),
@@ -57,7 +54,7 @@ class PrenatalRecordsListPage extends StatelessWidget {
                 onTap: () => Navigator.push(
                     context,
                     MaterialPageRoute(
-                        builder: (context) => PrenatalRecordPage(
+                        builder: (context) => const PrenatalRecordPage(
                               user: "Lady",
                             ))),
               ),
