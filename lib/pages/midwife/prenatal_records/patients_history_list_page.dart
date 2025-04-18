@@ -1,67 +1,100 @@
-import 'dart:math';
+import 'dart:developer';
 
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:intl/intl.dart';
-import 'package:smartguide_app/models/barangay.dart';
+import 'package:smartguide_app/models/prenatal.dart';
+import 'package:smartguide_app/models/user.dart';
 import 'package:smartguide_app/pages/midwife/prenatal_records/prenatal_record_page.dart';
-import 'package:smartguide_app/services/laravel/barangay_services.dart';
+import 'package:smartguide_app/services/laravel/prenatal_services.dart';
 
 class PatientsHistoryListPage extends StatefulWidget {
-  const PatientsHistoryListPage({super.key});
+  const PatientsHistoryListPage({super.key, required this.id, required this.fullname});
+
+  final int id;
+  final String fullname;
 
   @override
   State<PatientsHistoryListPage> createState() => _PatientsHistoryListPageState();
 }
 
 class _PatientsHistoryListPageState extends State<PatientsHistoryListPage> {
-  List<Barangay> barangays = [];
+  final PrenatalServices prenatalServices = PrenatalServices();
 
-  final BarangayServices barangayServices = BarangayServices();
+  late final List<Prenatal> prenatals;
+  bool isLoading = false;
 
-  Future<void> fetchAllBarangays() async {
-    final List<Barangay> b = await barangayServices.fetchALlBarangays();
+  Future<void> fetchPrenatals() async {
+    setState(() {
+      isLoading = true;
+    });
+
+    final User user = context.read<User>();
+
+    prenatals =
+        await prenatalServices.fetchAllPrenatalByLaravelUserId(token: user.token!, id: widget.id);
 
     setState(() {
-      barangays = b;
+      isLoading = false;
     });
   }
 
   @override
   void initState() {
     super.initState();
-    fetchAllBarangays();
+    fetchPrenatals();
   }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: const Text("Mary's history"),
+        title: Text("${widget.fullname.split(" ").first}'s history"),
       ),
-      body: ListView.builder(
-          itemCount: 20,
-          itemBuilder: (context, index) {
-            final List<Map<String, dynamic>> dates = List.generate(20, (index) {
-              final int selectedBarangay = Random().nextInt(barangays.length);
+      body: isLoading
+          ? const Padding(
+              padding: EdgeInsets.symmetric(vertical: 10 * 8.0),
+              child: Center(
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.center,
+                  children: [
+                    SizedBox.square(
+                      dimension: 8 * 5,
+                      child: CircularProgressIndicator(),
+                    ),
+                    SizedBox(
+                      height: 4 * 4,
+                    ),
+                    Text("Loading...")
+                  ],
+                ),
+              ),
+            )
+          : prenatals.isEmpty
+              ? const Padding(
+                  padding: EdgeInsets.symmetric(vertical: 10 * 8.0),
+                  child: Center(
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.center,
+                      children: [Text("No records found")],
+                    ),
+                  ),
+                )
+              : ListView.builder(
+                  itemCount: prenatals.length,
+                  itemBuilder: (context, index) {
+                    final Prenatal currPrenatal = prenatals[index];
 
-              return {
-                "id": index,
-                "barangay": barangays[selectedBarangay].name,
-                "date": DateTime.now().subtract(Duration(days: index * 30)),
-              };
-            });
-
-            return ListTile(
-              onTap: () => Navigator.push(
-                  context,
-                  MaterialPageRoute(
-                      builder: (context) => const PrenatalRecordPage(
-                            user: "Mary",
-                          ))),
-              title: Text(DateFormat("MMMM dd, yyyy").format(dates[index]["date"])),
-              subtitle: Text(dates[index]["barangay"]),
-            );
-          }),
+                    return ListTile(
+                      onTap: () => Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                              builder: (context) =>
+                                  PrenatalRecordPage(prenatal: prenatals[index]))),
+                      title: Text(DateFormat("MMMM dd, yyyy").format(currPrenatal.createdAt!)),
+                      subtitle: Text(currPrenatal.barangay),
+                    );
+                  }),
     );
   }
 }

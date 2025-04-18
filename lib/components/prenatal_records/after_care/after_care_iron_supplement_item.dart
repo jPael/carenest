@@ -2,9 +2,9 @@ import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 
 class AfterCareIronSupplementItem extends StatelessWidget {
-  const AfterCareIronSupplementItem({super.key, required this.date, required this.tabs});
+  const AfterCareIronSupplementItem({super.key, this.date, required this.tabs});
 
-  final DateTime date;
+  final DateTime? date;
   final int tabs;
 
   @override
@@ -14,7 +14,7 @@ class AfterCareIronSupplementItem extends StatelessWidget {
         Expanded(
           flex: 1,
           child: Text(
-            DateFormat("MMMM dd, yyyy").format(date),
+            date != null ? DateFormat("MMMM dd, yyyy").format(date!) : "NA",
             style: const TextStyle(fontSize: 4 * 4, fontWeight: FontWeight.bold),
           ),
         ),

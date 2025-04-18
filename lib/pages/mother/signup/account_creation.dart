@@ -32,8 +32,7 @@ class AccountCreationState extends State<AccountCreation> {
 
   final TextEditingController emailController = TextEditingController();
   final TextEditingController passwordController = TextEditingController();
-  final TextEditingController confirmPasswordController =
-      TextEditingController();
+  final TextEditingController confirmPasswordController = TextEditingController();
 
   bool isLoading = false;
   bool isPasswordStrongEnough = false;
@@ -60,8 +59,7 @@ class AccountCreationState extends State<AccountCreation> {
 
       if (result["error"] != null) {
         if (mounted) {
-          showErrorMessage(
-              context: context, message: errorMessage(result["error"]!));
+          showErrorMessage(context: context, message: errorMessage(result["error"]!));
         }
 
         setState(() {
@@ -71,8 +69,7 @@ class AccountCreationState extends State<AccountCreation> {
       }
 
       if (!mounted) return;
-      showSuccessMessage(
-          context: context, message: errorMessage(result["success"]!));
+      showSuccessMessage(context: context, message: errorMessage(result["success"]!));
       Navigator.pushAndRemoveUntil(
         context,
         MaterialPageRoute(builder: (context) => const AuthPage()),
@@ -101,12 +98,11 @@ class AccountCreationState extends State<AccountCreation> {
   @override
   void initState() {
     super.initState();
-    precacheImage(
-        const AssetImage("lib/assets/images/mothers_registration_hero.png"), context);
   }
 
   @override
   Widget build(BuildContext context) {
+    precacheImage(const AssetImage("lib/assets/images/mothers_registration_hero.png"), context);
     return Scaffold(
       backgroundColor: Colors.white,
       appBar: AppBar(
@@ -126,8 +122,7 @@ class AccountCreationState extends State<AccountCreation> {
                     const Flexible(
                         child: Text(
                       "Create your account",
-                      style: TextStyle(
-                          fontSize: 8 * 6, fontWeight: FontWeight.w500),
+                      style: TextStyle(fontSize: 8 * 6, fontWeight: FontWeight.w500),
                       softWrap: true,
                     )),
                     Image.asset(

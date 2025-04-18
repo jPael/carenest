@@ -2,16 +2,16 @@ import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 
 class DatePicker extends StatefulWidget {
-  const DatePicker({
-    super.key,
-    this.selectedDate,
-    required this.firstDate,
-    required this.lastDate,
-    this.label = "",
-    this.hint = "",
-    required this.onChange,
-    this.validator,
-  });
+  const DatePicker(
+      {super.key,
+      this.selectedDate,
+      required this.firstDate,
+      required this.lastDate,
+      this.label = "",
+      this.hint = "",
+      required this.onChange,
+      this.validator,
+      required this.readonly});
 
   final DateTime? selectedDate;
   final DateTime firstDate;
@@ -20,6 +20,7 @@ class DatePicker extends StatefulWidget {
   final String hint;
   final void Function(DateTime) onChange;
   final String? Function(String?)? validator;
+  final bool readonly;
 
   @override
   DatePickerState createState() => DatePickerState();
@@ -38,6 +39,7 @@ class DatePickerState extends State<DatePicker> {
   }
 
   Future<void> _selectDate(BuildContext context) async {
+    if (widget.readonly) return;
     final DateTime? picked = await showDatePicker(
       context: context,
       initialDate: widget.selectedDate,

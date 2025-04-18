@@ -1,3 +1,5 @@
+import 'dart:developer';
+
 import 'package:flutter/material.dart';
 import 'package:skeletonizer/skeletonizer.dart';
 
@@ -13,7 +15,8 @@ class CustomSection extends StatelessWidget {
       this.description,
       this.headerSpacing = 2,
       this.isLoading = false,
-      this.action});
+      this.action,
+      this.isLoadingWidget});
 
   final String? title;
   final Widget? description;
@@ -25,12 +28,27 @@ class CustomSection extends StatelessWidget {
   final int headerSpacing;
   final int childrenSpacing;
   final bool? isLoading;
+  final Widget? isLoadingWidget;
 
   @override
   Widget build(BuildContext context) {
+    final List<Widget> defaultLoadingWidget = List.generate(
+        3,
+        (int i) =>
+            isLoadingWidget ??
+            const Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Text("Header"),
+                Text("Description"),
+              ],
+            ));
+
     return Column(
       mainAxisSize: MainAxisSize.min,
-      crossAxisAlignment: alignment ?? CrossAxisAlignment.center,
+      crossAxisAlignment: isLoading != null && isLoading == true
+          ? CrossAxisAlignment.start
+          : alignment ?? CrossAxisAlignment.center,
       children: [
         if (title != null)
           Row(
@@ -41,7 +59,8 @@ class CustomSection extends StatelessWidget {
               Flexible(
                 child: Text(
                   title!,
-                  style: titleStyle ?? const TextStyle(fontSize: 8 * 3, fontWeight: FontWeight.bold),
+                  style:
+                      titleStyle ?? const TextStyle(fontSize: 8 * 3, fontWeight: FontWeight.bold),
                   softWrap: true,
                 ),
               ),
@@ -57,19 +76,21 @@ class CustomSection extends StatelessWidget {
           child: Column(
             mainAxisSize: MainAxisSize.min,
             spacing: 8.0 * childrenSpacing,
-            children: children.isEmpty
-                ? [
-                    Padding(
-                      padding: const EdgeInsets.all(8.0 * 4),
-                      child: Center(
-                        child: Column(
-                          mainAxisAlignment: MainAxisAlignment.center,
-                          children: [emptyChildrenContent ?? const Text("Empty")],
-                        ),
-                      ),
-                    )
-                  ]
-                : children.where((child) => child != null).toList().cast<Widget>(),
+            children: isLoading != null && isLoading == true
+                ? defaultLoadingWidget
+                : children.isEmpty
+                    ? [
+                        Padding(
+                          padding: const EdgeInsets.all(8.0 * 4),
+                          child: Center(
+                            child: Column(
+                              mainAxisAlignment: MainAxisAlignment.center,
+                              children: [emptyChildrenContent ?? const Text("Empty")],
+                            ),
+                          ),
+                        )
+                      ]
+                    : children.where((child) => child != null).toList().cast<Widget>(),
           ),
         ),
       ],

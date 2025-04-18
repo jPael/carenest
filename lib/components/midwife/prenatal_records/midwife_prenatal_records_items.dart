@@ -1,19 +1,35 @@
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
+import 'package:smartguide_app/models/prenatal.dart';
+import 'package:smartguide_app/pages/midwife/prenatal_records/patients_history_list_page.dart';
 
 class MidwifePrenatalRecordsItems extends StatelessWidget {
-  const MidwifePrenatalRecordsItems(
-      {super.key, required this.user, required this.lastVisit, required this.onTap});
+  const MidwifePrenatalRecordsItems({
+    super.key,
+    this.prenatal,
+  });
 
-  final String user;
-  final DateTime lastVisit;
-  final VoidCallback onTap;
+  final Prenatal? prenatal;
 
   final double profileImageSize = 60.0;
   @override
   Widget build(BuildContext context) {
+    String fullname = "Default name";
+    DateTime date = DateTime.now();
+
+    if (prenatal != null) {
+      fullname = prenatal!.fullname;
+      date = prenatal!.createdAt!;
+    }
+
     return InkWell(
-      onTap: onTap,
+      onTap: () => Navigator.push(
+          context,
+          MaterialPageRoute(
+              builder: (context) => PatientsHistoryListPage(
+                    fullname: fullname,
+                    id: prenatal!.laravelId,
+                  ))),
       child: Row(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
@@ -35,7 +51,7 @@ class MidwifePrenatalRecordsItems extends StatelessWidget {
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               Text(
-                user,
+                fullname,
                 style: const TextStyle(fontSize: 8 * 3, fontWeight: FontWeight.w500),
               ),
               Row(
@@ -44,7 +60,7 @@ class MidwifePrenatalRecordsItems extends StatelessWidget {
                     "Last visit: ",
                     style: TextStyle(fontWeight: FontWeight.w500),
                   ),
-                  Text(DateFormat("MMMM dd, yyyy").format(lastVisit)),
+                  Text(DateFormat("MMMM dd, yyyy").format(date)),
                 ],
               )
             ],

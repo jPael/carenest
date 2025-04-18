@@ -6,6 +6,7 @@ import 'package:smartguide_app/components/input/password.dart';
 class CustomInput {
   static Widget text(
       {required BuildContext context,
+      bool readonly = false,
       String label = "",
       String hint = "",
       Widget? startIcon,
@@ -18,6 +19,7 @@ class CustomInput {
     assert(maxLines >= minLines, 'maxLines must be greater than or equal to minLines');
 
     return TextFormField(
+      readOnly: readonly,
       validator: validator,
       controller: controller,
       onTapOutside: (event) {
@@ -110,6 +112,7 @@ class CustomInput {
       DateTime? lastDate,
       String label = "",
       String hint = "",
+      bool readonly = false,
       required void Function(DateTime) onChange,
       String? Function(String?)? validator}) {
     firstDate ??= DateTime(1900);
@@ -123,6 +126,7 @@ class CustomInput {
       label: label,
       hint: hint,
       validator: validator,
+      readonly: readonly,
     );
   }
 }

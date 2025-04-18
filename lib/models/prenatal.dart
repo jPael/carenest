@@ -1,6 +1,6 @@
 import 'dart:developer';
 
-import 'package:smartguide_app/components/prenatal_records/form/prenatal_info_form.dart';
+import 'package:smartguide_app/models/trimester.dart';
 import 'package:smartguide_app/services/laravel/prenatal_services.dart';
 
 class Prenatal {
@@ -37,6 +37,9 @@ class Prenatal {
     required this.donorFullname,
     required this.donorContact,
     required this.donorBloodTyped,
+    this.createdAt,
+    this.updatedAt,
+    this.id,
   });
 
   final bool breastFeeding;
@@ -71,6 +74,9 @@ class Prenatal {
   String accompaniedBy;
   final List<Map<String, dynamic>> ttItems;
   final List<Map<String, dynamic>> ironSuppItems;
+  DateTime? createdAt;
+  DateTime? updatedAt;
+  final int? id;
 
   final PrenatalServices prenatalServices = PrenatalServices();
 

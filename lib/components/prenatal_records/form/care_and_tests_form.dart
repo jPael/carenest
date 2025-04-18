@@ -2,8 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:smartguide_app/components/button/custom_dropdown_button.dart';
 import 'package:smartguide_app/components/checklist/custom_checkbox.dart';
 import 'package:smartguide_app/components/input/custom_input.dart';
-import 'package:smartguide_app/components/prenatal_records/form/prenatal_info_form.dart';
 import 'package:smartguide_app/components/section/custom_section.dart';
+import 'package:smartguide_app/models/trimester.dart';
 
 class CareAndTestsForm extends StatefulWidget {
   const CareAndTestsForm(
@@ -62,7 +62,8 @@ class _CareAndTestsFormState extends State<CareAndTestsForm> {
         // checkbox
         CustomSection(
           alignment: CrossAxisAlignment.start,
-          description: const Text("Check the item if it applies to your current prenatal care status",
+          description: const Text(
+              "Check the item if it applies to your current prenatal care status",
               style: TextStyle(fontStyle: FontStyle.italic)),
           headerSpacing: 1,
           childrenSpacing: 1,

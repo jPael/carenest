@@ -32,7 +32,7 @@ class CounselingForm extends StatelessWidget {
         ...questionaire.skip(3).map(
               (e) => CustomCheckbox(
                   id: e["id"],
-                  label: "${e["description"]} ${e["value"].toString()}",
+                  label: "${e["description"]} ",
                   value: e["value"],
                   customOnChange: onChange),
             ),

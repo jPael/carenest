@@ -60,6 +60,7 @@ class PatientInformationForm extends StatefulWidget {
 class _PatientInformationFormState extends State<PatientInformationForm> {
   bool isExpanded = false;
   late User user;
+  late DateTime userBirthday;
 
   @override
   void initState() {
@@ -68,6 +69,7 @@ class _PatientInformationFormState extends State<PatientInformationForm> {
 
     WidgetsBinding.instance.addPostFrameCallback((_) {
       widget.fullnameController.text = "${user.firstname!} ${user.lastname!}";
+      userBirthday = user.dateOfBirth != null ? DateTime.parse(user.dateOfBirth!) : widget.birthday;
       widget.ageController.text =
           ((DateTime.now().difference(DateTime.tryParse(user.dateOfBirth!)!).inDays / 365.2425))
               .floor()
@@ -108,6 +110,7 @@ class _PatientInformationFormState extends State<PatientInformationForm> {
               CustomInput.datepicker(
                 context: context,
                 label: "Date of birth",
+                selectedDate: userBirthday,
                 onChange: widget.birthdayOnChange,
               ),
               CustomInput.datepicker(

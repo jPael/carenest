@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:smartguide_app/components/button/custom_dropdown_button.dart';
-import 'package:smartguide_app/components/prenatal_records/form/prenatal_info_form.dart';
+import 'package:smartguide_app/models/trimester.dart';
 import 'package:smartguide_app/utils/utils.dart';
 
 enum SocialButtonType { google }
@@ -215,8 +215,8 @@ class CustomButton extends StatelessWidget {
       required VoidCallback onPressed,
       String? label,
       TextStyle? textStyle}) {
-    final TextStyle defaultTextStyle =
-        textStyle ?? const TextStyle(fontSize: 8 * 3, fontWeight: FontWeight.w500, color: Colors.white);
+    final TextStyle defaultTextStyle = textStyle ??
+        const TextStyle(fontSize: 8 * 3, fontWeight: FontWeight.w500, color: Colors.white);
 
     return Column(
       children: [
@@ -225,8 +225,8 @@ class CustomButton extends StatelessWidget {
             clipBehavior: Clip.antiAlias,
             style: ElevatedButton.styleFrom(
                 elevation: 3,
-                shape:
-                    const RoundedRectangleBorder(borderRadius: BorderRadius.all(Radius.circular(8 * 2))),
+                shape: const RoundedRectangleBorder(
+                    borderRadius: BorderRadius.all(Radius.circular(8 * 2))),
                 padding: EdgeInsets.zero),
             child: Hero(tag: label ?? "", child: content)),
         const SizedBox(

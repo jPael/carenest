@@ -25,7 +25,6 @@ class MyApp extends StatelessWidget {
 
   final Color primaryColor = const Color(0xFF235ee8);
 
-  // This widget is the root of your application.
   @override
   Widget build(BuildContext context) {
     return MaterialApp(

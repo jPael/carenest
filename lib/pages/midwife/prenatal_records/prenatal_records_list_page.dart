@@ -1,12 +1,43 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:smartguide_app/components/midwife/prenatal_records/midwife_prenatal_records_items.dart';
-import 'package:smartguide_app/components/midwife/prenatal_records/midwife_prenatal_records_search_bar.dart';
 import 'package:smartguide_app/components/section/custom_section.dart';
+import 'package:smartguide_app/models/prenatal.dart';
+import 'package:smartguide_app/models/user.dart';
 import 'package:smartguide_app/pages/midwife/prenatal_records/patients_history_list_page.dart';
-import 'package:smartguide_app/pages/midwife/prenatal_records/prenatal_record_page.dart';
+import 'package:smartguide_app/services/laravel/prenatal_services.dart';
 
-class PrenatalRecordsListPage extends StatelessWidget {
+class PrenatalRecordsListPage extends StatefulWidget {
   const PrenatalRecordsListPage({super.key});
+
+  @override
+  State<PrenatalRecordsListPage> createState() => _PrenatalRecordsListPageState();
+}
+
+class _PrenatalRecordsListPageState extends State<PrenatalRecordsListPage> {
+  bool isLoading = false;
+  late final List<Prenatal> prenatals;
+
+  Future<void> fetchAllPrenatals() async {
+    setState(() {
+      isLoading = true;
+    });
+    final User user = context.read<User>();
+
+    final PrenatalServices prenatalServices = PrenatalServices();
+
+    prenatals = await prenatalServices.fetchAllPrenatal(user.token!);
+
+    setState(() {
+      isLoading = false;
+    });
+  }
+
+  @override
+  void initState() {
+    super.initState();
+    fetchAllPrenatals();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -19,45 +50,53 @@ class PrenatalRecordsListPage extends StatelessWidget {
         child: Padding(
           padding: const EdgeInsets.symmetric(horizontal: 8.0 * 2),
           child: CustomSection(
-            description: MidwifePrenatalRecordsSearchBar(),
+            // description: MidwifePrenatalRecordsSearchBar(),
             emptyChildrenContent: const Text("No records found."),
+            isLoading: isLoading,
+            isLoadingWidget: const MidwifePrenatalRecordsItems(),
+
             children: [
-              MidwifePrenatalRecordsItems(
-                user: "Marry",
-                lastVisit: DateTime.now(),
-                onTap: () => Navigator.push(
-                    context, MaterialPageRoute(builder: (context) => PatientsHistoryListPage())),
-              ),
-              MidwifePrenatalRecordsItems(
-                user: "Rose",
-                lastVisit: DateTime.now(),
-                onTap: () => Navigator.push(
-                    context,
-                    MaterialPageRoute(
-                        builder: (context) => const PrenatalRecordPage(
-                              user: "Rose",
-                            ))),
-              ),
-              MidwifePrenatalRecordsItems(
-                user: "Ann",
-                lastVisit: DateTime.now(),
-                onTap: () => Navigator.push(
-                    context,
-                    MaterialPageRoute(
-                        builder: (context) => const PrenatalRecordPage(
-                              user: "Ann",
-                            ))),
-              ),
-              MidwifePrenatalRecordsItems(
-                user: "Lady",
-                lastVisit: DateTime.now(),
-                onTap: () => Navigator.push(
-                    context,
-                    MaterialPageRoute(
-                        builder: (context) => const PrenatalRecordPage(
-                              user: "Lady",
-                            ))),
-              ),
+              if (!isLoading)
+                ...prenatals.map((p) => MidwifePrenatalRecordsItems(
+                      prenatal: p,
+                    ))
+
+              // MidwifePrenatalRecordsItems(
+              //   user: "Marry",
+              //   lastVisit: DateTime.now(),
+              //   onTap: () => Navigator.push(
+              //       context, MaterialPageRoute(builder: (context) => PatientsHistoryListPage())),
+              // ),
+              // MidwifePrenatalRecordsItems(
+              //   user: "Rose",
+              //   lastVisit: DateTime.now(),
+              //   onTap: () => Navigator.push(
+              //       context,
+              //       MaterialPageRoute(
+              //           builder: (context) => const PrenatalRecordPage(
+              //                 user: "Rose",
+              //               ))),
+              // ),
+              // MidwifePrenatalRecordsItems(
+              //   user: "Ann",
+              //   lastVisit: DateTime.now(),
+              //   onTap: () => Navigator.push(
+              //       context,
+              //       MaterialPageRoute(
+              //           builder: (context) => const PrenatalRecordPage(
+              //                 user: "Ann",
+              //               ))),
+              // ),
+              // MidwifePrenatalRecordsItems(
+              //   user: "Lady",
+              //   lastVisit: DateTime.now(),
+              //   onTap: () => Navigator.push(
+              //       context,
+              //       MaterialPageRoute(
+              //           builder: (context) => const PrenatalRecordPage(
+              //                 user: "Lady",
+              //               ))),
+              // ),
             ],
           ),
         ),

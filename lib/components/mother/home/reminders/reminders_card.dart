@@ -28,7 +28,7 @@ class _RemindersCardState extends State<RemindersCard> with TickerProviderStateM
 
     final int percentage = ((difference.inDays / totalDuration.inDays) * 100).clamp(0, 100).toInt();
 
-    String dayLeftReadable = Utils.formatDayLeft(difference);
+    String dayLeftReadable = formatDayLeft(difference);
 
     final AnimationController progressController = AnimationController(
         vsync: this, duration: const Duration(milliseconds: 300), value: percentage / 100)
@@ -75,7 +75,8 @@ class _RemindersCardState extends State<RemindersCard> with TickerProviderStateM
                     style: const TextStyle(fontWeight: FontWeight.w500),
                   ),
                   Text("$percentage%",
-                      style: const TextStyle(fontWeight: FontWeight.w500), textAlign: TextAlign.right),
+                      style: const TextStyle(fontWeight: FontWeight.w500),
+                      textAlign: TextAlign.right),
                 ],
               ),
               const SizedBox(

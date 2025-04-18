@@ -11,10 +11,9 @@ import 'package:smartguide_app/components/prenatal_records/form/care_and_tests_f
 import 'package:smartguide_app/components/prenatal_records/form/counseling_form.dart';
 import 'package:smartguide_app/components/prenatal_records/form/patient_information_form.dart';
 import 'package:smartguide_app/models/prenatal.dart';
+import 'package:smartguide_app/models/trimester.dart';
 
 import '../../../models/user.dart';
-
-enum TrimesterEnum { first, second, third }
 
 class PrenatalInfoForm extends StatefulWidget {
   const PrenatalInfoForm({super.key});

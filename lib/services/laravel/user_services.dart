@@ -1,4 +1,5 @@
 import 'dart:convert';
+import 'dart:developer';
 
 import 'package:http/http.dart' as http;
 import 'package:smartguide_app/error/app_error.dart';
@@ -58,4 +59,31 @@ Future<Map<String, dynamic>> loginAccount({required String email, required Strin
     UserFields.token: data["data"]["token"],
     UserFields.laravelId: data["data"]["user"]["id"],
   };
+}
+
+Future<void> logoutAccount({required String token}) async {
+  final url = apiURIBase.replace(path: LaravelPaths.logout);
+
+  final res = await http
+      .post(url, headers: {'Content-Type': 'application/json', 'Authorization': "Bearer $token"});
+
+  log(res.body);
+}
+
+Future<Map<String, dynamic>> fetchUserByToken(String token) async {
+  final url = apiURIBase.replace(path: LaravelPaths.user);
+
+  final res = await http
+      .get(url, headers: {'Content-Type': 'application/json', 'Authorization': "Bearer $token"});
+
+  return jsonDecode(res.body) as Map<String, dynamic>;
+}
+
+Future<Map<String, dynamic>> fetchUserByUserId({required int id, required String token}) async {
+  final url = apiURIBase.replace(path: "${LaravelPaths.user}/$id");
+
+  final res = await http
+      .get(url, headers: {'Content-Type': 'application/json', 'Authorization': "Bearer $token"});
+
+  return jsonDecode(res.body) as Map<String, dynamic>;
 }

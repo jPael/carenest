@@ -8,6 +8,9 @@ class UserTypeSelectionPage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    precacheImage(const AssetImage("lib/assets/images/landingpage_choice_midwife.png"), context);
+    precacheImage(const AssetImage("lib/assets/images/landingpage_choice_mother.png"), context);
+
     return Scaffold(
         appBar: AppBar(
           backgroundColor: Colors.white,
