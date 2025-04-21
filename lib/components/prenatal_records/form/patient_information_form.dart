@@ -1,11 +1,16 @@
+import 'dart:developer';
+
 import 'package:flutter/material.dart';
+import 'package:intl/intl.dart';
 import 'package:provider/provider.dart';
 import 'package:smartguide_app/components/barangay/barangay_selector.dart';
 import 'package:smartguide_app/components/button/custom_button.dart';
 import 'package:smartguide_app/components/checklist/custom_checkbox.dart';
 import 'package:smartguide_app/components/input/custom_input.dart';
 import 'package:smartguide_app/components/section/custom_section.dart';
+import 'package:smartguide_app/models/patient_information.dart';
 import 'package:smartguide_app/models/user.dart';
+import 'package:smartguide_app/services/laravel/prenatal_services.dart';
 
 class PatientInformationForm extends StatefulWidget {
   // const PatientInformationForm({super.key});
@@ -61,11 +66,31 @@ class _PatientInformationFormState extends State<PatientInformationForm> {
   bool isExpanded = false;
   late User user;
   late DateTime userBirthday;
+  String? userToken;
+
+  Future<void> fetchPatientInformation() async {
+    if (userToken == null) return;
+
+    PrenatalServices prenatalServices = PrenatalServices();
+
+    final PatientInformation pi = await prenatalServices.fetchPatientInformationByToken(userToken!);
+
+    widget.obStatusController.text = pi.obStatus;
+    log(DateFormat('MM dd, yyyy').format(pi.lmp));
+    widget.lmpOnChange(pi.lmp);
+    widget.edcOnChange(pi.edc);
+    widget.philHealthOnChange(pi.philhealth);
+    widget.nhtsOnChange(pi.nhts);
+  }
 
   @override
   void initState() {
     super.initState();
     user = context.read<User>();
+    userToken = user.token;
+    userBirthday = DateTime.now();
+
+    fetchPatientInformation();
 
     WidgetsBinding.instance.addPostFrameCallback((_) {
       widget.fullnameController.text = "${user.firstname!} ${user.lastname!}";
@@ -114,15 +139,15 @@ class _PatientInformationFormState extends State<PatientInformationForm> {
                 onChange: widget.birthdayOnChange,
               ),
               CustomInput.datepicker(
-                context: context,
-                label: "My Last Menstrual Period (LMP)",
-                onChange: widget.lmpOnChange,
-              ),
+                  context: context,
+                  label: "My Last Menstrual Period (LMP)",
+                  onChange: widget.lmpOnChange,
+                  selectedDate: widget.lastMenstrualPeriod),
               CustomInput.datepicker(
-                context: context,
-                label: "I am expected to Give Birth to my Child (EDC) on",
-                onChange: widget.edcOnChange,
-              ),
+                  context: context,
+                  label: "I am expected to Give Birth to my Child (EDC) on",
+                  onChange: widget.edcOnChange,
+                  selectedDate: widget.expectedDateOfConfinement),
               CustomCheckbox(
                 label: "PhilHealth",
                 value: widget.philHealth,

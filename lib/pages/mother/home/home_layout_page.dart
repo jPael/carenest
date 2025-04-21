@@ -91,24 +91,20 @@ class _HomeLayoutPageState extends State<HomeLayoutPage> {
       onPopInvoked: _handlePop,
       child: Scaffold(
         appBar: AppBar(
-          backgroundColor: extendBehindAppbar
-              ? Colors.transparent
-              : Theme.of(context).colorScheme.primary,
+          backgroundColor:
+              extendBehindAppbar ? Colors.transparent : Theme.of(context).colorScheme.primary,
           automaticallyImplyLeading: false,
           title: Text(
             titles[selectedView],
-            style: const TextStyle(
-                color: Colors.white,
-                fontWeight: FontWeight.w900,
-                fontSize: 8 * 3),
+            style:
+                const TextStyle(color: Colors.white, fontWeight: FontWeight.w900, fontSize: 8 * 3),
           ),
         ),
         extendBodyBehindAppBar: extendBehindAppbar,
         floatingActionButton: floatingButtons[selectedView],
         body: PageView(
           controller: _pageController,
-          physics:
-              const NeverScrollableScrollPhysics(), // Disable swipe to change page
+          physics: const NeverScrollableScrollPhysics(), // Disable swipe to change page
           children: views,
         ),
         bottomNavigationBar: BottomNavigationBar(
@@ -127,7 +123,7 @@ class _HomeLayoutPageState extends State<HomeLayoutPage> {
             BottomNavigationBarItem(
               icon: const Icon(Ionicons.chatbubble_outline),
               activeIcon: const Icon(Ionicons.chatbubble),
-              label: "Chats",
+              label: "Accuracy",
               backgroundColor: Theme.of(context).colorScheme.primary,
             ),
             BottomNavigationBarItem(

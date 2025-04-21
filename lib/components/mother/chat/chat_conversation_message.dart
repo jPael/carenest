@@ -53,16 +53,10 @@ class ChatConversationMessage extends StatelessWidget {
                           topLeft: Radius.circular(8 * 2),
                           bottomRight: Radius.circular(8 * 2),
                           topRight: Radius.circular(8 * 2))),
-                  child: Row(
-                    children: [
-                      Flexible(
-                        child: Text(
-                          content,
-                          style: const TextStyle(fontSize: 8 * 2),
-                          softWrap: true,
-                        ),
-                      ),
-                    ],
+                  child: Text(
+                    content,
+                    style: const TextStyle(fontSize: 8 * 2),
+                    softWrap: true,
                   ),
                 ),
               )
@@ -86,10 +80,10 @@ class ChatConversationMessage extends StatelessWidget {
                       color: Theme.of(context).colorScheme.primary,
                       boxShadow: [
                         BoxShadow(
-                          color: Colors.black.withValues(alpha: 0.1),
+                          color: Colors.black.withValues(alpha: 0.2),
                           spreadRadius: 1,
                           blurRadius: 2,
-                          offset: const Offset(0, 0),
+                          offset: const Offset(1, 0),
                         ),
                       ],
                       borderRadius: const BorderRadius.only(

@@ -112,13 +112,13 @@ class CareAndTestsGroup extends StatelessWidget {
           const SizedBox(
             height: 4 * 10,
           ),
-          const Column(
+          Column(
             children: [
               Text(
-                "Maria Dela Cruz",
-                style: TextStyle(fontWeight: FontWeight.w500),
+                trimester.whtPersonnel,
+                style: const TextStyle(fontWeight: FontWeight.w500),
               ),
-              Text(
+              const Text(
                 "WHT Personnel",
                 style: TextStyle(fontStyle: FontStyle.italic),
               )

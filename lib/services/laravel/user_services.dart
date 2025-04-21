@@ -31,6 +31,8 @@ Future<void> registerAccount(
       },
       body: jsonEncode(body));
 
+  log("from register: ${res.body}");
+
   final data = jsonDecode(res.body);
 
   final message = data[RegistrationResponseJsonProperties.message];
@@ -48,6 +50,8 @@ Future<Map<String, dynamic>> loginAccount({required String email, required Strin
   final res = await http.post(url,
       headers: {'Content-Type': 'application/json'},
       body: jsonEncode({"email": email, "password": password}));
+
+  log("from login: ${res.body}");
 
   final data = jsonDecode(res.body);
 
@@ -67,7 +71,7 @@ Future<void> logoutAccount({required String token}) async {
   final res = await http
       .post(url, headers: {'Content-Type': 'application/json', 'Authorization': "Bearer $token"});
 
-  log(res.body);
+  log("from logout: ${res.body}");
 }
 
 Future<Map<String, dynamic>> fetchUserByToken(String token) async {

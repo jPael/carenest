@@ -3,6 +3,8 @@ import 'dart:developer';
 
 import 'package:http/http.dart' as http;
 import 'package:smartguide_app/fields/user_fields.dart';
+import 'package:smartguide_app/models/midwife.dart';
+import 'package:smartguide_app/models/patient_information.dart';
 
 import 'package:smartguide_app/models/prenatal.dart';
 import 'package:smartguide_app/services/laravel/api_url.dart';
@@ -12,6 +14,17 @@ import 'package:smartguide_app/services/user_services.dart';
 import 'package:smartguide_app/utils/utils.dart';
 
 class PrenatalServices {
+  Future<PatientInformation> fetchPatientInformationByToken(String token) async {
+    final url = apiURIBase.replace(path: LaravelPaths.patientInformation);
+
+    final res = await http
+        .get(url, headers: {'Content-Type': 'application/json', 'Authorization': "Bearer $token"});
+
+    final patientInformationJson = jsonDecode(res.body);
+
+    return PatientInformation.fromJson(patientInformationJson);
+  }
+
   Future<Prenatal?> fetchPrenatalByPrenatalId({required String token, required int id}) async {
     final List<Prenatal> prenatals = await fetchAllPrenatal(token);
 
@@ -50,8 +63,6 @@ class PrenatalServices {
       final DateTime birthday = DateTime.parse(firebaseUser[UserFields.dateOfBirth]);
       final String barangay = firebaseUser[UserFields.address];
 
-      // log(p[PrenatalFields.clinicVisits].first[PrenatalFields.whtIntroducedBirthPlan].toString());
-
       return Prenatal(
           laravelId: p[LaravelUserFields.userId],
           selectedTrimester: getTrimesterEnumFromTrimesterString(
@@ -68,29 +79,34 @@ class PrenatalServices {
           bloodPressure: (p[PrenatalFields.bloodPressure] ?? "NA").toString(),
           bloodPressureNormal: true,
           advices: [
-            p[PrenatalFields.adviceContent] != null
-                ? p[PrenatalFields.adviceContent].first[PrenatalFields.adviceContent]
-                : "NA"
+            (p[PrenatalFields.clinicVisits].first[PrenatalFields.advices])['content'] ?? "NA"
           ],
           services: [
-            p[PrenatalFields.serviceContent] != null
-                ? p[PrenatalFields.serviceContent].first[PrenatalFields.serviceContent]
-                : "NA"
+            p[PrenatalFields.clinicVisits].first[PrenatalFields.services]['content'] ?? "NA"
           ],
           birthplace: p[PrenatalFields.birthPlace] ?? "NA",
-          assignedBy: p[PrenatalFields.assignedBy].toString(),
-          accompaniedBy: p[PrenatalFields.accompanyBy].toString(),
+          patientInformation: PatientInformation(
+              philhealth: p[PatientInformationFields.philhealth] == 1 ? true : false,
+              nhts: p[PatientInformationFields.nhts] == 1 ? true : false,
+              lmp: DateTime.parse(p[PatientInformationFields.lmp]),
+              edc: DateTime.parse(p[PatientInformationFields.edc]),
+              obStatus: p[PatientInformationFields.obStatus],
+              assignById: p[PatientInformationFields.assignedBy],
+              accompanyById: p[PatientInformationFields.accompanyBy],
+              accompaniedBy: Midwife.fromJsonStatic(p[PatientInformationFields.accompanyByData])),
+          // assignedBy: p[PrenatalFields.assignedBy].toString(),
+          // accompaniedBy: p[PrenatalFields.accompanyBy].toString(),
+          // philhealth: p[PrenatalFields.philhealth] == 1 ? true : false,
+          // nhts: p[PrenatalFields.nhts] == 1 ? true : false,
+          // expectedDateOfConfinement: DateTime.parse(p[PrenatalFields.edc]),
+          // lastMenstrualPeriod: DateTime.parse(p[PrenatalFields.lmp]),
+          // obStatus: p[PrenatalFields.obStatus],
           ttItems: (p[PrenatalFields.immunizationTerm] as List).cast<Map<String, dynamic>>(),
           ironSuppItems: (p[PrenatalFields.ironSupplements] as List).cast<Map<String, dynamic>>(),
           barangay: barangay,
-          philhealth: p[PrenatalFields.philhealth] == 1 ? true : false,
-          nhts: p[PrenatalFields.nhts] == 1 ? true : false,
-          expectedDateOfConfinement: DateTime.parse(p[PrenatalFields.edc]),
           birthday: birthday,
-          lastMenstrualPeriod: DateTime.parse(p[PrenatalFields.lmp]),
           fullname: user[LaravelUserFields.name],
           age: calculateAge(birthday).toString(),
-          obStatus: p[PrenatalFields.obStatus],
           breastFeeding: p[PrenatalFields.counselings].first[PrenatalFields.isBreastFeeding] == 1
               ? true
               : false,
@@ -137,13 +153,13 @@ class PrenatalServices {
     const int patientInfoId = 1;
 
     final Map<String, dynamic> payload = {
-      PrenatalFields.philhealth: prenatal.philhealth,
-      PrenatalFields.nhts: prenatal.nhts,
-      PrenatalFields.lmp: prenatal.lastMenstrualPeriod.toString(),
-      PrenatalFields.obStatus: prenatal.obStatus.toString(),
-      PrenatalFields.edc: prenatal.expectedDateOfConfinement.toString(),
-      PrenatalFields.assignedBy: prenatal.assignedBy,
-      PrenatalFields.patientInformationAccompaniedBy: prenatal.accompaniedBy,
+      PatientInformationFields.philhealth: prenatal.patientInformation.philhealth,
+      PatientInformationFields.nhts: prenatal.patientInformation.nhts,
+      PatientInformationFields.lmp: prenatal.patientInformation.lmp.toString(),
+      PatientInformationFields.obStatus: prenatal.patientInformation.obStatus.toString(),
+      PatientInformationFields.edc: prenatal.patientInformation.edc.toString(),
+      PatientInformationFields.assignedBy: prenatal.patientInformation.assignById,
+      PrenatalFields.patientInformationAccompaniedBy: prenatal.patientInformation.accompanyById,
       PrenatalFields.patientInformationUserId: prenatal.laravelId,
       PrenatalFields.immunizationTerm: ttItem['term'] ?? "NA",
       PrenatalFields.ironSupplementNoTabs: ironSuppItem['iron_supplement_no_tabs'] ?? "NA",
@@ -165,10 +181,8 @@ class PrenatalServices {
       PrenatalFields.whtIntroducedBirthPlan: prenatal.introducedBirthPlan ? 1 : 0,
       PrenatalFields.fundicHeight: prenatal.fundicHeight,
       PrenatalFields.patientInformationId: patientInfoId,
-      PrenatalFields.accompanyBy: prenatal.accompaniedBy,
+      PatientInformationFields.accompanyBy: prenatal.patientInformation.accompanyById,
     };
-
-    log('Sending payload: ${jsonEncode(payload)}');
 
     try {
       final response = await http.post(

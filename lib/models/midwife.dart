@@ -23,4 +23,16 @@ class Midwife {
     email = json[UserFields.email];
     address = json[UserFields.address];
   }
+
+  static Midwife? fromJsonStatic(Map<String, dynamic>? json) {
+    if (json == null) return null;
+
+    return Midwife(
+      id: json[LaravelUserFields.id],
+      name: json[LaravelUserFields.name],
+      phone: json[UserFields.phoneNumber],
+      email: json[UserFields.email],
+      address: json[UserFields.address],
+    );
+  }
 }

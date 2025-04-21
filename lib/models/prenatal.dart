@@ -1,5 +1,6 @@
 import 'dart:developer';
 
+import 'package:smartguide_app/models/patient_information.dart';
 import 'package:smartguide_app/models/trimester.dart';
 import 'package:smartguide_app/services/laravel/prenatal_services.dart';
 
@@ -16,19 +17,20 @@ class Prenatal {
     required this.advices,
     required this.services,
     required this.birthplace,
-    required this.assignedBy,
-    required this.accompaniedBy,
     required this.ttItems,
     required this.ironSuppItems,
     required this.barangay,
-    required this.philhealth,
-    required this.nhts,
-    required this.expectedDateOfConfinement,
     required this.birthday,
-    required this.lastMenstrualPeriod,
+    // required this.assignedBy,
+    // required this.accompaniedBy,
+    // required this.philhealth,
+    // required this.nhts,
+    // required this.expectedDateOfConfinement,
+    // required this.lastMenstrualPeriod,
+    // required this.obStatus,
+    required this.patientInformation,
     required this.fullname,
     required this.age,
-    required this.obStatus,
     required this.breastFeeding,
     required this.familyPlanning,
     required this.properNutrition,
@@ -52,15 +54,18 @@ class Prenatal {
   final bool donorBloodTyped;
   final String fullname;
   final String age;
-  final String obStatus;
   final int laravelId;
   TrimesterEnum selectedTrimester;
   String barangay;
-  bool philhealth;
-  bool nhts;
-  DateTime expectedDateOfConfinement;
   DateTime birthday;
-  DateTime lastMenstrualPeriod;
+  PatientInformation patientInformation;
+  // final String obStatus;
+  // bool philhealth;
+  // bool nhts;
+  // DateTime expectedDateOfConfinement;
+  // DateTime lastMenstrualPeriod;
+  // String assignedBy;
+  // String accompaniedBy;
   bool consultWht;
   bool introducedBirthPlan;
   String fundicHeight;
@@ -70,8 +75,6 @@ class Prenatal {
   List<String> advices;
   List<String> services;
   String birthplace;
-  String assignedBy;
-  String accompaniedBy;
   final List<Map<String, dynamic>> ttItems;
   final List<Map<String, dynamic>> ironSuppItems;
   DateTime? createdAt;

@@ -4,7 +4,6 @@ import 'package:smartguide_app/components/midwife/prenatal_records/midwife_prena
 import 'package:smartguide_app/components/section/custom_section.dart';
 import 'package:smartguide_app/models/prenatal.dart';
 import 'package:smartguide_app/models/user.dart';
-import 'package:smartguide_app/pages/midwife/prenatal_records/patients_history_list_page.dart';
 import 'package:smartguide_app/services/laravel/prenatal_services.dart';
 
 class PrenatalRecordsListPage extends StatefulWidget {
@@ -26,7 +25,8 @@ class _PrenatalRecordsListPageState extends State<PrenatalRecordsListPage> {
 
     final PrenatalServices prenatalServices = PrenatalServices();
 
-    prenatals = await prenatalServices.fetchAllPrenatal(user.token!);
+    prenatals = await prenatalServices.fetchAllPrenatalByLaravelUserId(
+        token: user.token!, id: user.laravelId!);
 
     setState(() {
       isLoading = false;

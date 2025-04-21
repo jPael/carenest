@@ -9,8 +9,10 @@ class Trimester {
   final bool isBloodPressureNormal;
   final List<String> advices;
   final List<String> services;
+  final String whtPersonnel;
 
   Trimester({
+    required this.whtPersonnel,
     required this.trimester,
     required this.dateOfVisit,
     required this.consultWht,

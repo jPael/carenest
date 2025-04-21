@@ -1,4 +1,3 @@
-import 'dart:developer';
 
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -49,11 +48,11 @@ class PatientsInfoPage extends StatelessWidget {
         'age': prenatal.age,
         'birthday': prenatal.birthday,
         'address': prenatal.barangay,
-        'philHealth': prenatal.philhealth,
-        'nhts': prenatal.nhts,
-        'lastMenstrualPeriod': prenatal.lastMenstrualPeriod,
-        'obStatus': prenatal.obStatus,
-        'expectedDateOfConfinement': prenatal.expectedDateOfConfinement,
+        'philHealth': prenatal.patientInformation.philhealth,
+        'nhts': prenatal.patientInformation.nhts,
+        'lastMenstrualPeriod': prenatal.patientInformation.lmp,
+        'obStatus': prenatal.patientInformation.obStatus,
+        'expectedDateOfConfinement': prenatal.patientInformation.edc,
         'bloodDonors': [
           {
             'fullname': prenatal.donorFullname,

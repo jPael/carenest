@@ -10,6 +10,7 @@ import 'package:smartguide_app/components/prenatal_records/form/birth_plan_form.
 import 'package:smartguide_app/components/prenatal_records/form/care_and_tests_form.dart';
 import 'package:smartguide_app/components/prenatal_records/form/counseling_form.dart';
 import 'package:smartguide_app/components/prenatal_records/form/patient_information_form.dart';
+import 'package:smartguide_app/models/patient_information.dart';
 import 'package:smartguide_app/models/prenatal.dart';
 import 'package:smartguide_app/models/trimester.dart';
 
@@ -96,7 +97,7 @@ class _PrenatalInfoFormState extends State<PrenatalInfoForm> {
   //  blood donors
 
   String barangay = "";
-  bool philHealth = false;
+  bool philhealth = false;
   bool nhts = false;
   DateTime expectedDateOfConfinement = DateTime.now();
   DateTime birthday = DateTime.now();
@@ -116,38 +117,47 @@ class _PrenatalInfoFormState extends State<PrenatalInfoForm> {
     final user = context.read<User>();
 
     final Prenatal record = Prenatal(
-        donorBloodTyped: donorBloodTyped,
-        donorContact: donorContactController.text,
-        donorFullname: donorFullnameController.text,
-        breastFeeding: counselingQuestionaire[0]["value"],
-        familyPlanning: counselingQuestionaire[1]["value"],
-        properNutrition: counselingQuestionaire[2]["value"],
-        properNutritionForChild: counselingQuestionaire[3]["value"],
-        properNutritionForMyself: counselingQuestionaire[4]["value"],
-        age: ageController.text,
-        fullname: fullnameController.text,
-        obStatus: obStatusController.text,
-        barangay: barangay,
-        birthday: birthday,
-        expectedDateOfConfinement: expectedDateOfConfinement,
-        lastMenstrualPeriod: lastMenstrualPeriod,
-        nhts: nhts,
-        philhealth: philHealth,
-        laravelId: user.laravelId!,
-        ironSuppItems: ironSuppItems,
-        ttItems: ttItems,
-        selectedTrimester: selectedTrimester,
-        consultWht: consultWht,
-        introducedBirthPlan: introducedBirthPlan,
-        fundicHeight: fundicHeightController.text,
-        fundicNormal: fundicNormal,
-        bloodPressure: bloodPressureController.text,
-        bloodPressureNormal: bloodPressureNormal,
-        advices: advicesControllers.map((c) => c.text).toList(),
-        services: servicesControllers.map((c) => c.text).toList(),
-        birthplace: birthplaceController.text,
-        assignedBy: assignedByController.text,
-        accompaniedBy: accompaniedByController.text);
+      donorBloodTyped: donorBloodTyped,
+      donorContact: donorContactController.text,
+      donorFullname: donorFullnameController.text,
+      breastFeeding: counselingQuestionaire[0]["value"],
+      familyPlanning: counselingQuestionaire[1]["value"],
+      properNutrition: counselingQuestionaire[2]["value"],
+      properNutritionForChild: counselingQuestionaire[3]["value"],
+      properNutritionForMyself: counselingQuestionaire[4]["value"],
+      age: ageController.text,
+      fullname: fullnameController.text,
+      barangay: barangay,
+      birthday: birthday,
+      // obStatus: obStatusController.text,
+      // expectedDateOfConfinement: expectedDateOfConfinement,
+      // lastMenstrualPeriod: lastMenstrualPeriod,
+      // nhts: nhts,
+      // philhealth: philHealth,
+      // assignedBy: assignedByController.text,
+      // accompaniedBy: accompaniedByController.text
+      patientInformation: PatientInformation(
+          philhealth: philhealth,
+          nhts: nhts,
+          lmp: lastMenstrualPeriod,
+          edc: expectedDateOfConfinement,
+          obStatus: obStatusController.text,
+          assignById: int.parse(assignedByController.text),
+          accompanyById: int.parse(accompaniedByController.text)),
+      laravelId: user.laravelId!,
+      ironSuppItems: ironSuppItems,
+      ttItems: ttItems,
+      selectedTrimester: selectedTrimester,
+      consultWht: consultWht,
+      introducedBirthPlan: introducedBirthPlan,
+      fundicHeight: fundicHeightController.text,
+      fundicNormal: fundicNormal,
+      bloodPressure: bloodPressureController.text,
+      bloodPressureNormal: bloodPressureNormal,
+      advices: advicesControllers.map((c) => c.text).toList(),
+      services: servicesControllers.map((c) => c.text).toList(),
+      birthplace: birthplaceController.text,
+    );
 
     try {
       setState(() {
@@ -239,7 +249,7 @@ class _PrenatalInfoFormState extends State<PrenatalInfoForm> {
                 donorContactController: donorContactController,
                 donorBloodTyped: donorBloodTyped,
                 barangay: barangay,
-                philHealth: philHealth,
+                philHealth: philhealth,
                 nhts: nhts,
                 expectedDateOfConfinement: expectedDateOfConfinement,
                 birthday: birthday,
@@ -266,7 +276,7 @@ class _PrenatalInfoFormState extends State<PrenatalInfoForm> {
                 },
                 philHealthOnChange: (value) {
                   setState(() {
-                    philHealth = value!;
+                    philhealth = value!;
                   });
                 },
                 nhtsOnChange: (value) {
