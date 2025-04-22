@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:smartguide_app/components/input/custom_input.dart';
+import 'package:smartguide_app/components/midwife/reminders/mother_selector.dart';
 import 'package:smartguide_app/fields/reminder_fields.dart';
 import 'package:smartguide_app/models/reminder.dart';
 
@@ -13,6 +14,7 @@ class AddReminderForm extends StatefulWidget {
     required this.reminderType,
     required this.onChangeReminderType,
     required this.onReminderDateChange,
+    required this.onMotherChange,
   });
 
   final GlobalKey<FormState> formKey;
@@ -21,6 +23,7 @@ class AddReminderForm extends StatefulWidget {
   final DateTime date;
   final ReminderTypeEnum? reminderType;
   final Function(ReminderTypeEnum?) onChangeReminderType;
+  final Function(int? userId) onMotherChange;
   final Function(DateTime) onReminderDateChange;
 
   @override
@@ -37,6 +40,7 @@ class AddReminderFormState extends State<AddReminderForm> {
           mainAxisSize: MainAxisSize.min,
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
+            MotherSelector(onChange: widget.onMotherChange),
             DropdownButton(
               alignment: Alignment.centerLeft,
               value: widget.reminderType,

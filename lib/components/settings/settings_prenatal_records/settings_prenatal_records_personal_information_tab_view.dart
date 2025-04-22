@@ -28,7 +28,7 @@ class SettingsPrenatalRecordsPersonalInformationTabView extends StatelessWidget 
         mainAxisAlignment: MainAxisAlignment.spaceAround,
         children: [
           CustomChecklist(
-            label: "PhilHealth",
+            label: "PhilHealthss",
             checked: true,
           ),
           CustomChecklist(

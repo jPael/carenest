@@ -1,14 +1,14 @@
 import 'package:smartguide_app/fields/user_fields.dart';
 import 'package:smartguide_app/services/laravel/fields.dart';
 
-class Midwife {
+class Person {
   int? id;
   String? name;
   String? phone;
   String? email;
   String? address;
 
-  Midwife({
+  Person({
     this.id,
     this.name,
     this.phone,
@@ -24,10 +24,10 @@ class Midwife {
     address = json[UserFields.address];
   }
 
-  static Midwife? fromJsonStatic(Map<String, dynamic>? json) {
+  static Person? fromJsonStatic(Map<String, dynamic>? json) {
     if (json == null) return null;
 
-    return Midwife(
+    return Person(
       id: json[LaravelUserFields.id],
       name: json[LaravelUserFields.name],
       phone: json[UserFields.phoneNumber],
@@ -35,4 +35,12 @@ class Midwife {
       address: json[UserFields.address],
     );
   }
+
+  Map<String, dynamic> toJson() => {
+        LaravelUserFields.id: id,
+        LaravelUserFields.name: name,
+        UserFields.phoneNumber: phone,
+        UserFields.email: email,
+        UserFields.address: address,
+      };
 }

@@ -1,7 +1,7 @@
 import 'dart:developer';
 
 import 'package:flutter/material.dart';
-import 'package:smartguide_app/models/midwife.dart';
+import 'package:smartguide_app/models/person.dart';
 import 'package:smartguide_app/services/laravel/midwife_services.dart';
 
 class MidwifeSelector extends StatefulWidget {
@@ -15,13 +15,13 @@ class MidwifeSelector extends StatefulWidget {
 
 class MidwifeSelectorState extends State<MidwifeSelector> {
   String defaultValue = "";
-  List<Midwife> midwives = [];
+  List<Person> midwives = [];
   bool fetchingMidwife = false;
   final MidwifeServices midwifeServices = MidwifeServices();
 
   Future<void> _fetchMidwife() async {
     try {
-      final List<Midwife> _midwives = await midwifeServices.fetchAllMidwife();
+      final List<Person> _midwives = await midwifeServices.fetchAllMidwife();
 
       setState(() {
         defaultValue = _midwives.first.id!.toString();

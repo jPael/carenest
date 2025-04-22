@@ -5,6 +5,100 @@ import 'package:smartguide_app/utils/utils.dart';
 
 enum SocialButtonType { google }
 
+enum CustomButtonType { success, primary, secondary, destructive, ghost }
+
+extension CustomButtonTypeExtension on CustomButtonType {
+  Color color(BuildContext context) {
+    switch (this) {
+      case CustomButtonType.ghost:
+        return Colors.white;
+      case CustomButtonType.success:
+        return Colors.green;
+      case CustomButtonType.primary:
+        return Theme.of(context).colorScheme.primary;
+      case CustomButtonType.secondary:
+        return Theme.of(context).colorScheme.secondary;
+
+      case CustomButtonType.destructive:
+        return Theme.of(context).colorScheme.error;
+    }
+  }
+
+  ButtonStyle style(BuildContext context, bool isLoading, int radius, int horizontalPadding,
+      int verticalPadding, Color defaultColor) {
+    switch (this) {
+      case CustomButtonType.primary:
+        return ButtonStyle(
+            elevation: WidgetStateProperty.all(isLoading ? 0 : null),
+            iconColor: WidgetStateProperty.all(Colors.white),
+            shape: WidgetStateProperty.all(
+                RoundedRectangleBorder(borderRadius: BorderRadius.circular(8.0 * radius))),
+            padding: WidgetStateProperty.all(EdgeInsets.symmetric(
+                horizontal: 8.0 * horizontalPadding, vertical: 8.0 * verticalPadding)),
+            backgroundColor: WidgetStateProperty.all(defaultColor));
+
+      case CustomButtonType.secondary:
+        return ButtonStyle(
+            elevation: WidgetStateProperty.all(isLoading ? 0 : null),
+            iconColor: WidgetStateProperty.all(Colors.white),
+            shape: WidgetStateProperty.all(
+                RoundedRectangleBorder(borderRadius: BorderRadius.circular(8.0 * radius))),
+            padding: WidgetStateProperty.all(EdgeInsets.symmetric(
+                horizontal: 8.0 * horizontalPadding, vertical: 8.0 * verticalPadding)),
+            backgroundColor: WidgetStateProperty.all(defaultColor));
+
+      case CustomButtonType.destructive:
+        return ButtonStyle(
+            elevation: WidgetStateProperty.all(isLoading ? 0 : null),
+            iconColor: WidgetStateProperty.all(Colors.white),
+            shape: WidgetStateProperty.all(
+                RoundedRectangleBorder(borderRadius: BorderRadius.circular(8.0 * radius))),
+            padding: WidgetStateProperty.all(EdgeInsets.symmetric(
+                horizontal: 8.0 * horizontalPadding, vertical: 8.0 * verticalPadding)),
+            backgroundColor: WidgetStateProperty.all(defaultColor));
+
+      case CustomButtonType.success:
+        return ButtonStyle(
+            elevation: WidgetStateProperty.all(isLoading ? 0 : null),
+            iconColor: WidgetStateProperty.all(Colors.white),
+            shape: WidgetStateProperty.all(
+                RoundedRectangleBorder(borderRadius: BorderRadius.circular(8.0 * radius))),
+            padding: WidgetStateProperty.all(EdgeInsets.symmetric(
+                horizontal: 8.0 * horizontalPadding, vertical: 8.0 * verticalPadding)),
+            backgroundColor: WidgetStateProperty.all(defaultColor));
+
+      case CustomButtonType.ghost:
+        return ButtonStyle(
+            elevation: WidgetStateProperty.all(isLoading ? 0 : null),
+            iconColor: WidgetStateProperty.all(Colors.white),
+            shape: WidgetStateProperty.all(
+                RoundedRectangleBorder(borderRadius: BorderRadius.circular(8.0 * radius))),
+            padding: WidgetStateProperty.all(EdgeInsets.symmetric(
+                horizontal: 8.0 * horizontalPadding, vertical: 8.0 * verticalPadding)),
+            backgroundColor: WidgetStateProperty.all(defaultColor));
+    }
+  }
+
+  TextStyle textStyle(BuildContext context) {
+    switch (this) {
+      case CustomButtonType.primary:
+        return const TextStyle(color: Colors.white, fontSize: 8 * 2);
+
+      case CustomButtonType.secondary:
+        return const TextStyle(color: Colors.white, fontSize: 8 * 2);
+
+      case CustomButtonType.destructive:
+        return const TextStyle(color: Colors.white, fontSize: 8 * 2);
+
+      case CustomButtonType.success:
+        return const TextStyle(color: Colors.white, fontSize: 8 * 2);
+
+      case CustomButtonType.ghost:
+        return TextStyle(color: Theme.of(context).colorScheme.primary, fontSize: 8 * 2);
+    }
+  }
+}
+
 class CustomButton extends StatelessWidget {
   const CustomButton(
       {super.key,
@@ -15,7 +109,10 @@ class CustomButton extends StatelessWidget {
       this.horizontalPadding = 4,
       this.verticalPadding = 2,
       this.isLoading = false,
-      this.buttonStyle});
+      this.type = CustomButtonType.primary,
+      this.buttonStyle,
+      this.customButtonStyle,
+      this.labelStyle});
 
   final VoidCallback onPress;
   final String label;
@@ -27,28 +124,39 @@ class CustomButton extends StatelessWidget {
 
   final bool isLoading;
 
+  final ButtonStyle? customButtonStyle;
+  final CustomButtonType type;
+
   final ButtonStyle? buttonStyle;
+  final TextStyle? labelStyle;
 
   @override
   Widget build(BuildContext context) {
-    final ButtonStyle defaultButtonStyle = buttonStyle ??
-        ButtonStyle(
-            elevation: WidgetStateProperty.all(isLoading ? 0 : null),
-            iconColor: WidgetStateProperty.all(Colors.white),
-            shape: WidgetStateProperty.all(
-                RoundedRectangleBorder(borderRadius: BorderRadius.circular(8.0 * radius))),
-            padding: WidgetStateProperty.all(EdgeInsets.symmetric(
-                horizontal: 8.0 * horizontalPadding, vertical: 8.0 * verticalPadding)),
-            backgroundColor: WidgetStateProperty.all(
-                Theme.of(context).colorScheme.primary.withValues(alpha: isLoading ? 0.5 : 1.0)));
+    // final Color defaultColor =
+    //     Theme.of(context).colorScheme.primary.withValues(alpha: isLoading ? 0.5 : 1.0);
+
+    final TextStyle defaultLabelStyle =
+        labelStyle ?? const TextStyle(color: Colors.white, fontSize: 8 * 2);
+
+    // final ButtonStyle defaultButtonStyle = customButtonStyle != null
+    //     ? customButtonStyle!.copyWith(backgroundColor: WidgetStateProperty.all(defaultColor))
+    //     : ButtonStyle(
+    //         elevation: WidgetStateProperty.all(isLoading ? 0 : null),
+    //         iconColor: WidgetStateProperty.all(Colors.white),
+    //         shape: WidgetStateProperty.all(
+    //             RoundedRectangleBorder(borderRadius: BorderRadius.circular(8.0 * radius))),
+    //         padding: WidgetStateProperty.all(EdgeInsets.symmetric(
+    //             horizontal: 8.0 * horizontalPadding, vertical: 8.0 * verticalPadding)),
+    //         backgroundColor: WidgetStateProperty.all(defaultColor));
 
     return ElevatedButton.icon(
         icon: isLoading ? loadingIndicator() : icon,
-        style: defaultButtonStyle,
+        style: type.style(
+            context, isLoading, radius, horizontalPadding, verticalPadding, type.color(context)),
         onPressed: onPress,
         label: Text(
           label,
-          style: const TextStyle(color: Colors.white, fontSize: 8 * 2),
+          style: type.textStyle(context),
         ));
   }
 

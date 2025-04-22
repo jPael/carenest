@@ -26,11 +26,12 @@ class _AddRemindersPageState extends State<AddRemindersPage> {
     required String purpose,
     required ReminderTypeEnum reminderType,
     required DateTime date,
+    required int userId,
   }) {
     final User user = context.read<User>();
     setState(() {
       reminders.add(Reminder(
-        userId: user.laravelId!,
+        userId: userId,
         date: date,
         purpose: purpose,
         reminderType: reminderType,
@@ -54,6 +55,8 @@ class _AddRemindersPageState extends State<AddRemindersPage> {
     final TextEditingController titleController = TextEditingController();
     final TextEditingController purposeController = TextEditingController();
 
+    int? userId;
+
     DateTime date = DateTime.now();
     // TimeOfDay time = TimeOfDay.now();
 
@@ -75,6 +78,12 @@ class _AddRemindersPageState extends State<AddRemindersPage> {
               });
             }
 
+            void onMotherChange(int? i) {
+              setDialogState(() {
+                userId = i;
+              });
+            }
+
             // void onReminderTimeChange(TimeOfDay t) {
             //   setState(() {
             //     time = t;
@@ -86,6 +95,7 @@ class _AddRemindersPageState extends State<AddRemindersPage> {
               content: AddReminderForm(
                 date: date,
                 formKey: formKey,
+                onMotherChange: onMotherChange,
                 onChangeReminderType: onChangeReminderType,
                 onReminderDateChange: onReminderDateChange,
                 // onReminderTimeChange: onReminderTimeChange,
@@ -101,10 +111,11 @@ class _AddRemindersPageState extends State<AddRemindersPage> {
                 ),
                 TextButton(
                   onPressed: () {
-                    if (formKey.currentState!.validate()) {
+                    if (formKey.currentState!.validate() && userId != null) {
                       formKey.currentState!.save();
 
                       handleAddReminders(
+                          userId: userId!,
                           date: date,
                           purpose: purposeController.text,
                           reminderType: reminderType!,

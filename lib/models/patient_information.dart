@@ -1,6 +1,6 @@
 import 'dart:developer';
 
-import 'package:smartguide_app/models/midwife.dart';
+import 'package:smartguide_app/models/person.dart';
 import 'package:smartguide_app/services/laravel/fields.dart';
 
 class PatientInformation {
@@ -14,7 +14,7 @@ class PatientInformation {
   final int accompanyById;
   final DateTime? createdAt;
   final DateTime? updatedAt;
-  final Midwife? accompaniedBy;
+  final Person? accompaniedBy;
 
   PatientInformation(
       {this.id,
@@ -30,10 +30,11 @@ class PatientInformation {
       this.updatedAt});
 
   static PatientInformation fromJson(Map<String, dynamic> json) {
-    final Midwife? midwifeData =
-        Midwife.fromJsonStatic(json[PatientInformationFields.accompanyByData]);
+    final Person? midwifeData =
+        Person.fromJsonStatic(json[PatientInformationFields.accompanyByData]);
 
-    log(midwifeData?.name ?? "NA");
+    log(json.toString());
+    log("${midwifeData?.id?.toString() ?? "NA"}: ${midwifeData?.name ?? "NA"}::${json[PatientInformationFields.accompanyByData].toString()}");
 
     return PatientInformation(
         id: json[PatientInformationFields.id],

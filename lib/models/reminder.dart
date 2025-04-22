@@ -1,5 +1,6 @@
 import 'package:smartguide_app/fields/reminder_fields.dart';
 import 'package:smartguide_app/services/laravel/reminder_services.dart';
+import 'package:smartguide_app/utils/utils.dart';
 
 class Reminder {
   final int? id;
@@ -10,8 +11,10 @@ class Reminder {
   // final TimeOfDay time;
   bool isFresh;
   final int userId;
+  bool? isDone;
 
   Reminder({
+    this.isDone,
     this.id,
     required this.title,
     required this.userId,
@@ -35,13 +38,19 @@ class Reminder {
     return res;
   }
 
-  void fromJson(Map<String, dynamic> json) {
-    title = json[ReminderFields.name];
-    reminderType = json[ReminderFields.type];
-    date = json[ReminderFields.reminderDate];
-  }
+  static Reminder fromJson(Map<String, dynamic> json) => Reminder(
+      isDone: json[ReminderFields.isDone] == 1 ? true : false,
+      isFresh: false,
+      id: json[ReminderFields.id],
+      userId: json[ReminderFields.userId],
+      date: DateTime.tryParse(json[ReminderFields.reminderDate]),
+      title: json[ReminderFields.name],
+      reminderType: getReminderTypeEnumFromReminderInt(json[ReminderFields.icon]) ??
+          ReminderTypeEnum.prenatalCheckup);
 
   Map<String, dynamic> toJson() => {
+        ReminderFields.id: id,
+        ReminderFields.isDone: isDone,
         ReminderFields.name: title,
         ReminderFields.icon: reminderType.code,
         ReminderFields.reminderDate: date.toString(),
@@ -60,21 +69,40 @@ class Reminder {
     );
   }
 
+  Future<void> markAsDone(String token) async {
+    final bool res = await reminderServices.updateReminder(
+        id: id!,
+        title: title,
+        type: reminderType,
+        date: date!,
+        token: token,
+        userId: userId,
+        isDone: true);
+  }
+
   Future<Reminder> updateReminder({
     required String title,
     required ReminderTypeEnum type,
-    required String userId,
+    required int userId,
     required DateTime date,
     required String token,
+    bool isDone = false,
   }) async {
-    final bool res = await reminderServices.updateReminder(id!, title, type, date, token, userId);
+    final bool res = await reminderServices.updateReminder(
+        id: id!,
+        title: title,
+        type: type,
+        date: date,
+        token: token,
+        userId: userId,
+        isDone: isDone);
 
     if (res) {
       return Reminder(
           date: date,
           reminderType: type,
           title: title,
-          userId: int.parse(userId),
+          userId: userId,
           id: id,
           isFresh: isFresh,
           purpose: purpose);

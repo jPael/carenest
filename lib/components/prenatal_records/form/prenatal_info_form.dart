@@ -260,9 +260,11 @@ class _PrenatalInfoFormState extends State<PrenatalInfoForm> {
                   });
                 },
                 birthdayOnChange: (value) {
+                  log(value.toString());
                   setState(() {
                     birthday = value!;
                   });
+                  log(value.toString());
                 },
                 lmpOnChange: (value) {
                   setState(() {

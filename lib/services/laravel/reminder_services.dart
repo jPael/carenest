@@ -9,6 +9,62 @@ import 'package:smartguide_app/services/laravel/api_url.dart';
 import 'package:smartguide_app/utils/utils.dart';
 
 class ReminderServices {
+  Future<Map<String, List<Reminder>>> fetchAllSegregatedReminderByUserId(
+      String laravelId, String token) async {
+    final List<Reminder> reminders =
+        await fetchAllReminderByUserId(laravelId, token) as List<Reminder>;
+
+    final List<Reminder> today = [];
+    final List<Reminder> upcoming = [];
+    final List<Reminder> done = [];
+    final List<Reminder> missed = [];
+
+    final DateTime now = DateTime.now();
+    final DateTime todayStart = DateTime(now.year, now.month, now.day);
+    final DateTime todayEnd = DateTime(now.year, now.month, now.day, 23, 59, 59);
+
+    for (Reminder reminder in reminders) {
+      if (reminder.isDone == true) {
+        done.add(reminder);
+        continue;
+      }
+
+      if (reminder.date == null) continue;
+
+      if (reminder.date!.isAfter(todayStart) && reminder.date!.isBefore(todayEnd)) {
+        today.add(reminder);
+      } else if (reminder.date!.isAfter(now)) {
+        upcoming.add(reminder);
+      } else {
+        missed.add(reminder);
+      }
+    }
+
+    today.sort((a, b) => a.date!.compareTo(b.date!));
+
+    upcoming.sort((a, b) => a.date!.compareTo(b.date!));
+
+    missed.sort((a, b) => b.date!.compareTo(a.date!));
+
+    final d = {
+      'today': today,
+      'upcoming': upcoming,
+      'done': done,
+      'missed': missed,
+    };
+
+    d.forEach(
+      <String, object>(key, List<Reminder> value) =>
+          value.forEach((v) => log("$key: ${v.toJson().toString()}")),
+    );
+    // d.forEach(
+    //   <String, object>(key, List<Reminder> value) => value.forEach((v) => log(
+    //       "$key: ${v.id!.toString()} ${v.isDone!.toString()} ${v.date!.toString()} ${DateTime.now().toString()}")),
+    // );
+
+    return d;
+  }
+
   Future<List<Reminder>?>? fetchAllReminderByUserId(String laravelId, String token) async {
     if (laravelId.isEmpty) return null;
 
@@ -23,16 +79,7 @@ class ReminderServices {
 
     await Future.delayed(const Duration(seconds: 5));
 
-    final List<Reminder> reminders = cleanReminder
-        .map((r) => Reminder(
-            isFresh: false,
-            id: r[ReminderFields.id],
-            userId: r[ReminderFields.userId],
-            date: DateTime.tryParse(r[ReminderFields.reminderDate]),
-            title: r[ReminderFields.name],
-            reminderType: getReminderTypeEnumFromReminderInt(r[ReminderFields.icon]) ??
-                ReminderTypeEnum.prenatalCheckup))
-        .toList();
+    final List<Reminder> reminders = cleanReminder.map((r) => Reminder.fromJson(r)).toList();
 
     return reminders;
   }
@@ -56,14 +103,19 @@ class ReminderServices {
 
     if (res.statusCode != HttpStatus.ok) {
       throw Exception("Unabled to delete reminder");
-      
     }
 
     return reminder.id!;
   }
 
-  Future<bool> updateReminder(int id, String title, ReminderTypeEnum type, DateTime date,
-      String token, String userId) async {
+  Future<bool> updateReminder(
+      {required int id,
+      required String title,
+      required ReminderTypeEnum type,
+      required DateTime date,
+      required String token,
+      required int userId,
+      required bool isDone}) async {
     if (token.isEmpty) return false;
 
     final url = apiURIBase.replace(path: LaravelPaths.specificReminder(id));
@@ -78,7 +130,7 @@ class ReminderServices {
           ReminderFields.icon: type.code,
           ReminderFields.reminderDate: date.toString(),
           ReminderFields.userId: userId,
-          ReminderFields.isDone: 0
+          ReminderFields.isDone: isDone ? 1 : 0
         }));
 
     if (res.statusCode != HttpStatus.ok) {

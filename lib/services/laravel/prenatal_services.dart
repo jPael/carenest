@@ -3,7 +3,7 @@ import 'dart:developer';
 
 import 'package:http/http.dart' as http;
 import 'package:smartguide_app/fields/user_fields.dart';
-import 'package:smartguide_app/models/midwife.dart';
+import 'package:smartguide_app/models/person.dart';
 import 'package:smartguide_app/models/patient_information.dart';
 
 import 'package:smartguide_app/models/prenatal.dart';
@@ -93,7 +93,7 @@ class PrenatalServices {
               obStatus: p[PatientInformationFields.obStatus],
               assignById: p[PatientInformationFields.assignedBy],
               accompanyById: p[PatientInformationFields.accompanyBy],
-              accompaniedBy: Midwife.fromJsonStatic(p[PatientInformationFields.accompanyByData])),
+              accompaniedBy: Person.fromJsonStatic(p[PatientInformationFields.accompanyByData])),
           // assignedBy: p[PrenatalFields.assignedBy].toString(),
           // accompaniedBy: p[PrenatalFields.accompanyBy].toString(),
           // philhealth: p[PrenatalFields.philhealth] == 1 ? true : false,

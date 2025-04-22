@@ -3,11 +3,11 @@ import 'dart:developer';
 
 import 'package:flutter/foundation.dart';
 import 'package:http/http.dart' as http;
-import 'package:smartguide_app/models/midwife.dart';
+import 'package:smartguide_app/models/person.dart';
 import 'package:smartguide_app/services/laravel/api_url.dart';
 
 class MidwifeServices {
-  Future<List<Midwife>> fetchAllMidwife() async {
+  Future<List<Person>> fetchAllMidwife() async {
     final apiUrl = apiURIBase.replace(path: LaravelPaths.midwife);
     log(apiUrl.toString());
 
@@ -19,8 +19,8 @@ class MidwifeServices {
       print(data);
     }
 
-    final List<Midwife> midwife = data.map((d) {
-      final Midwife m = Midwife();
+    final List<Person> midwife = data.map((d) {
+      final Person m = Person();
       m.fromJson(d);
       return m;
     }).toList();

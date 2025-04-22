@@ -1,8 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:smartguide_app/components/mother/home/reminders/reminders_schedule_item.dart';
+import 'package:smartguide_app/models/reminder.dart';
 
 class RemindersCompletedScheduleSection extends StatelessWidget {
-  const RemindersCompletedScheduleSection({super.key});
+  const RemindersCompletedScheduleSection({super.key, required this.reminders});
+
+  final List<Reminder> reminders;
 
   @override
   Widget build(BuildContext context) {
@@ -19,14 +22,26 @@ class RemindersCompletedScheduleSection extends StatelessWidget {
         const SizedBox(
           height: 8,
         ),
-        Column(spacing: 8 * 2, children: [
-          RemindersScheduleItem(
-            title: "Prenatal Check-up",
-            datetime: DateTime(2025, 3, 15, 9, 0),
-            iconSrc: "lib/assets/images/reminders_card_prenatal_checkup_icon.png",
-            statusType: ScheduleItemStatusType.done,
-          ),
-        ])
+        Column(
+            spacing: 8 * 2,
+            children: reminders
+                .map((r) => RemindersScheduleItem(
+                      title: r.title,
+                      iconSrc: r.reminderType.image,
+                      datetime: r.date!,
+                      statusType: ScheduleItemStatusType.done,
+                    ))
+                .toList()
+
+            // [
+            //   RemindersScheduleItem(
+            //     title: "Prenatal Check-up",
+            //     datetime: DateTime(2025, 3, 15, 9, 0),
+            //     iconSrc: "lib/assets/images/reminders_card_prenatal_checkup_icon.png",
+            //     statusType: ScheduleItemStatusType.done,
+            //   ),
+            // ]
+            )
       ],
     );
   }

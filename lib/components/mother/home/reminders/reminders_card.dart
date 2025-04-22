@@ -1,43 +1,46 @@
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
-import 'package:smartguide_app/utils/utils.dart';
+import 'package:smartguide_app/components/button/custom_button.dart';
 
 class RemindersCard extends StatefulWidget {
   const RemindersCard(
-      {super.key, required this.title, required this.datetime, required this.iconSrc});
+      {super.key,
+      required this.title,
+      required this.datetime,
+      required this.iconSrc,
+      this.markAsDone});
 
   final String title;
   final String iconSrc;
   final DateTime datetime;
+  final Function? markAsDone;
 
   @override
   State<RemindersCard> createState() => _RemindersCardState();
 }
 
 class _RemindersCardState extends State<RemindersCard> with TickerProviderStateMixin {
+  bool done = false;
+
+  Future markAsDone() async {
+    setState(() {
+      done = true;
+    });
+
+    if (widget.markAsDone == null) return;
+    await widget.markAsDone!();
+  }
+
   @override
   Widget build(BuildContext context) {
     final String date = DateFormat("MMMM d, y").format(widget.datetime);
     final String time = DateFormat("hh:mm a").format(widget.datetime);
 
-    final DateTime monthOfConception = DateTime(2024, 12, 1);
-
-    final Duration totalDuration = widget.datetime.difference(monthOfConception);
-
-    final Duration difference = DateTime.now().difference(monthOfConception);
-
-    final int percentage = ((difference.inDays / totalDuration.inDays) * 100).clamp(0, 100).toInt();
-
-    String dayLeftReadable = formatDayLeft(difference);
-
-    final AnimationController progressController = AnimationController(
-        vsync: this, duration: const Duration(milliseconds: 300), value: percentage / 100)
-      ..addListener(() {
-        setState(() {});
-      });
-
     return Card(
-      elevation: 2,
+      // color: done
+      //     ? HSLColor.fromColor(Colors.green).withSaturation(0.3).withLightness(.9).toColor()
+      //     : Colors.white,
+      elevation: done ? 0 : 2,
       child: SizedBox(
         width: 150,
         child: Padding(
@@ -65,34 +68,17 @@ class _RemindersCardState extends State<RemindersCard> with TickerProviderStateM
               Text(date),
               Text(time),
               const SizedBox(
-                height: 8,
+                height: 4 * 6,
               ),
-              Row(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                children: [
-                  Text(
-                    dayLeftReadable,
-                    style: const TextStyle(fontWeight: FontWeight.w500),
-                  ),
-                  Text("$percentage%",
-                      style: const TextStyle(fontWeight: FontWeight.w500),
-                      textAlign: TextAlign.right),
-                ],
-              ),
-              const SizedBox(
-                height: 8,
-              ),
-              Row(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  SizedBox(
-                    width: 150 - 8 * 4,
-                    child: LinearProgressIndicator(
-                      color: Theme.of(context).colorScheme.primary,
-                      value: progressController.value,
-                    ),
-                  ),
-                ],
+
+              // CustomCheckbox(customOnChange: (p0, p1) {}, label: "Done", value: done)
+              CustomButton(
+                onPress: markAsDone,
+                label: "Done",
+                icon: done ? const Icon(Icons.check) : null,
+                horizontalPadding: 3,
+                type: done ? CustomButtonType.success : CustomButtonType.ghost,
+                verticalPadding: 1,
               )
             ],
           ),

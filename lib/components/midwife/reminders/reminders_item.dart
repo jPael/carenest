@@ -30,7 +30,7 @@ class _RemindersItemState extends State<RemindersItem> {
   Future<void> syncFresh() async {
     final User user = context.read<User>();
 
-    log(isFresh.toString());
+    // log(isFresh.toString());
 
     if (isFresh) {
       setState(() {
@@ -95,7 +95,7 @@ class _RemindersItemState extends State<RemindersItem> {
     final User user = context.read<User>();
     final formKey = GlobalKey<FormState>();
     ReminderTypeEnum? reminderType = widget.reminder.reminderType;
-
+    int? userId;
     final TextEditingController titleController =
         TextEditingController(text: widget.reminder.title);
     final TextEditingController purposeController =
@@ -117,6 +117,12 @@ class _RemindersItemState extends State<RemindersItem> {
               });
             }
 
+            void onMotherChange(int? i) {
+              setDialogState(() {
+                userId = i;
+              });
+            }
+
             void onReminderDateChange(DateTime d) {
               setState(() {
                 date = d;
@@ -135,7 +141,7 @@ class _RemindersItemState extends State<RemindersItem> {
                   final res = await widget.reminder.updateReminder(
                       title: titleController.text,
                       type: reminderType!,
-                      userId: user.laravelId.toString(),
+                      userId: userId!,
                       date: date,
                       token: user.token!);
 
@@ -165,6 +171,7 @@ class _RemindersItemState extends State<RemindersItem> {
               title: const Text('Update reminder'),
               content: AddReminderForm(
                 date: date,
+                onMotherChange: onMotherChange,
                 formKey: formKey,
                 onChangeReminderType: onChangeReminderType,
                 onReminderDateChange: onReminderDateChange,
