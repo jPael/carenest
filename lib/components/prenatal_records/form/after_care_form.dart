@@ -6,7 +6,6 @@ import 'package:smartguide_app/components/prenatal_records/after_care/after_care
 import 'package:smartguide_app/components/prenatal_records/after_care/after_care_tt_immunization_item.dart';
 import 'package:smartguide_app/components/section/custom_section.dart';
 import 'package:smartguide_app/models/after_care.dart';
-import 'package:smartguide_app/models/care_and_test.dart';
 
 class AfterCareForm extends StatefulWidget {
   final List<Map<String, dynamic>> ttItems;

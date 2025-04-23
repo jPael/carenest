@@ -45,7 +45,7 @@ class NewUser {
           .createUserWithEmailAndPassword(email: email, password: password);
 
       if (kDebugMode) {
-        print("firebase data: " + getUserDetails().toString());
+        print("firebase data: ${getUserDetails()}");
       }
       final String uid = user.user!.uid;
       await FirebaseFirestore.instance

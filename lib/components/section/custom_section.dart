@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:skeletonizer/skeletonizer.dart';
-import 'package:smartguide_app/models/reminder.dart';
 
 class CustomSection extends StatelessWidget {
   const CustomSection(

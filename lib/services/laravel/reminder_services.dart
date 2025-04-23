@@ -6,7 +6,6 @@ import 'package:http/http.dart' as http;
 import 'package:smartguide_app/fields/reminder_fields.dart';
 import 'package:smartguide_app/models/reminder.dart';
 import 'package:smartguide_app/services/laravel/api_url.dart';
-import 'package:smartguide_app/utils/utils.dart';
 
 class ReminderServices {
   Future<Map<String, List<Reminder>>> fetchAllSegregatedReminderByUserId(

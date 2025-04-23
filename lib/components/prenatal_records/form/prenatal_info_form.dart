@@ -89,7 +89,6 @@ class _PrenatalInfoFormState extends State<PrenatalInfoForm> {
     } catch (e, stackTrace) {
       showErrorMessage(context: context, message: "Something went wrong. Please try again");
       log(e.toString(), stackTrace: stackTrace);
-      ;
     }
 
     setState(() {

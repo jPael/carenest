@@ -1,4 +1,3 @@
-import 'dart:developer';
 
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
@@ -9,8 +8,6 @@ import 'package:smartguide_app/components/input/custom_input.dart';
 import 'package:smartguide_app/components/section/custom_section.dart';
 import 'package:smartguide_app/models/patient_information.dart';
 import 'package:smartguide_app/models/user.dart';
-import 'package:smartguide_app/services/laravel/prenatal_services.dart';
-import 'package:smartguide_app/utils/utils.dart';
 
 class PatientInformationForm extends StatefulWidget {
   // const PatientInformationForm({super.key});

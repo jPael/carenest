@@ -23,7 +23,9 @@ Future<List<Person>> fetchAllMothers() async {
       .whereType<Person>()
       .toList();
 
-  mothers.forEach((m) => log(m.toJson().toString()));
+  for (var m in mothers) {
+    log(m.toJson().toString());
+  }
 
   return mothers;
 }
