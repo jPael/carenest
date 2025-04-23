@@ -51,9 +51,9 @@ class _ProfilePersonalInformationItemState extends State<ProfilePersonalInformat
     });
   }
 
-  void handleBarangaySelection(String? value) {
+  void handleBarangaySelection(String? name, String? id) {
     setState(() {
-      selectedBarangay = value ?? "";
+      selectedBarangay = name ?? "";
     });
   }
 
@@ -163,7 +163,10 @@ class _ProfilePersonalInformationItemState extends State<ProfilePersonalInformat
           //     controller: addressController,
           //     label: "Address",
           //     hint: "e.g., 123 Rizal St., Brgy. San Isidro, Makati City, Metro Manila, 1230"),
-          BarangaySelector(onChange: handleBarangaySelection),
+          BarangaySelector(
+            onChange: handleBarangaySelection,
+            barangayName: widget.address,
+          ),
           Row(mainAxisAlignment: MainAxisAlignment.end, children: [
             CustomButton(
               onPress: () async {

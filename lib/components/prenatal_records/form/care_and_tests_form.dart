@@ -3,49 +3,65 @@ import 'package:smartguide_app/components/button/custom_dropdown_button.dart';
 import 'package:smartguide_app/components/checklist/custom_checkbox.dart';
 import 'package:smartguide_app/components/input/custom_input.dart';
 import 'package:smartguide_app/components/section/custom_section.dart';
+import 'package:smartguide_app/models/care_and_test.dart';
 import 'package:smartguide_app/models/trimester.dart';
 
 class CareAndTestsForm extends StatefulWidget {
-  const CareAndTestsForm(
-      {super.key,
-      required this.fundicHeightController,
-      required this.isFundicNormal,
-      required this.bloodPressureController,
-      required this.isBloodPressureNormal,
-      required this.advicesControllers,
-      required this.servicesControllers,
-      required this.introducedBirthPlan,
-      required this.consultWht,
-      required this.selectedTrimester,
-      this.dropdownOnChange,
-      required this.trimesters,
-      this.introducedBirthPlanOnChange,
-      this.consultWhtOnChange,
-      required this.addAdvices,
-      required this.addServices});
+  const CareAndTestsForm({
+    super.key,
+    required this.data,
+    required this.selectedTrimester,
+    required this.trimesterOnChange,
+    required this.consultWht,
+    required this.introducedBirthPlan,
+    required this.consultWhtOnChange,
+    required this.introducedBirthPlanOnChange,
+    required this.fundicHeightController,
+    required this.bloodPressureController,
+    required this.isFundicNormal,
+    required this.isBloodPressureNormal,
+    required this.advicesControllers,
+    required this.servicesControllers,
+  });
+
+  final CareAndTest? data;
+  final TrimesterEnum selectedTrimester;
+  final Function(Object?) trimesterOnChange;
+  final Function(bool) consultWhtOnChange;
+  final Function(bool) introducedBirthPlanOnChange;
 
   final TextEditingController fundicHeightController;
-  final bool isFundicNormal;
   final TextEditingController bloodPressureController;
-  final bool isBloodPressureNormal;
-  final List<TextEditingController> advicesControllers;
-  final VoidCallback addAdvices;
-  final List<TextEditingController> servicesControllers;
-  final VoidCallback addServices;
 
-  final Function(bool?)? introducedBirthPlanOnChange;
-  final Function(bool?)? consultWhtOnChange;
-  final bool introducedBirthPlan;
+  final List<TextEditingController> advicesControllers;
+  final List<TextEditingController> servicesControllers;
+
   final bool consultWht;
-  final TrimesterEnum selectedTrimester;
-  final Function(Object?)? dropdownOnChange;
-  final List<Map<String, dynamic>> trimesters;
+  final bool introducedBirthPlan;
+  final bool isFundicNormal;
+  final bool isBloodPressureNormal;
 
   @override
   State<CareAndTestsForm> createState() => _CareAndTestsFormState();
 }
 
 class _CareAndTestsFormState extends State<CareAndTestsForm> {
+  final List<Map<String, dynamic>> trimesters = [
+    {"value": TrimesterEnum.first, "label": TrimesterEnum.first.label},
+    {"value": TrimesterEnum.second, "label": TrimesterEnum.second.label},
+    {"value": TrimesterEnum.third, "label": TrimesterEnum.third.label},
+  ];
+
+  void handleConsultWhtValue(bool? v) {
+    if (v == null) return;
+    widget.consultWhtOnChange(v);
+  }
+
+  void handleIntroducedBirthPlanValue(bool? v) {
+    if (v == null) return;
+    widget.introducedBirthPlanOnChange(v);
+  }
+
   @override
   Widget build(BuildContext context) {
     return CustomSection(
@@ -55,11 +71,11 @@ class _CareAndTestsFormState extends State<CareAndTestsForm> {
         // trimester selector
         CustomDropdownButton(
           value: widget.selectedTrimester,
-          data: widget.trimesters,
-          onChange: widget.dropdownOnChange,
+          data: trimesters,
+          onChange: widget.trimesterOnChange,
         ),
         const SizedBox(),
-        // checkbox
+        // // checkbox
         CustomSection(
           alignment: CrossAxisAlignment.start,
           description: const Text(
@@ -72,14 +88,14 @@ class _CareAndTestsFormState extends State<CareAndTestsForm> {
                 label:
                     "The women's Health team WHT will help me in my Pregnancyif there's anything I want to know I will consult",
                 value: widget.consultWht,
-                onChange: widget.consultWhtOnChange),
+                onChange: handleConsultWhtValue),
             CustomCheckbox(
                 label: "WTH introduce & helped me accomplished my birth plan",
                 value: widget.introducedBirthPlan,
-                onChange: widget.introducedBirthPlanOnChange),
+                onChange: handleIntroducedBirthPlanValue),
           ],
         ),
-        // findings section
+        // // findings section
         CustomSection(
           title: "Findings",
           titleStyle: const TextStyle(
@@ -101,7 +117,7 @@ class _CareAndTestsFormState extends State<CareAndTestsForm> {
           ],
         ),
         const SizedBox(),
-        // advice section
+        // // advice section
         CustomSection(
           title: "Advice",
           titleStyle: const TextStyle(
@@ -109,12 +125,6 @@ class _CareAndTestsFormState extends State<CareAndTestsForm> {
           ),
           headerSpacing: 1,
           childrenSpacing: 1,
-          action: IconButton(
-              onPressed: widget.addAdvices,
-              icon: Icon(
-                Icons.add_circle_outline,
-                color: Theme.of(context).colorScheme.primary,
-              )),
           children: [
             ...widget.advicesControllers.map((controller) => Row(
                   spacing: 4 * 2,
@@ -139,12 +149,6 @@ class _CareAndTestsFormState extends State<CareAndTestsForm> {
           ),
           headerSpacing: 1,
           childrenSpacing: 1,
-          action: IconButton(
-              onPressed: widget.addServices,
-              icon: Icon(
-                Icons.add_circle_outline,
-                color: Theme.of(context).colorScheme.primary,
-              )),
           children: [
             ...widget.servicesControllers.map((controller) => Row(
                   spacing: 4 * 2,

@@ -37,16 +37,19 @@ class _MotherRegistrationState extends State<MotherRegistration> {
                     firstname: firstnameController.text,
                     lastname: lastnameController.text,
                     phoneNumber: phoneNumberController.text,
-                    address: selectedBarangay,
+                    barangayId: selectedBarangayId,
+                    firebaseAddress: selectedBarangayAddress,
                     dateOfBirth: dateOfBirth!,
                   )));
     }
   }
 
-  String selectedBarangay = "";
-  void handleBarangaySelection(String? value) {
+  String selectedBarangayId = "";
+  String selectedBarangayAddress = "";
+  void handleBarangaySelection(String? address, String? id) {
     setState(() {
-      selectedBarangay = value ?? "";
+      selectedBarangayId = id ?? "";
+      selectedBarangayAddress = address ?? "";
     });
   }
 

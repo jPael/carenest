@@ -1,7 +1,6 @@
 import 'dart:developer';
 
 import 'package:flutter/material.dart';
-import 'package:intl/intl.dart';
 import 'package:provider/provider.dart';
 import 'package:smartguide_app/components/barangay/barangay_selector.dart';
 import 'package:smartguide_app/components/button/custom_button.dart';
@@ -11,52 +10,53 @@ import 'package:smartguide_app/components/section/custom_section.dart';
 import 'package:smartguide_app/models/patient_information.dart';
 import 'package:smartguide_app/models/user.dart';
 import 'package:smartguide_app/services/laravel/prenatal_services.dart';
+import 'package:smartguide_app/utils/utils.dart';
 
 class PatientInformationForm extends StatefulWidget {
   // const PatientInformationForm({super.key});
 
   const PatientInformationForm({
     super.key,
+    required this.data,
     required this.fullnameController,
     required this.ageController,
     required this.obStatusController,
-    required this.barangay,
-    required this.philHealth,
-    required this.nhts,
-    required this.expectedDateOfConfinement,
-    required this.birthday,
-    required this.lastMenstrualPeriod,
     required this.onBarangayChange,
-    required this.birthdayOnChange,
-    required this.lmpOnChange,
-    required this.edcOnChange,
-    required this.philHealthOnChange,
-    required this.nhtsOnChange,
+    required this.onBirthdayChange,
+    required this.onLmpChange,
+    required this.onEdcChange,
+    required this.onPhilhealthChange,
+    required this.onNhtsChange,
+    required this.philhealth,
+    required this.nhts,
     required this.donorFullnameController,
     required this.donorContactController,
     required this.donorBloodTyped,
-    required this.bloodTypeOnChange,
+    required this.onDonorBloodTypeChange,
+    required this.birthday,
+    required this.lmp,
+    required this.edc,
   });
 
+  final PatientInformation? data;
   final TextEditingController fullnameController;
   final TextEditingController ageController;
   final TextEditingController obStatusController;
   final TextEditingController donorFullnameController;
   final TextEditingController donorContactController;
-  final bool donorBloodTyped;
-  final Function(bool?) bloodTypeOnChange;
-  final String barangay;
-  final bool philHealth;
+  final Function(String?, String?) onBarangayChange;
+  final Function(DateTime) onBirthdayChange;
+  final Function(DateTime) onLmpChange;
+  final Function(DateTime) onEdcChange;
+  final bool philhealth;
   final bool nhts;
-  final DateTime expectedDateOfConfinement;
-  final DateTime birthday;
-  final DateTime lastMenstrualPeriod;
-  final Function(String?) onBarangayChange;
-  final Function(DateTime?) birthdayOnChange;
-  final Function(DateTime?) lmpOnChange;
-  final Function(DateTime?) edcOnChange;
-  final Function(bool?) philHealthOnChange;
-  final Function(bool?) nhtsOnChange;
+  final bool donorBloodTyped;
+  final Function(bool) onPhilhealthChange;
+  final Function(bool) onNhtsChange;
+  final Function(bool) onDonorBloodTypeChange;
+  final DateTime? birthday;
+  final DateTime? lmp;
+  final DateTime? edc;
 
   @override
   State<PatientInformationForm> createState() => _PatientInformationFormState();
@@ -64,47 +64,32 @@ class PatientInformationForm extends StatefulWidget {
 
 class _PatientInformationFormState extends State<PatientInformationForm> {
   bool isExpanded = false;
-  late User user;
-  late DateTime userBirthday;
-  String? userToken;
 
-  Future<void> fetchPatientInformation() async {
-    if (userToken == null) return;
-
-    PrenatalServices prenatalServices = PrenatalServices();
-
-    final PatientInformation pi = await prenatalServices.fetchPatientInformationByToken(userToken!);
-
-    widget.obStatusController.text = pi.obStatus;
-    log(DateFormat('MM dd, yyyy').format(pi.lmp));
-    widget.lmpOnChange(pi.lmp);
-    widget.edcOnChange(pi.edc);
-    widget.philHealthOnChange(pi.philhealth);
-    widget.nhtsOnChange(pi.nhts);
+  void handleBirthdayValue(DateTime d) {
+    widget.onBirthdayChange(d);
   }
 
-  @override
-  void initState() {
-    super.initState();
-    user = context.read<User>();
-    userToken = user.token;
-    userBirthday = DateTime.now();
+  void handlePhilhealthValue(bool? v) {
+    if (v == null) return;
+    widget.onPhilhealthChange(v);
+  }
 
-    fetchPatientInformation();
+  void handleNhtsValue(bool? v) {
+    if (v == null) return;
+    widget.onNhtsChange(v);
+  }
 
-    WidgetsBinding.instance.addPostFrameCallback((_) {
-      widget.fullnameController.text = "${user.firstname!} ${user.lastname!}";
-      userBirthday = user.dateOfBirth != null ? DateTime.parse(user.dateOfBirth!) : widget.birthday;
-      widget.ageController.text =
-          ((DateTime.now().difference(DateTime.tryParse(user.dateOfBirth!)!).inDays / 365.2425))
-              .floor()
-              .toString();
-      widget.onBarangayChange(user.address);
-    });
+  void handleBloodTypeValue(bool? v) {
+    if (v == null) return;
+    widget.onDonorBloodTypeChange(v);
   }
 
   @override
   Widget build(BuildContext context) {
+    final User user = context.read<User>();
+
+    // handleBirthdayValue(DateTime.parse(user.dateOfBirth!));
+
     return CustomSection(
       title: "My Information",
       action: CustomButton(
@@ -131,32 +116,33 @@ class _PatientInformationFormState extends State<PatientInformationForm> {
                   context: context, controller: widget.obStatusController, label: "OB Status"),
               BarangaySelector(
                 onChange: widget.onBarangayChange,
+                barangayName: user.address,
               ),
               CustomInput.datepicker(
                 context: context,
                 label: "Date of birth",
-                selectedDate: userBirthday,
-                onChange: widget.birthdayOnChange,
+                selectedDate: widget.birthday,
+                onChange: handleBirthdayValue,
               ),
               CustomInput.datepicker(
                   context: context,
                   label: "My Last Menstrual Period (LMP)",
-                  onChange: widget.lmpOnChange,
-                  selectedDate: widget.lastMenstrualPeriod),
+                  onChange: widget.onLmpChange,
+                  selectedDate: widget.data?.lmp),
               CustomInput.datepicker(
                   context: context,
                   label: "I am expected to Give Birth to my Child (EDC) on",
-                  onChange: widget.edcOnChange,
-                  selectedDate: widget.expectedDateOfConfinement),
+                  onChange: widget.onEdcChange,
+                  selectedDate: widget.data?.edc),
               CustomCheckbox(
                 label: "PhilHealth",
-                value: widget.philHealth,
-                onChange: widget.philHealthOnChange,
+                value: widget.philhealth,
+                onChange: handlePhilhealthValue,
               ),
               CustomCheckbox(
                 label: "NHTS",
                 value: widget.nhts,
-                onChange: widget.nhtsOnChange,
+                onChange: handleNhtsValue,
               ),
               CustomSection(
                 title: "Blood Donor",
@@ -177,7 +163,7 @@ class _PatientInformationFormState extends State<PatientInformationForm> {
                   CustomCheckbox(
                       label: "Blood type verified",
                       value: widget.donorBloodTyped,
-                      onChange: widget.bloodTypeOnChange),
+                      onChange: handleBloodTypeValue),
                   // CustomInput.text(
                   //     context: context, controller: widget.donorBloodTyped, label: "Blood type"),
                 ],

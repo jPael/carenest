@@ -1,13 +1,18 @@
 import 'package:flutter/material.dart';
 import 'package:smartguide_app/components/checklist/custom_checkbox.dart';
 import 'package:smartguide_app/components/section/custom_section.dart';
+import 'package:smartguide_app/models/counseling.dart';
 
 class CounselingForm extends StatelessWidget {
   const CounselingForm({
     super.key,
+    this.data,
     required this.questionaire,
+    // required this.questionaire,
     required this.onChange,
   });
+
+  final Counseling? data;
 
   final List<Map<String, dynamic>> questionaire;
   final Function(String, bool) onChange;
@@ -21,7 +26,7 @@ class CounselingForm extends StatelessWidget {
       title: "Counseling",
       headerSpacing: 4,
       children: [
-        ...questionaire.take(3).map(
+        ...questionaire.take(2).map(
               (e) => CustomCheckbox(
                   id: e["id"],
                   label: "${e["description"]}",
@@ -29,7 +34,7 @@ class CounselingForm extends StatelessWidget {
                   customOnChange: onChange),
             ),
         const Text("The counseling for proper nutrition has been completed"),
-        ...questionaire.skip(3).map(
+        ...questionaire.skip(2).map(
               (e) => CustomCheckbox(
                   id: e["id"],
                   label: "${e["description"]} ",

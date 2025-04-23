@@ -43,7 +43,7 @@ class InlineInput extends StatelessWidget {
                   )),
           if (isNormal != null)
             Expanded(
-                flex: 1,
+                flex: 2,
                 child: Row(
                   spacing: 4,
                   children: [

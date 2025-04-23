@@ -13,15 +13,18 @@ Future<void> registerAccount(
     {required String name,
     required String email,
     required String password,
+    required String barangayId,
     required UserType type}) async {
   Map<String, dynamic> body = {
     RegistrationFields.name: name,
     RegistrationFields.email: email,
     RegistrationFields.password: password,
     RegistrationFields.passwordConfirmation: password,
-    RegistrationFields.barangayId: "1",
+    RegistrationFields.barangayId: int.parse(barangayId),
     RegistrationFields.userType: getIntegerFromUserTypeEnum(type),
   };
+
+  print(body.toString());
 
   final url = apiURIBase.replace(path: LaravelPaths.register);
 
@@ -30,8 +33,6 @@ Future<void> registerAccount(
         'Content-Type': 'application/json',
       },
       body: jsonEncode(body));
-
-  // log("from register: ${res.body}");
 
   final data = jsonDecode(res.body);
 
@@ -50,8 +51,6 @@ Future<Map<String, dynamic>> loginAccount({required String email, required Strin
   final res = await http.post(url,
       headers: {'Content-Type': 'application/json'},
       body: jsonEncode({"email": email, "password": password}));
-
-  // log("from login: ${res.body}");
 
   final data = jsonDecode(res.body);
 

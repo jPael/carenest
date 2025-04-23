@@ -24,6 +24,19 @@ class Trimester {
     required this.advices,
     required this.services,
   });
+
+  // static Trimester fromJson(Map<String, dynamic> json) => Trimester(
+  //     whtPersonnel: whtPersonnel,
+  //     trimester: trimester,
+  //     dateOfVisit: dateOfVisit,
+  //     consultWht: consultWht,
+  //     introducedBirthPlan: introducedBirthPlan,
+  //     fundicHeight: fundicHeight,
+  //     isFundicNormal: isFundicNormal,
+  //     bloodPressure: bloodPressure,
+  //     isBloodPressureNormal: isBloodPressureNormal,
+  //     advices: advices,
+  //     services: services);
 }
 
 enum TrimesterEnum { first, second, third }

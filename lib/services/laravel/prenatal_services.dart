@@ -3,9 +3,13 @@ import 'dart:developer';
 
 import 'package:http/http.dart' as http;
 import 'package:smartguide_app/fields/user_fields.dart';
-import 'package:smartguide_app/models/person.dart';
+import 'package:smartguide_app/models/after_care.dart';
+import 'package:smartguide_app/models/birth_plan.dart';
+import 'package:smartguide_app/models/care_and_test.dart';
+import 'package:smartguide_app/models/counseling.dart';
+import 'package:smartguide_app/models/donor.dart';
 import 'package:smartguide_app/models/patient_information.dart';
-
+import 'package:smartguide_app/models/person.dart';
 import 'package:smartguide_app/models/prenatal.dart';
 import 'package:smartguide_app/services/laravel/api_url.dart';
 import 'package:smartguide_app/services/laravel/fields.dart';
@@ -14,15 +18,70 @@ import 'package:smartguide_app/services/user_services.dart';
 import 'package:smartguide_app/utils/utils.dart';
 
 class PrenatalServices {
-  Future<PatientInformation> fetchPatientInformationByToken(String token) async {
-    final url = apiURIBase.replace(path: LaravelPaths.patientInformation);
+  Future<Map<String, dynamic>?> fetchPatientInformationByToken(String token, int id) async {
+    if (token.isEmpty) return null;
 
-    final res = await http
-        .get(url, headers: {'Content-Type': 'application/json', 'Authorization': "Bearer $token"});
+    final List<Prenatal> prenatals = await fetchAllPrenatalByLaravelUserId(token: token, id: id);
+    if (prenatals.isEmpty) return null;
 
-    final patientInformationJson = jsonDecode(res.body);
+    final Prenatal prenatal = prenatals.first;
 
-    return PatientInformation.fromJson(patientInformationJson);
+    // careAndTest
+    final CareAndTest ci = CareAndTest(
+        trimester: prenatal.selectedTrimester,
+        consultWht: prenatal.consultWht,
+        introducedBirthPlann: prenatal.introducedBirthPlan,
+        fundicHeight: prenatal.fundicHeight,
+        isFundicNormal: prenatal.fundicNormal,
+        bloodPressure: prenatal.bloodPressure,
+        isBloodPressureNormal: prenatal.bloodPressureNormal,
+        advices: prenatal.advices,
+        services: prenatal.services);
+
+    // birth plan
+    final Map<String, dynamic> assignedByJson =
+        await fetchUserByUserId(id: prenatal.patientInformation.assignById, token: token);
+    final Map<String, dynamic> accompanyByJson =
+        await fetchUserByUserId(id: prenatal.patientInformation.accompanyById, token: token);
+
+    final Person? assignedByData = Person.fromJsonStatic(assignedByJson);
+    final Person? accompaniedBy = Person.fromJsonStatic(accompanyByJson);
+
+    final BirthPlan bi = BirthPlan(
+        birthplace: prenatal.birthplace,
+        assignedBy: assignedByData!,
+        accompaniedBy: accompaniedBy!);
+
+    // afterCare
+
+    // log(prenatal.toString());
+    final AfterCare afi = AfterCare(
+        immunzation: prenatal.ttItems
+            .map((i) => Immunization(term: i['term'], date: DateTime.parse(i['created_at'])))
+            .toList(),
+        ironSupplement: prenatal.ironSuppItems
+            .map((i) => IronSupplement(tabs: i['no_tabs'], date: DateTime.parse(i['created_at'])))
+            .toList());
+
+    // counseling
+    final Counseling co = Counseling(
+        breastFeeding: prenatal.breastFeeding,
+        familyPlanning: prenatal.familyPlanning,
+        properNutrition: prenatal.properNutrition,
+        childProperNutrition: prenatal.properNutritionForChild,
+        selfProperNutrition: prenatal.properNutritionForMyself);
+
+    final Map<String, dynamic> patientInformation = {
+      "patientInformation": prenatal.patientInformation,
+      'careAndTest': ci,
+      'birthPlan': bi,
+      'afterCare': afi,
+      'counseling': co
+    };
+
+    // log(patientInformationJson.toString());
+
+    return patientInformation;
   }
 
   Future<Prenatal?> fetchPrenatalByPrenatalId({required String token, required int id}) async {
@@ -47,6 +106,8 @@ class PrenatalServices {
 
     final List<dynamic> prenatalsMap = jsonDecode(res.body);
 
+    if (prenatalsMap.isEmpty) return [];
+
     final List<Prenatal?> prenatals = await Future.wait(prenatalsMap.map((p) async {
       final int userId = p[LaravelUserFields.userId];
 
@@ -62,7 +123,7 @@ class PrenatalServices {
 
       final DateTime birthday = DateTime.parse(firebaseUser[UserFields.dateOfBirth]);
       final String barangay = firebaseUser[UserFields.address];
-
+      // log(p[PrenatalFields.bloodDonors].first[PrenatalFields.donorFullname]);
       return Prenatal(
           laravelId: p[LaravelUserFields.userId],
           selectedTrimester: getTrimesterEnumFromTrimesterString(
@@ -86,21 +147,23 @@ class PrenatalServices {
           ],
           birthplace: p[PrenatalFields.birthPlace] ?? "NA",
           patientInformation: PatientInformation(
+              bloodDonor: Donor(
+                  id: p[PrenatalFields.bloodDonors].first['id'],
+                  fullname: p[PrenatalFields.bloodDonors].first[PrenatalFields.donorFullname],
+                  contactNumber:
+                      p[PrenatalFields.bloodDonors].first[PrenatalFields.donorContactNumber],
+                  bloodTyped: p[PrenatalFields.bloodDonors].first[PrenatalFields.donorBloodType] == 1
+                      ? true
+                      : false),
               philhealth: p[PatientInformationFields.philhealth] == 1 ? true : false,
               nhts: p[PatientInformationFields.nhts] == 1 ? true : false,
               lmp: DateTime.parse(p[PatientInformationFields.lmp]),
               edc: DateTime.parse(p[PatientInformationFields.edc]),
               obStatus: p[PatientInformationFields.obStatus],
-              assignById: p[PatientInformationFields.assignedBy],
-              accompanyById: p[PatientInformationFields.accompanyBy],
-              accompaniedBy: Person.fromJsonStatic(p[PatientInformationFields.accompanyByData])),
-          // assignedBy: p[PrenatalFields.assignedBy].toString(),
-          // accompaniedBy: p[PrenatalFields.accompanyBy].toString(),
-          // philhealth: p[PrenatalFields.philhealth] == 1 ? true : false,
-          // nhts: p[PrenatalFields.nhts] == 1 ? true : false,
-          // expectedDateOfConfinement: DateTime.parse(p[PrenatalFields.edc]),
-          // lastMenstrualPeriod: DateTime.parse(p[PrenatalFields.lmp]),
-          // obStatus: p[PrenatalFields.obStatus],
+              assignById: p[PatientInformationFields.assignedBy]['id'],
+              accompanyById: p[PatientInformationFields.accompanyBy]['id'],
+              accompaniedByData:
+                  Person.fromJsonStatic(p[PatientInformationFields.accompanyByData])),
           ttItems: (p[PrenatalFields.immunizationTerm] as List).cast<Map<String, dynamic>>(),
           ironSuppItems: (p[PrenatalFields.ironSupplements] as List).cast<Map<String, dynamic>>(),
           barangay: barangay,
@@ -124,9 +187,7 @@ class PrenatalServices {
                   : false,
           donorFullname: p[PrenatalFields.bloodDonors].first[PrenatalFields.donorFullname],
           donorContact: p[PrenatalFields.bloodDonors].first[PrenatalFields.donorContactNumber],
-          donorBloodTyped: p[PrenatalFields.bloodDonors].first[PrenatalFields.donorBloodType] == 1
-              ? true
-              : false,
+          donorBloodTyped: p[PrenatalFields.bloodDonors].first[PrenatalFields.donorBloodType] == 1 ? true : false,
           createdAt: DateTime.parse(p[PrenatalFields.createdAt]),
           updatedAt: DateTime.parse(p[PrenatalFields.updatedAt]),
           id: p[PrenatalFields.id]);

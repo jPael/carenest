@@ -33,7 +33,7 @@ class _PrenatalRecordPageState extends State<PrenatalRecordPage> with TickerProv
       CareAndTests(
         trimesters: [
           Trimester(
-              whtPersonnel: widget.prenatal.patientInformation.accompaniedBy!.name!,
+              whtPersonnel: widget.prenatal.patientInformation.accompaniedByData!.name!,
               trimester: widget.prenatal.selectedTrimester,
               dateOfVisit: widget.prenatal.createdAt!,
               consultWht: widget.prenatal.consultWht,

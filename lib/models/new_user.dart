@@ -9,17 +9,19 @@ class NewUser {
   final UserType type;
   final String firstname;
   final String lastname;
-  final String address;
+  final String barangayId;
+  final String firebaseBarangay;
   final String phoneNumber;
   final DateTime dateOfBirth;
   final String email;
   final String password;
 
   NewUser({
+    required this.firebaseBarangay,
     required this.type,
     required this.firstname,
     required this.lastname,
-    required this.address,
+    required this.barangayId,
     required this.phoneNumber,
     required this.dateOfBirth,
     required this.email,
@@ -30,7 +32,7 @@ class NewUser {
         UserFields.email: email,
         UserFields.firstname: firstname,
         UserFields.lastname: lastname,
-        UserFields.address: address,
+        UserFields.address: firebaseBarangay,
         UserFields.phoneNumber: phoneNumber,
         UserFields.dateOfBirth: dateOfBirth.toString(),
         UserFields.userType: getUserStringFromUserTypeEnum(type),
@@ -42,6 +44,9 @@ class NewUser {
       final user = await FirebaseAuth.instance
           .createUserWithEmailAndPassword(email: email, password: password);
 
+      if (kDebugMode) {
+        print("firebase data: " + getUserDetails().toString());
+      }
       final String uid = user.user!.uid;
       await FirebaseFirestore.instance
           .collection("users")
@@ -49,7 +54,11 @@ class NewUser {
           .set({UserFields.uid: uid, ...getUserDetails()});
 
       await registerAccount(
-          name: "$firstname $lastname", email: email, password: password, type: type);
+          name: "$firstname $lastname",
+          email: email,
+          password: password,
+          type: type,
+          barangayId: barangayId);
 
       return {"success": "Registered successfully! Continue logging in with your new account"};
     } on FirebaseException catch (e, stackTrace) {
@@ -69,7 +78,7 @@ class NewUser {
 
   @override
   String toString() {
-    return 'User(type: $type, firstname: $firstname, lastname: $lastname, address: $address, phoneNumber: $phoneNumber, dateOfBirth: $dateOfBirth, email: $email, password: $password)';
+    return 'User(type: $type, firstname: $firstname, lastname: $lastname, address: $barangayId, phoneNumber: $phoneNumber, dateOfBirth: $dateOfBirth, email: $email, password: $password)';
   }
 }
 

@@ -14,13 +14,15 @@ class AccountCreation extends StatefulWidget {
       required this.firstname,
       required this.lastname,
       required this.phoneNumber,
-      required this.address,
-      required this.dateOfBirth});
+      required this.dateOfBirth,
+      required this.barangayId,
+      required this.firebaseAddress});
 
   final String firstname;
   final String lastname;
   final String phoneNumber;
-  final String address;
+  final String barangayId;
+  final String firebaseAddress;
   final DateTime dateOfBirth;
 
   @override
@@ -46,10 +48,11 @@ class AccountCreationState extends State<AccountCreation> {
       // await Future.delayed(const Duration(seconds: 3));
 
       final NewUser user = NewUser(
-          type: UserType.midwife,
+          type: UserType.mother,
           firstname: widget.firstname,
           lastname: widget.lastname,
-          address: widget.address,
+          barangayId: widget.barangayId,
+          firebaseBarangay: widget.firebaseAddress,
           phoneNumber: widget.phoneNumber,
           dateOfBirth: widget.dateOfBirth,
           email: emailController.text,

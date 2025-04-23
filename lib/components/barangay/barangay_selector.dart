@@ -1,3 +1,5 @@
+import 'dart:developer';
+
 import 'package:flutter/material.dart';
 import 'package:smartguide_app/models/barangay.dart';
 import 'package:smartguide_app/services/laravel/barangay_services.dart';
@@ -6,16 +8,18 @@ class BarangaySelector extends StatefulWidget {
   const BarangaySelector({
     super.key,
     required this.onChange,
+    this.barangayName,
   });
 
-  final Function(String? value) onChange;
+  final Function(String? address, String? id) onChange;
+  final String? barangayName;
 
   @override
   BarangaySelectorState createState() => BarangaySelectorState();
 }
 
 class BarangaySelectorState extends State<BarangaySelector> {
-  String defaultValue = "";
+  Barangay? defaultValue;
   bool fetchingBarangay = false;
   List<Barangay> barangays = [];
 
@@ -25,15 +29,28 @@ class BarangaySelectorState extends State<BarangaySelector> {
     });
 
     // await Future.delayed(Duration(seconds: 3));
-    final _barangays = await BarangayServices().fetchALlBarangays();
-
+    List<Barangay> _barangays = [];
+    try {
+      _barangays = await BarangayServices().fetchALlBarangays();
+    } catch (e, stackTrace) {
+      log(e.toString(), stackTrace: stackTrace);
+    }
     setState(() {
-      defaultValue = _barangays.first.name;
-      widget.onChange(defaultValue);
+      if (widget.barangayName == null) {
+        defaultValue = _barangays.first;
+      } else {
+        for (var b in _barangays) {
+          if (b.name == widget.barangayName) {
+            defaultValue = b;
+            break;
+          }
+        }
+      }
+
+      // if (defaultValue?.id == null && defaultValue?.name == null) return;
+
+      widget.onChange(defaultValue?.id, defaultValue?.name);
       barangays = _barangays;
-    });
-
-    setState(() {
       fetchingBarangay = false;
     });
   }
@@ -69,15 +86,15 @@ class BarangaySelectorState extends State<BarangaySelector> {
             ),
             value: defaultValue,
             onChanged: (value) {
-              widget.onChange(value);
+              if (value == null) return;
+              widget.onChange(value.name, value.id);
               setState(() {
-                defaultValue = value!;
+                defaultValue = value;
               });
             },
-            items:
-                barangays.map((b) => DropdownMenuItem(value: b.name, child: Text(b.name))).toList(),
+            items: barangays.map((b) => DropdownMenuItem(value: b, child: Text(b.name))).toList(),
             validator: (value) {
-              if (value == null || value.isEmpty) {
+              if (value == null) {
                 return "Please select your barangay";
               }
               return null;

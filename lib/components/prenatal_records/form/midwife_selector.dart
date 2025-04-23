@@ -5,9 +5,10 @@ import 'package:smartguide_app/models/person.dart';
 import 'package:smartguide_app/services/laravel/midwife_services.dart';
 
 class MidwifeSelector extends StatefulWidget {
-  const MidwifeSelector({super.key, required this.onChange});
+  const MidwifeSelector({super.key, required this.onChange, this.defaultValue});
 
   final Function(String?)? onChange;
+  final String? defaultValue;
 
   @override
   MidwifeSelectorState createState() => MidwifeSelectorState();
@@ -23,8 +24,22 @@ class MidwifeSelectorState extends State<MidwifeSelector> {
     try {
       final List<Person> _midwives = await midwifeServices.fetchAllMidwife();
 
+      // _midwives.forEach((m) => log(m.toJson().toString()));
+
       setState(() {
-        defaultValue = _midwives.first.id!.toString();
+        if (widget.defaultValue == null) {
+          // log("Default value is not set: ${widget.defaultValue.toString()}");
+          defaultValue = _midwives.first.id!.toString();
+        } else {
+          // log("Default value is  set: ${widget.defaultValue.toString()}");
+
+          for (var m in _midwives) {
+            if (m.id?.toString() == widget.defaultValue) {
+              defaultValue = m.id.toString();
+            }
+          }
+        }
+
         widget.onChange!(defaultValue);
         midwives = _midwives;
       });

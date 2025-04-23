@@ -29,7 +29,7 @@ class CustomDropdownButton extends StatelessWidget {
       items: data.map((b) => DropdownMenuItem(value: b["value"], child: Text(b["label"]))).toList(),
       validator: (value) {
         if (value == null) {
-          return "Please select your barangay";
+          return "Please select your trimester";
         }
         return null;
       },

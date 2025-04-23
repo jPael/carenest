@@ -5,6 +5,8 @@ import 'package:smartguide_app/components/input/custom_input.dart';
 import 'package:smartguide_app/components/prenatal_records/after_care/after_care_iron_supplement_item.dart';
 import 'package:smartguide_app/components/prenatal_records/after_care/after_care_tt_immunization_item.dart';
 import 'package:smartguide_app/components/section/custom_section.dart';
+import 'package:smartguide_app/models/after_care.dart';
+import 'package:smartguide_app/models/care_and_test.dart';
 
 class AfterCareForm extends StatefulWidget {
   final List<Map<String, dynamic>> ttItems;
@@ -12,9 +14,12 @@ class AfterCareForm extends StatefulWidget {
 
   const AfterCareForm({
     super.key,
-    this.ttItems = const [],
-    this.ironSuppItems = const [],
+    this.data,
+    required this.ttItems,
+    required this.ironSuppItems,
   });
+
+  final AfterCare? data;
 
   @override
   State<AfterCareForm> createState() => _AfterCareFormState();

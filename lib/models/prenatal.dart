@@ -21,19 +21,12 @@ class Prenatal {
     required this.ironSuppItems,
     required this.barangay,
     required this.birthday,
-    // required this.assignedBy,
-    // required this.accompaniedBy,
-    // required this.philhealth,
-    // required this.nhts,
-    // required this.expectedDateOfConfinement,
-    // required this.lastMenstrualPeriod,
-    // required this.obStatus,
     required this.patientInformation,
     required this.fullname,
     required this.age,
     required this.breastFeeding,
     required this.familyPlanning,
-    required this.properNutrition,
+    this.properNutrition,
     required this.properNutritionForChild,
     required this.properNutritionForMyself,
     required this.donorFullname,
@@ -46,7 +39,7 @@ class Prenatal {
 
   final bool breastFeeding;
   final bool familyPlanning;
-  final bool properNutrition;
+  final bool? properNutrition;
   final bool properNutritionForChild;
   final bool properNutritionForMyself;
   final String donorFullname;
@@ -59,13 +52,6 @@ class Prenatal {
   String barangay;
   DateTime birthday;
   PatientInformation patientInformation;
-  // final String obStatus;
-  // bool philhealth;
-  // bool nhts;
-  // DateTime expectedDateOfConfinement;
-  // DateTime lastMenstrualPeriod;
-  // String assignedBy;
-  // String accompaniedBy;
   bool consultWht;
   bool introducedBirthPlan;
   String fundicHeight;
@@ -92,4 +78,36 @@ class Prenatal {
       return {"success": false, "message": "Failed to save prenatal record"};
     }
   }
+
+  Map<String, dynamic> get toJson => {
+        'breastFeeding': breastFeeding,
+        'familyPlanning': familyPlanning,
+        'properNutrition': properNutrition,
+        'properNutritionForChild': properNutritionForChild,
+        'properNutritionForMyself': properNutritionForMyself,
+        'donorFullname': donorFullname,
+        'donorContact': donorContact,
+        'donorBloodTyped': donorBloodTyped,
+        'fullname': fullname,
+        'age': age,
+        'laravelId': laravelId,
+        'selectedTrimester': selectedTrimester.toString(),
+        'barangay': barangay,
+        'birthday': birthday.toIso8601String(),
+        'patientInformation': {},
+        'consultWht': consultWht,
+        'introducedBirthPlan': introducedBirthPlan,
+        'fundicHeight': fundicHeight,
+        'fundicNormal': fundicNormal,
+        'bloodPressure': bloodPressure,
+        'bloodPressureNormal': bloodPressureNormal,
+        'advices': advices,
+        'services': services,
+        'birthplace': birthplace,
+        'ttItems': ttItems,
+        'ironSuppItems': ironSuppItems,
+        'createdAt': createdAt,
+        'updatedAt': updatedAt,
+        'id': id,
+      };
 }
