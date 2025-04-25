@@ -9,6 +9,7 @@ import 'package:smartguide_app/models/user.dart' as current_user;
 import 'package:smartguide_app/pages/landing_page.dart';
 import 'package:smartguide_app/pages/midwife/home/home_layout_page.dart' as midwife;
 import 'package:smartguide_app/pages/mother/home/home_layout_page.dart' as mother;
+import 'package:smartguide_app/pages/onboarding/waiting_verification_page.dart';
 import 'package:smartguide_app/services/user_services.dart';
 import 'package:smartguide_app/utils/utils.dart';
 
@@ -42,14 +43,23 @@ class _AuthPageState extends State<AuthPage> {
               );
             } else if (userSnapshot.hasData) {
               final data = userSnapshot.data!;
-              final UserType role = getUserEnumFromUserTypeString(data[UserFields.userType]);
-              log(data[UserFields.token].toString());
 
-              WidgetsBinding.instance.addPostFrameCallback((_) {
-                context.read<current_user.User>().setUser(data);
-              });
+              if (data[UserFields.isVerified]) {
+                // log(data.toString());
+                final UserType role = getUserEnumFromUserTypeString(data[UserFields.userType]);
+                // log(data[UserFields.token].toString());
 
-              return role == UserType.mother ? const mother.HomeLayoutPage() : const midwife.HomeLayoutPage();
+                WidgetsBinding.instance.addPostFrameCallback((_) {
+                  context.read<current_user.User>().setUser(data);
+                });
+
+                return role == UserType.mother
+                    ? const mother.HomeLayoutPage()
+                    : const midwife.HomeLayoutPage();
+              } else {
+                return WaitingVerificationPage(
+                    fullname: "${data[UserFields.firstname]} ${data[UserFields.lastname]}");
+              }
             } else {
               return const LandingPage();
             }

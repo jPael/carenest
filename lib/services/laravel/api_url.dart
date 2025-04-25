@@ -1,5 +1,5 @@
 // Uri get apiURIBase => Uri(scheme: "https", host: "tagorhu.site");
-Uri get apiURIBase => Uri(scheme: "http", host: "192.168.43.186", port: 8000);
+Uri get apiURIBase => Uri(scheme: "http", host: "192.168.254.107", port: 8000);
 
 // 192.168.1.17:8000
 

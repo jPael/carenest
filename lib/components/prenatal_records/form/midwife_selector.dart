@@ -26,8 +26,9 @@ class MidwifeSelectorState extends State<MidwifeSelector> {
 
       // _midwives.forEach((m) => log(m.toJson().toString()));
 
+      // log(widget.defaultValue?.length.toString() ?? (-1).toString());
       setState(() {
-        if (widget.defaultValue == null) {
+        if (widget.defaultValue == null || widget.defaultValue!.isEmpty) {
           // log("Default value is not set: ${widget.defaultValue.toString()}");
           defaultValue = _midwives.first.id!.toString();
         } else {
@@ -87,9 +88,10 @@ class MidwifeSelectorState extends State<MidwifeSelector> {
                       defaultValue = value!;
                     });
                   },
-                  items: midwives
-                      .map((b) => DropdownMenuItem(value: b.id.toString(), child: Text(b.name!)))
-                      .toList(),
+                  items: midwives.map((b) {
+                    log("value: ${b.id.toString()} name: ${b.name.toString()} value:$defaultValue");
+                    return DropdownMenuItem(value: b.id.toString(), child: Text(b.name!));
+                  }).toList(),
                   validator: (value) {
                     if (value == null || value.isEmpty) {
                       return "Please select your midwife";

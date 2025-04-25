@@ -1,4 +1,5 @@
 class UserFields {
+  static String get isVerified => 'is_verified';
   static String get firstname => "firstname";
   static String get lastname => "lastname";
   static String get phoneNumber => "phoneNumber";

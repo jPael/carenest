@@ -29,9 +29,17 @@ class DatePicker extends StatefulWidget {
 class DatePickerState extends State<DatePicker> {
   late TextEditingController dateController;
 
+  final FocusNode fn = FocusNode();
+
   @override
   void initState() {
     super.initState();
+    fn.addListener(() {
+      if (fn.hasFocus) {
+        _selectDate(context);
+      }
+      fn.unfocus();
+    });
     dateController = TextEditingController(
       text:
           widget.selectedDate != null ? DateFormat("MMMM d, y").format(widget.selectedDate!) : null,
@@ -40,6 +48,7 @@ class DatePickerState extends State<DatePicker> {
 
   Future<void> _selectDate(BuildContext context) async {
     if (widget.readonly) return;
+
     final DateTime? picked = await showDatePicker(
       context: context,
       initialDate: widget.selectedDate,
@@ -60,6 +69,7 @@ class DatePickerState extends State<DatePicker> {
     return Flexible(
       child: TextFormField(
         readOnly: true,
+        onTap: () => _selectDate(context),
         validator: widget.validator,
         controller: dateController,
         decoration: InputDecoration(

@@ -60,6 +60,7 @@ Future<Map<String, dynamic>> loginAccount({required String email, required Strin
   return {
     UserFields.token: data["data"]["token"],
     UserFields.laravelId: data["data"]["user"]["id"],
+    UserFields.isVerified: data['data']['user'][UserFields.isVerified] == 1 ? true : false,
   };
 }
 
