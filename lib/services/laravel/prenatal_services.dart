@@ -18,16 +18,19 @@ import 'package:smartguide_app/services/user_services.dart';
 import 'package:smartguide_app/utils/utils.dart';
 
 class PrenatalServices {
-  Future<Map<String, dynamic>?> fetchPatientInformationByToken(String token, int id) async {
+  Future<Map<String, dynamic>?> fetchPatientInformationById(
+      {required String token, required int userId, required int patientInformationId}) async {
     if (token.isEmpty) return null;
 
-    final List<Prenatal> prenatals = await fetchAllPrenatalByLaravelUserId(token: token, id: id);
+    final List<Prenatal> prenatals =
+        await fetchAllPrenatalByLaravelUserId(token: token, id: userId);
     if (prenatals.isEmpty) return null;
 
-    final Prenatal prenatal = prenatals.first;
+    final Prenatal prenatal = prenatals.firstWhere((p) => p.id! == patientInformationId);
 
     // careAndTest
     final CareAndTest ci = CareAndTest(
+        whtPersonnel: prenatal.patientInformation.assignedByData,
         trimester: prenatal.selectedTrimester,
         consultWht: prenatal.consultWht,
         introducedBirthPlann: prenatal.introducedBirthPlan,
@@ -35,6 +38,7 @@ class PrenatalServices {
         isFundicNormal: prenatal.fundicNormal,
         bloodPressure: prenatal.bloodPressure,
         isBloodPressureNormal: prenatal.bloodPressureNormal,
+        dateOfVisit: prenatal.createdAt,
         advices: prenatal.advices,
         services: prenatal.services);
 
@@ -53,8 +57,6 @@ class PrenatalServices {
         accompaniedBy: accompaniedBy!);
 
     // afterCare
-
-    // log(prenatal.toString());
     final AfterCare afi = AfterCare(
         immunzation: prenatal.ttItems
             .map((i) => Immunization(term: i['term'], date: DateTime.parse(i['created_at'])))
@@ -79,131 +81,226 @@ class PrenatalServices {
       'counseling': co
     };
 
-    // log(patientInformationJson.toString());
+    return patientInformation;
+  }
+
+  Future<Map<String, dynamic>?> fetchLatestPatientInformationByToken(String token, int id) async {
+    if (token.isEmpty) return null;
+
+    final List<Prenatal> prenatals = await fetchAllPrenatalByLaravelUserId(token: token, id: id);
+    if (prenatals.isEmpty) return null;
+
+    final Prenatal prenatal = prenatals.last;
+
+    // careAndTest
+    final CareAndTest ci = CareAndTest(
+        whtPersonnel: prenatal.patientInformation.assignedByData,
+        trimester: prenatal.selectedTrimester,
+        consultWht: prenatal.consultWht,
+        introducedBirthPlann: prenatal.introducedBirthPlan,
+        fundicHeight: prenatal.fundicHeight,
+        isFundicNormal: prenatal.fundicNormal,
+        bloodPressure: prenatal.bloodPressure,
+        isBloodPressureNormal: prenatal.bloodPressureNormal,
+        dateOfVisit: prenatal.createdAt,
+        advices: prenatal.advices,
+        services: prenatal.services);
+
+    // birth plan
+    final Map<String, dynamic> assignedByJson =
+        await fetchUserByUserId(id: prenatal.patientInformation.assignById, token: token);
+    final Map<String, dynamic> accompanyByJson =
+        await fetchUserByUserId(id: prenatal.patientInformation.accompanyById, token: token);
+
+    final Person? assignedByData = Person.fromJsonStatic(assignedByJson);
+    final Person? accompaniedBy = Person.fromJsonStatic(accompanyByJson);
+
+    final BirthPlan bi = BirthPlan(
+        birthplace: prenatal.birthplace,
+        assignedBy: assignedByData!,
+        accompaniedBy: accompaniedBy!);
+
+    // afterCare
+    final AfterCare afi = AfterCare(
+        immunzation: prenatal.ttItems
+            .map((i) => Immunization(term: i['term'], date: DateTime.parse(i['created_at'])))
+            .toList(),
+        ironSupplement: prenatal.ironSuppItems
+            .map((i) => IronSupplement(tabs: i['no_tabs'], date: DateTime.parse(i['created_at'])))
+            .toList());
+
+    // counseling
+    final Counseling co = Counseling(
+        breastFeeding: prenatal.breastFeeding,
+        familyPlanning: prenatal.familyPlanning,
+        properNutrition: prenatal.properNutrition,
+        childProperNutrition: prenatal.properNutritionForChild,
+        selfProperNutrition: prenatal.properNutritionForMyself);
+
+    final Map<String, dynamic> patientInformation = {
+      "patientInformation": prenatal.patientInformation,
+      'careAndTest': ci,
+      'birthPlan': bi,
+      'afterCare': afi,
+      'counseling': co
+    };
 
     return patientInformation;
   }
 
   Future<Prenatal?> fetchPrenatalByPrenatalId({required String token, required int id}) async {
     final List<Prenatal> prenatals = await fetchAllPrenatal(token);
-
     return prenatals.where((p) => p.id == id).firstOrNull;
   }
 
   Future<List<Prenatal>> fetchAllPrenatalByLaravelUserId(
       {required String token, required int id}) async {
     final List<Prenatal> prenatals = await fetchAllPrenatal(token);
+    return prenatals.where((p) => p.laravelId == id).toList();
+  }
 
-    final List<Prenatal> filteredPrenatal = prenatals.where((p) => p.laravelId == id).toList();
+  Future<List<Prenatal>> fetchAllPrenatalByMidwifeLaravelUserId(
+      {required String token, required int id}) async {
+    final List<Prenatal> prenatals = await fetchAllPrenatal(token);
 
-    return filteredPrenatal;
+    // log(prenatals.length.toString());
+
+    // final List<Prenatal> uniquePrenatals = [];
+    final List<int> seenIds = []; // Track seen IDs to ensure uniqueness
+
+    final List<Prenatal?> uniquePrentals = prenatals.map((p) {
+      if (!seenIds.contains(p.laravelId)) {
+        seenIds.add(p.laravelId);
+        return p;
+      }
+    }).toList();
+
+    return uniquePrentals.whereType<Prenatal>().toList();
   }
 
   Future<List<Prenatal>> fetchAllPrenatal(String token) async {
     final url = apiURIBase.replace(path: LaravelPaths.allPrenatal);
-
     final res = await http.get(url);
 
+    if (res.statusCode != 200) {
+      log('Failed to fetch prenatal data. Status code: ${res.statusCode}');
+      return [];
+    }
+
     final List<dynamic> prenatalsMap = jsonDecode(res.body);
+
+    // log("prenatalsMap: ${prenatalsMap.length.toString()}");
 
     if (prenatalsMap.isEmpty) return [];
 
     final List<Prenatal?> prenatals = await Future.wait(prenatalsMap.map((p) async {
-      final int userId = p[LaravelUserFields.userId];
+      try {
+        final int userId = p[LaravelUserFields.userId];
+        final Map<String, dynamic> user = await fetchUserByUserId(id: userId, token: token);
+        final String userEmail = user[LaravelUserFields.email];
+        final Map<String, dynamic>? firebaseUser = await getUserByEmail(userEmail);
 
-      final Map<String, dynamic> user = await fetchUserByUserId(id: userId, token: token);
+        if (firebaseUser == null) {
+          log('Firebase user not found for email: $userEmail');
+          return null;
+        }
 
-      final String userEmail = user[LaravelUserFields.email];
+        // Handle clinic visits
+        final List<dynamic> clinicVisits = p[PrenatalFields.clinicVisits] as List;
+        if (clinicVisits.isEmpty) {
+          log('No clinic visits found for prenatal record ${p[PrenatalFields.id]}');
+          return null;
+        }
+        final Map<String, dynamic> clinicVisit = clinicVisits.first;
 
-      final Map<String, dynamic>? firebaseUser = await getUserByEmail(userEmail);
+        // Handle counselings
+        final List<dynamic> counselings = p[PrenatalFields.counselings] as List;
+        final Map<String, dynamic> counseling = counselings.isNotEmpty ? counselings.first : {};
 
-      if (firebaseUser == null) {
-        return null;
-      }
+        // Handle blood donors
+        final List<dynamic> bloodDonors = p[PrenatalFields.bloodDonors] as List;
+        final Map<String, dynamic> bloodDonor = bloodDonors.isNotEmpty ? bloodDonors.first : {};
 
-      final DateTime birthday = DateTime.parse(firebaseUser[UserFields.dateOfBirth]);
-      final String barangay = firebaseUser[UserFields.address];
-      // log(p[PrenatalFields.bloodDonors].first[PrenatalFields.donorFullname]);
-      return Prenatal(
+        final DateTime birthday = DateTime.parse(firebaseUser[UserFields.dateOfBirth]);
+        final String barangay = firebaseUser[UserFields.address];
+
+        return Prenatal(
           laravelId: p[LaravelUserFields.userId],
           selectedTrimester: getTrimesterEnumFromTrimesterString(
-              p[PrenatalFields.clinicVisits].first['trimester']),
-          consultWht:
-              p[PrenatalFields.clinicVisits].first[PrenatalFields.consultWht] == 1 ? true : false,
-          introducedBirthPlan:
-              p[PrenatalFields.clinicVisits].first[PrenatalFields.whtIntroducedBirthPlan] == 1
-                  ? true
-                  : false,
-          fundicHeight:
-              p[PrenatalFields.clinicVisits].first[PrenatalFields.fundicHeight].toString(),
+              clinicVisit['trimester']?.toString() ?? '1st Trimester'),
+          consultWht: clinicVisit[PrenatalFields.consultWht] == 1,
+          introducedBirthPlan: clinicVisit[PrenatalFields.whtIntroducedBirthPlan] == 1,
+          fundicHeight: clinicVisit[PrenatalFields.fundicHeight]?.toString() ?? 'NA',
           fundicNormal: true,
           bloodPressure: (p[PrenatalFields.bloodPressure] ?? "NA").toString(),
           bloodPressureNormal: true,
           advices: [
-            (p[PrenatalFields.clinicVisits].first[PrenatalFields.advices])['content'] ?? "NA"
+            (clinicVisit[PrenatalFields.advices] as Map?)?.containsKey('content') ?? false
+                ? (clinicVisit[PrenatalFields.advices]!['content'] ?? "NA")
+                : "NA"
           ],
           services: [
-            p[PrenatalFields.clinicVisits].first[PrenatalFields.services]['content'] ?? "NA"
+            (clinicVisit[PrenatalFields.services] as Map?)?.containsKey('content') ?? false
+                ? (clinicVisit[PrenatalFields.services]!['content'] ?? "NA")
+                : "NA"
           ],
           birthplace: p[PrenatalFields.birthPlace] ?? "NA",
           patientInformation: PatientInformation(
-              bloodDonor: Donor(
-                  id: p[PrenatalFields.bloodDonors].first['id'],
-                  fullname: p[PrenatalFields.bloodDonors].first[PrenatalFields.donorFullname],
-                  contactNumber:
-                      p[PrenatalFields.bloodDonors].first[PrenatalFields.donorContactNumber],
-                  bloodTyped: p[PrenatalFields.bloodDonors].first[PrenatalFields.donorBloodType] == 1
-                      ? true
-                      : false),
-              philhealth: p[PatientInformationFields.philhealth] == 1 ? true : false,
-              nhts: p[PatientInformationFields.nhts] == 1 ? true : false,
-              lmp: DateTime.parse(p[PatientInformationFields.lmp]),
-              edc: DateTime.parse(p[PatientInformationFields.edc]),
-              obStatus: p[PatientInformationFields.obStatus],
-              assignById: p[PatientInformationFields.assignedBy]['id'],
-              accompanyById: p[PatientInformationFields.accompanyBy]['id'],
-              accompaniedByData:
-                  Person.fromJsonStatic(p[PatientInformationFields.accompanyByData])),
-          ttItems: (p[PrenatalFields.immunizationTerm] as List).cast<Map<String, dynamic>>(),
-          ironSuppItems: (p[PrenatalFields.ironSupplements] as List).cast<Map<String, dynamic>>(),
+            assignedByData: Person.fromJsonStatic(p['assigned_by'] ?? {}),
+            bloodDonor: Donor(
+              id: bloodDonor['id'] ?? 0,
+              fullname: bloodDonor[PrenatalFields.donorFullname] ?? 'NA',
+              contactNumber: bloodDonor[PrenatalFields.donorContactNumber] ?? 'NA',
+              bloodTyped: bloodDonor[PrenatalFields.donorBloodType] == 1,
+            ),
+            philhealth: p[PatientInformationFields.philhealth] == 1,
+            nhts: p[PatientInformationFields.nhts] == 1,
+            lmp: DateTime.parse(p[PatientInformationFields.lmp]),
+            edc: DateTime.parse(p[PatientInformationFields.edc]),
+            obStatus: p[PatientInformationFields.obStatus] ?? 'NA',
+            assignById: (p[PatientInformationFields.assignedBy] as Map?)?.containsKey('id') ?? false
+                ? p[PatientInformationFields.assignedBy]['id']
+                : 0,
+            accompanyById:
+                (p[PatientInformationFields.accompanyBy] as Map?)?.containsKey('id') ?? false
+                    ? p[PatientInformationFields.accompanyBy]['id']
+                    : 0,
+            accompaniedByData:
+                Person.fromJsonStatic(p[PatientInformationFields.accompanyByData] ?? {}),
+          ),
+          ttItems:
+              (p[PrenatalFields.immunizationTerm] as List?)?.cast<Map<String, dynamic>>() ?? [],
+          ironSuppItems:
+              (p[PrenatalFields.ironSupplements] as List?)?.cast<Map<String, dynamic>>() ?? [],
           barangay: barangay,
           birthday: birthday,
           fullname: user[LaravelUserFields.name],
           age: calculateAge(birthday).toString(),
-          breastFeeding: p[PrenatalFields.counselings].first[PrenatalFields.isBreastFeeding] == 1
-              ? true
-              : false,
-          familyPlanning: p[PrenatalFields.counselings].first[PrenatalFields.isFamilyPlanning] == 1
-              ? true
-              : false,
+          breastFeeding: counseling[PrenatalFields.isBreastFeeding] == 1,
+          familyPlanning: counseling[PrenatalFields.isFamilyPlanning] == 1,
           properNutrition: true,
-          properNutritionForChild:
-              p[PrenatalFields.counselings].first[PrenatalFields.isChildProperNutrition] == 1
-                  ? true
-                  : false,
-          properNutritionForMyself:
-              p[PrenatalFields.counselings].first[PrenatalFields.isSelfProperNutrition] == 1
-                  ? true
-                  : false,
-          donorFullname: p[PrenatalFields.bloodDonors].first[PrenatalFields.donorFullname],
-          donorContact: p[PrenatalFields.bloodDonors].first[PrenatalFields.donorContactNumber],
-          donorBloodTyped: p[PrenatalFields.bloodDonors].first[PrenatalFields.donorBloodType] == 1 ? true : false,
+          properNutritionForChild: counseling[PrenatalFields.isChildProperNutrition] == 1,
+          properNutritionForMyself: counseling[PrenatalFields.isSelfProperNutrition] == 1,
+          donorFullname: bloodDonor[PrenatalFields.donorFullname] ?? 'NA',
+          donorContact: bloodDonor[PrenatalFields.donorContactNumber] ?? 'NA',
+          donorBloodTyped: bloodDonor[PrenatalFields.donorBloodType] == 1,
           createdAt: DateTime.parse(p[PrenatalFields.createdAt]),
           updatedAt: DateTime.parse(p[PrenatalFields.updatedAt]),
-          id: p[PrenatalFields.id]);
+          id: p[PrenatalFields.id],
+        );
+      } catch (e) {
+        log('Error processing prenatal record: $e');
+        return null;
+      }
     }).toList());
 
-    // final List<Prenatal> cleanPrenatals = prenatals.where((p) => p != null).map((p)=>p!).toList();
-    final List<Prenatal> cleanPrenatal = prenatals.whereType<Prenatal>().toList();
-
-    return cleanPrenatal;
+    return prenatals.whereType<Prenatal>().toList();
   }
 
   Future<void> storePrenatalRecord(Prenatal prenatal) async {
     final url = apiURIBase.replace(path: LaravelPaths.prenatal);
 
     final ttItem = prenatal.ttItems.isNotEmpty ? prenatal.ttItems.first : {'term': '1st Trimester'};
-
     final ironSuppItem = prenatal.ironSuppItems.isNotEmpty
         ? prenatal.ironSuppItems.first
         : {'iron_supplement_no_tabs': '30'};

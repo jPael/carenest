@@ -3,13 +3,13 @@ import 'package:smartguide_app/components/prenatal_records/care_and_tests/care_a
 import 'package:smartguide_app/components/prenatal_records/care_and_tests/care_and_tests_findings_item.dart';
 import 'package:smartguide_app/components/prenatal_records/care_and_tests/care_and_tests_item.dart';
 import 'package:smartguide_app/components/section/custom_section.dart';
-import 'package:smartguide_app/models/trimester.dart';
+import 'package:smartguide_app/models/care_and_test.dart';
 
 class CareAndTestsGroup extends StatelessWidget {
   const CareAndTestsGroup({super.key, required this.title, required this.trimester});
 
   final String title;
-  final Trimester trimester;
+  final CareAndTest trimester;
 
   @override
   Widget build(BuildContext context) {
@@ -44,7 +44,7 @@ class CareAndTestsGroup extends StatelessWidget {
           ),
           CareAndTestItem(
             description: "WTH introduce & helped me accomplished my Birth Plan.",
-            isTrue: trimester.introducedBirthPlan,
+            isTrue: trimester.introducedBirthPlann,
           ),
           const SizedBox(
             height: 4 * 2,
@@ -115,7 +115,7 @@ class CareAndTestsGroup extends StatelessWidget {
           Column(
             children: [
               Text(
-                trimester.whtPersonnel,
+                trimester.whtPersonnel?.name ?? "None",
                 style: const TextStyle(fontWeight: FontWeight.w500),
               ),
               const Text(

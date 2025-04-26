@@ -1,14 +1,17 @@
 import 'package:flutter/material.dart';
 import 'package:smartguide_app/components/checklist/custom_checklist.dart';
 import 'package:smartguide_app/components/section/custom_section.dart';
+import 'package:smartguide_app/models/counseling.dart' as c;
 
 class Counseling extends StatelessWidget {
-  const Counseling({super.key});
+  const Counseling({super.key, required this.counseling});
+
+  final c.Counseling? counseling;
 
   @override
   Widget build(BuildContext context) {
-    return const Padding(
-      padding: EdgeInsets.all(2 * 8.0),
+    return Padding(
+      padding: const EdgeInsets.all(2 * 8.0),
       child: CustomSection(
         title: "Counseling",
         children: [
@@ -18,7 +21,7 @@ class Counseling extends StatelessWidget {
               Flexible(
                 child: CustomChecklist(
                   label: "Breastfeeding",
-                  checked: true,
+                  checked: counseling?.breastFeeding ?? false,
                 ),
               ),
             ],
@@ -29,15 +32,15 @@ class Counseling extends StatelessWidget {
               Flexible(
                 child: CustomChecklist(
                   label: "Family Planning",
-                  checked: true,
+                  checked: counseling?.familyPlanning ?? false,
                 ),
               ),
             ],
           ),
-          SizedBox(
+          const SizedBox(
             height: 4 * 6,
           ),
-          Text(
+          const Text(
             "Proper Nutrition",
             style: TextStyle(fontSize: 4 * 6),
           ),
@@ -47,7 +50,7 @@ class Counseling extends StatelessWidget {
               Flexible(
                 child: CustomChecklist(
                   label: "Child",
-                  checked: true,
+                  checked: counseling?.childProperNutrition ?? false,
                 ),
               ),
             ],
@@ -58,7 +61,7 @@ class Counseling extends StatelessWidget {
               Flexible(
                 child: CustomChecklist(
                   label: "Mother",
-                  checked: true,
+                  checked: counseling?.selfProperNutrition ?? false,
                 ),
               ),
             ],

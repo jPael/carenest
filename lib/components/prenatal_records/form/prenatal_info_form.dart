@@ -162,7 +162,7 @@ class _PrenatalInfoFormState extends State<PrenatalInfoForm> {
     final User user = context.read<User>();
 
     final Map<String, dynamic>? data =
-        await prenatalServices.fetchPatientInformationByToken(user.token!, user.laravelId!);
+        await prenatalServices.fetchLatestPatientInformationByToken(user.token!, user.laravelId!);
 
     setState(() {
       prenatalData = data;

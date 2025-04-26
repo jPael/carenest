@@ -93,7 +93,7 @@ class Prenatal {
         'laravelId': laravelId,
         'selectedTrimester': selectedTrimester.toString(),
         'barangay': barangay,
-        'birthday': birthday.toIso8601String(),
+        'birthday': birthday.toString(),
         'patientInformation': {},
         'consultWht': consultWht,
         'introducedBirthPlan': introducedBirthPlan,

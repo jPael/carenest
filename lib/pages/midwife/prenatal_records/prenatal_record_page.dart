@@ -1,4 +1,7 @@
+import 'dart:developer';
+
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 import 'package:smartguide_app/components/button/custom_button.dart';
 import 'package:smartguide_app/components/prenatal_records/after_care/after_care.dart';
 import 'package:smartguide_app/components/prenatal_records/birth_plan/birth_plan.dart';
@@ -6,8 +9,9 @@ import 'package:smartguide_app/components/prenatal_records/care_and_tests/care_a
 import 'package:smartguide_app/components/prenatal_records/counseling/counseling.dart';
 import 'package:smartguide_app/models/after_care.dart' as af_model;
 import 'package:smartguide_app/models/prenatal.dart';
-import 'package:smartguide_app/models/trimester.dart';
+import 'package:smartguide_app/models/user.dart';
 import 'package:smartguide_app/pages/midwife/prenatal_records/patients_info_page.dart';
+import 'package:smartguide_app/services/laravel/prenatal_services.dart';
 
 class PrenatalRecordPage extends StatefulWidget {
   const PrenatalRecordPage({super.key, required this.prenatal});
@@ -18,50 +22,69 @@ class PrenatalRecordPage extends StatefulWidget {
 }
 
 class _PrenatalRecordPageState extends State<PrenatalRecordPage> with TickerProviderStateMixin {
+  bool isLoading = true;
+  Map<String, dynamic>? data;
+
   final List<String> tabs = ["Care and Tests", "Birth Plan", "After Care", "Counseling"];
 
   late final List<Widget> tabViews;
 
   late final TabController tabController;
 
-  @override
-  void initState() {
-    super.initState();
+  Future<void> fetchPatientInformation() async {
+    final User user = context.read<User>();
+    final PrenatalServices prenatalServices = PrenatalServices();
+
+    data = await prenatalServices.fetchPatientInformationById(
+        token: user.token!,
+        userId: widget.prenatal.laravelId,
+        patientInformationId: widget.prenatal.id!);
+
+    // log("sas: " + data.toString());
+    initTabbar();
+  }
+
+  void initTabbar() {
     tabController = TabController(length: tabs.length, vsync: this);
 
     tabViews = [
       CareAndTests(
-        trimesters: [
-          Trimester(
-              whtPersonnel: widget.prenatal.patientInformation.accompaniedByData!.name!,
-              trimester: widget.prenatal.selectedTrimester,
-              dateOfVisit: widget.prenatal.createdAt!,
-              consultWht: widget.prenatal.consultWht,
-              introducedBirthPlan: widget.prenatal.introducedBirthPlan,
-              fundicHeight: widget.prenatal.fundicHeight,
-              isFundicNormal: widget.prenatal.fundicNormal,
-              bloodPressure: widget.prenatal.bloodPressure,
-              isBloodPressureNormal: widget.prenatal.bloodPressureNormal,
-              advices: widget.prenatal.advices,
-              services: widget.prenatal.services)
-        ],
+        trimesters: [data!['careAndTest']],
       ),
-      const BirthPlan(),
+      BirthPlan(
+        data: data?['birthPlan'],
+      ),
       AfterCare(
         afterCare: af_model.AfterCare(
             immunzation: widget.prenatal.ttItems.map(
               (e) {
-                return af_model.Immunization(term: e['term']);
+                log(e['created_at'].toString());
+
+                return af_model.Immunization(
+                    term: e['term'], date: DateTime.parse(e['created_at']));
               },
             ).toList(),
             ironSupplement: widget.prenatal.ironSuppItems
                 .map(
-                  (e) => af_model.IronSupplement(tabs: e['no_tabs']),
+                  (e) => af_model.IronSupplement(
+                      tabs: e['no_tabs'], date: DateTime.parse(e['created_at'])),
                 )
                 .toList()),
       ),
-      const Counseling()
+      Counseling(
+        counseling: data?['counseling'],
+      )
     ];
+
+    setState(() {
+      isLoading = false;
+    });
+  }
+
+  @override
+  void initState() {
+    super.initState();
+    fetchPatientInformation();
   }
 
   @override
@@ -72,6 +95,22 @@ class _PrenatalRecordPageState extends State<PrenatalRecordPage> with TickerProv
 
   @override
   Widget build(BuildContext context) {
+    if (isLoading) {
+      return const Scaffold(
+        body: Column(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: [
+            Center(
+              child: SizedBox.square(
+                dimension: 8 * 5,
+                child: CircularProgressIndicator(),
+              ),
+            )
+          ],
+        ),
+      );
+    }
+
     return Scaffold(
         appBar: AppBar(
           actionsPadding: const EdgeInsets.only(right: 8 * 2),

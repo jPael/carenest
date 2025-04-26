@@ -19,6 +19,8 @@ class HomeView extends StatelessWidget {
   Widget build(BuildContext context) {
     images.forEach((key, value) => precacheImage(AssetImage(value), context));
 
+    final double cardWidth = (MediaQuery.of(context).size.width / 2) * 0.9;
+
     return Padding(
       padding: const EdgeInsets.all(8.0 * 2),
       child: Column(
@@ -32,7 +34,7 @@ class HomeView extends StatelessWidget {
                     images["childcare_tips"]!,
                     fit: BoxFit.fill,
                     height: 270,
-                    width: 180,
+                    width: cardWidth,
                   ),
                   label: "Childcare tips",
                   onPressed: () => Navigator.push(
@@ -46,7 +48,7 @@ class HomeView extends StatelessWidget {
                     images["chatbot"]!,
                     fit: BoxFit.fill,
                     height: 270,
-                    width: 180,
+                    width: cardWidth,
                   ),
                   label: "Chatbot",
                   onPressed: () => Navigator.push(
@@ -64,11 +66,13 @@ class HomeView extends StatelessWidget {
                     images["reminders"]!,
                     fit: BoxFit.fill,
                     height: 270,
-                    width: 180,
+                    width: cardWidth,
                   ),
                   label: "Reminders",
-                  onPressed: () => Navigator.push(context,
-                      MaterialPageRoute(builder: (context) => const RemindersPage(label: "Reminders")))),
+                  onPressed: () => Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                          builder: (context) => const RemindersPage(label: "Reminders")))),
               CardButton(
                   content: Image.asset(
                     images["forum"]!,
@@ -76,10 +80,9 @@ class HomeView extends StatelessWidget {
                     height: 270,
                     width: 190,
                   ),
-                  notifCount: 4,
                   label: "Forum",
-                  onPressed: () => Navigator.push(
-                      context, MaterialPageRoute(builder: (context) => const ForumPage(label: "Forum")))),
+                  onPressed: () => Navigator.push(context,
+                      MaterialPageRoute(builder: (context) => const ForumPage(label: "Forum")))),
             ],
           )
         ],

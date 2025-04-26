@@ -28,7 +28,7 @@ class _AddRemindersPageState extends State<AddRemindersPage> {
     required DateTime date,
     required int userId,
   }) {
-    final User user = context.read<User>();
+    // final User user = context.read<User>();
     setState(() {
       reminders.add(Reminder(
         userId: userId,

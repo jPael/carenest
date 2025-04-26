@@ -31,7 +31,7 @@ class MidwifePrenatalRecordsItems extends StatelessWidget {
                     id: prenatal!.laravelId,
                   ))),
       child: Row(
-        crossAxisAlignment: CrossAxisAlignment.start,
+        crossAxisAlignment: CrossAxisAlignment.center,
         children: [
           Container(
             height: profileImageSize,

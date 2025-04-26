@@ -1,4 +1,3 @@
-
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:intl/intl.dart';
@@ -31,7 +30,10 @@ class _PatientsHistoryListPageState extends State<PatientsHistoryListPage> {
     final User user = context.read<User>();
 
     prenatals =
-        await prenatalServices.fetchAllPrenatalByLaravelUserId(token: user.token!, id: widget.id);
+        await prenatalServices.fetchAllPrenatalByLaravelUserId(token: user.token!, id: widget.id)
+          ..sort(
+            (a, b) => b.createdAt!.compareTo(a.createdAt!),
+          );
 
     setState(() {
       isLoading = false;
@@ -90,7 +92,9 @@ class _PatientsHistoryListPageState extends State<PatientsHistoryListPage> {
                           MaterialPageRoute(
                               builder: (context) =>
                                   PrenatalRecordPage(prenatal: prenatals[index]))),
-                      title: Text(DateFormat("MMMM dd, yyyy").format(currPrenatal.createdAt!)),
+                      title: Text(DateFormat(
+                        "EE MMMM dd, yyyy @ hh:mm aa",
+                      ).format(currPrenatal.createdAt!.toLocal())),
                       subtitle: Text(currPrenatal.barangay),
                     );
                   }),

@@ -1,5 +1,3 @@
-import 'dart:developer';
-
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/foundation.dart';
@@ -41,7 +39,7 @@ Future<Map<String, dynamic>?> getUserByUID(String uid) async {
     Map<String, dynamic> laravelData = await loginAccount(
         email: data![UserFields.email], password: data[UserFields.laravelPassword]);
 
-    log(laravelData.toString());
+    // log("from user service: " + laravelData.toString());
 
     return {
       ...data,

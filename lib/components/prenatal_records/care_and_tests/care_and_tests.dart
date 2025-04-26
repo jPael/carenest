@@ -1,12 +1,13 @@
 import 'package:flutter/material.dart';
 import 'package:smartguide_app/components/prenatal_records/care_and_tests/care_and_tests_group.dart';
+import 'package:smartguide_app/models/care_and_test.dart';
 import 'package:smartguide_app/models/trimester.dart';
 
 class CareAndTests extends StatefulWidget {
   const CareAndTests({super.key, required this.trimesters});
 
   // final List<Map<String,dynamic>
-  final List<Trimester> trimesters;
+  final List<CareAndTest> trimesters;
 
   @override
   State<CareAndTests> createState() => _CareAndTestsState();

@@ -23,7 +23,7 @@ Future<void> registerAccount(
     RegistrationFields.userType: getIntegerFromUserTypeEnum(type),
   };
 
-  print(body.toString());
+  // print(body.toString());
 
   final url = apiURIBase.replace(path: LaravelPaths.register);
 
@@ -53,6 +53,8 @@ Future<Map<String, dynamic>> loginAccount({required String email, required Strin
 
   final data = jsonDecode(res.body);
 
+  // log("from services: " + data.toString());
+
   if (data["error"] != null) {
     throw Exception(errorMessage(data["message"]));
   }
@@ -67,7 +69,7 @@ Future<Map<String, dynamic>> loginAccount({required String email, required Strin
 Future<void> logoutAccount({required String token}) async {
   final url = apiURIBase.replace(path: LaravelPaths.logout);
 
-  final res = await http
+  await http
       .post(url, headers: {'Content-Type': 'application/json', 'Authorization': "Bearer $token"});
 
   // log("from logout: ${res.body}");

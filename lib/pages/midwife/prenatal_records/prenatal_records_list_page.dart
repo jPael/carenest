@@ -25,7 +25,7 @@ class _PrenatalRecordsListPageState extends State<PrenatalRecordsListPage> {
 
     final PrenatalServices prenatalServices = PrenatalServices();
 
-    prenatals = await prenatalServices.fetchAllPrenatalByLaravelUserId(
+    prenatals = await prenatalServices.fetchAllPrenatalByMidwifeLaravelUserId(
         token: user.token!, id: user.laravelId!);
 
     setState(() {

@@ -15,12 +15,6 @@ class AfterCare extends StatelessWidget {
       padding: const EdgeInsets.all(2 * 8),
       child: CustomSection(
         title: "After Care",
-        // action: IconButton(
-        //     onPressed: () {},
-        //     icon: const Icon(
-        //       Icons.edit,
-        //       size: 4 * 5,
-        //     )),
         children: [
           CustomSection(
             title: "TT Immunization",
@@ -31,20 +25,9 @@ class AfterCare extends StatelessWidget {
               ...afterCare.immunzation.map(
                 (e) => AfterCareTtImmunizationItem(
                   description: "TT${e.term}",
+                  date: e.date,
                 ),
               )
-              // AfterCareTtImmunizationItem(
-              //   description: "TT1",
-              //   date: DateTime.now(),
-              // ),
-              // AfterCareTtImmunizationItem(
-              //   description: "TT2",
-              //   date: DateTime.now(),
-              // ),
-              // AfterCareTtImmunizationItem(
-              //   description: "TT3",
-              //   date: DateTime.now(),
-              // ),
             ],
           ),
           const SizedBox(
@@ -57,11 +40,11 @@ class AfterCare extends StatelessWidget {
               AfterCareIronSupplementItem.header(
                   context: context, description: "Date", value: "Tabs"),
               ...afterCare.ironSupplement.map(
-                (e) => AfterCareIronSupplementItem(tabs: e.tabs),
+                (e) => AfterCareIronSupplementItem(
+                  tabs: e.tabs,
+                  date: e.date,
+                ),
               )
-              // AfterCareIronSupplementItem(date: DateTime.now(), tabs: 3),
-              // AfterCareIronSupplementItem(date: DateTime.now(), tabs: 1),
-              // AfterCareIronSupplementItem(date: DateTime.now(), tabs: 3),
             ],
           )
         ],

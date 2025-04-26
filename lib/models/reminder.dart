@@ -70,14 +70,14 @@ class Reminder {
   }
 
   Future<void> markAsDone(String token) async {
-    final bool res = await reminderServices.updateReminder(
-        id: id!,
-        title: title,
-        type: reminderType,
-        date: date!,
-        token: token,
-        userId: userId,
-        isDone: true);
+    // final bool res = await reminderServices.updateReminder(
+    //     id: id!,
+    //     title: title,
+    //     type: reminderType,
+    //     date: date!,
+    //     token: token,
+    //     userId: userId,
+    //     isDone: true);
   }
 
   Future<Reminder> updateReminder({

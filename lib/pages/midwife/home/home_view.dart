@@ -8,6 +8,8 @@ class HomeView extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final double cardWidth = (MediaQuery.of(context).size.width / 2) * 0.9;
+
     return Padding(
       padding: const EdgeInsets.all(8.0 * 2),
       child: Column(
@@ -21,17 +23,17 @@ class HomeView extends StatelessWidget {
                     "lib/assets/images/midwife_home_prenatal_records_icon.png",
                     fit: BoxFit.fill,
                     height: 270,
-                    width: 180,
+                    width: cardWidth,
                   ),
                   label: "Prenatal Records",
-                  onPressed: () => Navigator.push(
-                      context, MaterialPageRoute(builder: (context) => const PrenatalRecordsListPage()))),
+                  onPressed: () => Navigator.push(context,
+                      MaterialPageRoute(builder: (context) => const PrenatalRecordsListPage()))),
               CardButton(
                   content: Image.asset(
                     "lib/assets/images/midwife_home_add_reminders_icon.png",
                     fit: BoxFit.fill,
                     height: 270,
-                    width: 180,
+                    width: cardWidth,
                   ),
                   label: "Add Reminders",
                   onPressed: () => Navigator.push(

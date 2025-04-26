@@ -54,6 +54,7 @@ class ReminderServices {
 
     d.forEach(
       <String, object>(key, List<Reminder> value) =>
+          // ignore: avoid_function_literals_in_foreach_calls
           value.forEach((v) => log("$key: ${v.toJson().toString()}")),
     );
     // d.forEach(

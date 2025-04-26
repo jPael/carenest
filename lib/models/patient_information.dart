@@ -12,6 +12,7 @@ class PatientInformation {
   final DateTime edc;
   final String obStatus;
   final int assignById;
+  final Person? assignedByData;
   final int accompanyById;
   final Person? accompaniedByData;
   final Donor? bloodDonor;
@@ -21,6 +22,7 @@ class PatientInformation {
   PatientInformation(
       {this.id,
       this.bloodDonor,
+      this.assignedByData,
       required this.philhealth,
       required this.nhts,
       required this.lmp,
@@ -33,18 +35,19 @@ class PatientInformation {
       this.updatedAt});
 
   static PatientInformation fromJson(Map<String, dynamic> json) {
-    final Map<String, dynamic>? midwifeJsonData = json[PatientInformationFields.accompanyByData];
+    // final Map<String, dynamic>? midwifeJsonData = json[PatientInformationFields.accompanyByData];
 
-    Person? midwifePerson;
+    // Person? midwifePerson;
 
-    if (midwifeJsonData != null) {
-      midwifePerson = Person.fromJsonStatic(midwifeJsonData);
-    }
+    // if (midwifeJsonData != null) {
+    //   midwifePerson = Person.fromJsonStatic(midwifeJsonData);
+    // }
 
     final Map<String, dynamic> donor = (json[PrenatalFields.bloodDonors] as List).first;
     log(donor.toString());
 
     return PatientInformation(
+      assignedByData: Person.fromJsonStatic(json["assigned_by"]),
       bloodDonor: Donor(
           id: donor['id'],
           fullname: donor[PrenatalFields.donorFullname],

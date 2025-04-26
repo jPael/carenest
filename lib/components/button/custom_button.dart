@@ -135,8 +135,8 @@ class CustomButton extends StatelessWidget {
     // final Color defaultColor =
     //     Theme.of(context).colorScheme.primary.withValues(alpha: isLoading ? 0.5 : 1.0);
 
-    final TextStyle defaultLabelStyle =
-        labelStyle ?? const TextStyle(color: Colors.white, fontSize: 8 * 2);
+    // final TextStyle defaultLabelStyle =
+    //     labelStyle ?? const TextStyle(color: Colors.white, fontSize: 8 * 2);
 
     // final ButtonStyle defaultButtonStyle = customButtonStyle != null
     //     ? customButtonStyle!.copyWith(backgroundColor: WidgetStateProperty.all(defaultColor))
