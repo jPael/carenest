@@ -5,10 +5,12 @@ import 'package:smartguide_app/models/person.dart';
 import 'package:smartguide_app/services/laravel/midwife_services.dart';
 
 class MidwifeSelector extends StatefulWidget {
-  const MidwifeSelector({super.key, required this.onChange, this.defaultValue});
+  const MidwifeSelector(
+      {super.key, required this.onChange, this.defaultValue, this.readonly = false});
 
   final Function(String?)? onChange;
   final String? defaultValue;
+  final bool readonly;
 
   @override
   MidwifeSelectorState createState() => MidwifeSelectorState();
@@ -71,33 +73,36 @@ class MidwifeSelectorState extends State<MidwifeSelector> {
         : Row(
             children: [
               Flexible(
-                child: DropdownButtonFormField(
-                  isExpanded: true,
-                  menuMaxHeight: MediaQuery.of(context).size.height * 0.6,
-                  decoration: InputDecoration(
-                    labelText: "Midwife",
-                    hintText: "Choose your midwife",
-                    border: OutlineInputBorder(
-                      borderRadius: BorderRadius.circular(8 * 2),
+                child: AbsorbPointer(
+                  absorbing: widget.readonly,
+                  child: DropdownButtonFormField(
+                    isExpanded: true,
+                    menuMaxHeight: MediaQuery.of(context).size.height * 0.6,
+                    decoration: InputDecoration(
+                      labelText: "Midwife",
+                      hintText: "Choose your midwife",
+                      border: OutlineInputBorder(
+                        borderRadius: BorderRadius.circular(8 * 2),
+                      ),
                     ),
+                    value: defaultValue,
+                    onChanged: (value) {
+                      widget.onChange!(value);
+                      setState(() {
+                        defaultValue = value!;
+                      });
+                    },
+                    items: midwives.map((b) {
+                      // log("value: ${b.id.toString()} name: ${b.name.toString()} value:$defaultValue");
+                      return DropdownMenuItem(value: b.id.toString(), child: Text(b.name!));
+                    }).toList(),
+                    validator: (value) {
+                      if (value == null || value.isEmpty) {
+                        return "Please select your midwife";
+                      }
+                      return null;
+                    },
                   ),
-                  value: defaultValue,
-                  onChanged: (value) {
-                    widget.onChange!(value);
-                    setState(() {
-                      defaultValue = value!;
-                    });
-                  },
-                  items: midwives.map((b) {
-                    log("value: ${b.id.toString()} name: ${b.name.toString()} value:$defaultValue");
-                    return DropdownMenuItem(value: b.id.toString(), child: Text(b.name!));
-                  }).toList(),
-                  validator: (value) {
-                    if (value == null || value.isEmpty) {
-                      return "Please select your midwife";
-                    }
-                    return null;
-                  },
                 ),
               ),
             ],

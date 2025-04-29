@@ -1,3 +1,5 @@
+import 'dart:developer';
+
 import 'package:flutter/material.dart';
 import 'package:smartguide_app/components/mother/home/card_button.dart';
 import 'package:smartguide_app/features/chatbot/chatbot.dart';
@@ -19,6 +21,8 @@ class HomeView extends StatelessWidget {
   Widget build(BuildContext context) {
     images.forEach((key, value) => precacheImage(AssetImage(value), context));
 
+    final double cardHeight = (MediaQuery.of(context).size.height / 2) * (1 - 0.36);
+
     final double cardWidth = (MediaQuery.of(context).size.width / 2) * 0.9;
 
     return Padding(
@@ -30,10 +34,12 @@ class HomeView extends StatelessWidget {
             mainAxisAlignment: MainAxisAlignment.spaceEvenly,
             children: [
               CardButton(
+                  height: cardHeight,
+                  width: cardWidth,
                   content: Image.asset(
                     images["childcare_tips"]!,
                     fit: BoxFit.fill,
-                    height: 270,
+                    height: cardHeight,
                     width: cardWidth,
                   ),
                   label: "Childcare tips",
@@ -44,10 +50,12 @@ class HomeView extends StatelessWidget {
                                 label: "Childcare tips",
                               )))),
               CardButton(
+                  height: cardHeight,
+                  width: cardWidth,
                   content: Image.asset(
                     images["chatbot"]!,
                     fit: BoxFit.fill,
-                    height: 270,
+                    height: cardHeight,
                     width: cardWidth,
                   ),
                   label: "Chatbot",
@@ -62,10 +70,12 @@ class HomeView extends StatelessWidget {
             mainAxisAlignment: MainAxisAlignment.spaceEvenly,
             children: [
               CardButton(
+                  height: cardHeight,
+                  width: cardWidth,
                   content: Image.asset(
                     images["reminders"]!,
                     fit: BoxFit.fill,
-                    height: 270,
+                    height: cardHeight,
                     width: cardWidth,
                   ),
                   label: "Reminders",
@@ -74,10 +84,12 @@ class HomeView extends StatelessWidget {
                       MaterialPageRoute(
                           builder: (context) => const RemindersPage(label: "Reminders")))),
               CardButton(
+                  height: cardHeight,
+                  width: cardWidth,
                   content: Image.asset(
                     images["forum"]!,
                     fit: BoxFit.fill,
-                    height: 270,
+                    height: cardHeight,
                     width: 190,
                   ),
                   label: "Forum",

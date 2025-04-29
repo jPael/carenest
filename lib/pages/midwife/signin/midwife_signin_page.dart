@@ -38,7 +38,7 @@ class _MidwifeSigninPageState extends State<MidwifeSigninPage> {
 
     if (result['status'] == false) {
       if (!mounted) return;
-      showErrorMessage(context: context, message: result["message"]);
+      Alert.showErrorMessage(message: result["message"]);
     } else {
       if (!mounted) return;
       Navigator.pushAndRemoveUntil(

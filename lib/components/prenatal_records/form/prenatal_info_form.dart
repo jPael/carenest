@@ -15,15 +15,20 @@ import 'package:smartguide_app/models/birth_plan.dart';
 import 'package:smartguide_app/models/care_and_test.dart';
 import 'package:smartguide_app/models/counseling.dart';
 import 'package:smartguide_app/models/patient_information.dart';
+import 'package:smartguide_app/models/person.dart';
 import 'package:smartguide_app/models/prenatal.dart';
 import 'package:smartguide_app/models/trimester.dart';
+import 'package:smartguide_app/pages/midwife/prenatal_records/prenatal_records_list_page.dart';
 import 'package:smartguide_app/services/laravel/prenatal_services.dart';
 import 'package:smartguide_app/utils/date_utils.dart';
 
 import '../../../models/user.dart';
 
 class PrenatalInfoForm extends StatefulWidget {
-  const PrenatalInfoForm({super.key});
+  const PrenatalInfoForm({super.key, this.patient, this.readonly = false});
+
+  final Person? patient;
+  final bool readonly;
 
   @override
   State<PrenatalInfoForm> createState() => _PrenatalInfoFormState();
@@ -37,14 +42,16 @@ class _PrenatalInfoFormState extends State<PrenatalInfoForm> {
   bool isSubmitting = false;
 
   Future<void> handleSubmit() async {
+    if (widget.readonly) return;
+
     setState(() {
       isSubmitting = true;
     });
     try {
-      final User user = context.read<User>();
+      // final User user = context.read<User>();
 
       final Prenatal prenatal = Prenatal(
-          laravelId: user.laravelId!,
+          laravelId: widget.patient!.id!,
           selectedTrimester: selectedTrimester,
           consultWht: consultWht,
           introducedBirthPlan: introducedBirthPlan,
@@ -81,13 +88,16 @@ class _PrenatalInfoFormState extends State<PrenatalInfoForm> {
       final res = await prenatal.storeRecord();
 
       if (res['success'] == true) {
-        showSuccessMessage(
-            context: context, message: "Your prenatal has been updated successfully");
+        Alert.showSuccessMessage(message: "Your prenatal has been updated successfully");
+        // Navigator.pushReplacement(
+        //     context, MaterialPageRoute(builder: (_) => const PrenatalRecordsListPage()));
+        Navigator.pop(context);
+        Navigator.pop(context);
       } else {
-        showErrorMessage(context: context, message: "Something went wrong. Please try again");
+        Alert.showErrorMessage(message: "Something went wrong. Please try again");
       }
     } catch (e, stackTrace) {
-      showErrorMessage(context: context, message: "Something went wrong. Please try again");
+      Alert.showErrorMessage(message: "Something went wrong. Please try again");
       log(e.toString(), stackTrace: stackTrace);
     }
 
@@ -118,7 +128,7 @@ class _PrenatalInfoFormState extends State<PrenatalInfoForm> {
   final TextEditingController fundicHeightController = TextEditingController();
   final TextEditingController bloodPressureController = TextEditingController();
 
-  List<TextEditingController> adviceControllers = [];
+  List<TextEditingController> adviceControllers = List.generate(1, (i) => TextEditingController());
   List<TextEditingController> serviceControllers = List.generate(1, (i) => TextEditingController());
 
   TrimesterEnum selectedTrimester = TrimesterEnum.first;
@@ -240,11 +250,17 @@ class _PrenatalInfoFormState extends State<PrenatalInfoForm> {
   @override
   void initState() {
     super.initState();
-    fetchPrenatalInformation().then(
-      (value) {
-        initData();
-      },
-    );
+
+    if (widget.readonly) {
+      fetchPrenatalInformation().then(
+        (value) {
+          initData();
+        },
+      );
+    } else {
+      fullnameController.text = widget.patient!.name!;
+      isLoading = false;
+    }
 
     // log(prenatalData?['careAndTest'].toString() ?? "");
 
@@ -289,18 +305,20 @@ class _PrenatalInfoFormState extends State<PrenatalInfoForm> {
                 ),
               )
             : CustomForm(actions: [
-                CustomButton(
-                  onPress: handleSubmit,
-                  label: "Submit",
-                  isLoading: isSubmitting,
-                  verticalPadding: 2,
-                  horizontalPadding: 5,
-                )
+                if (!widget.readonly)
+                  CustomButton(
+                    onPress: handleSubmit,
+                    label: "Submit",
+                    isLoading: isSubmitting,
+                    verticalPadding: 2,
+                    horizontalPadding: 5,
+                  )
               ], children: [
                 Card(
                   child: Padding(
                     padding: const EdgeInsets.all(8.0 * 2),
                     child: PatientInformationForm(
+                      isReadonly: widget.readonly,
                       birthday: birthday,
                       edc: edc,
                       lmp: lmp,
@@ -354,6 +372,7 @@ class _PrenatalInfoFormState extends State<PrenatalInfoForm> {
                   child: Padding(
                     padding: const EdgeInsets.all(8.0 * 2),
                     child: CareAndTestsForm(
+                      isReadonly: widget.readonly,
                       data: prenatalData?['careAndTest'],
                       trimesterOnChange: (trimester) {
                         if (trimester == null) return;
@@ -365,12 +384,15 @@ class _PrenatalInfoFormState extends State<PrenatalInfoForm> {
                       selectedTrimester: selectedTrimester,
                       consultWht: consultWht,
                       consultWhtOnChange: (bool v) {
+                        if (widget.readonly) return;
+
                         setState(() {
                           consultWht = v;
                         });
                       },
                       introducedBirthPlan: introducedBirthPlan,
                       introducedBirthPlanOnChange: (bool v) {
+                        if (widget.readonly) return;
                         setState(() {
                           introducedBirthPlan = v;
                         });
@@ -389,6 +411,7 @@ class _PrenatalInfoFormState extends State<PrenatalInfoForm> {
                   child: Padding(
                     padding: const EdgeInsets.all(8.0 * 2),
                     child: BirthPlanForm(
+                      isReadonly: widget.readonly,
                       data: prenatalData?['birthPlan'],
                       birthplaceController: birthPlaceController,
                       assignedByController: assignedByController,
@@ -401,6 +424,7 @@ class _PrenatalInfoFormState extends State<PrenatalInfoForm> {
                     child: Padding(
                   padding: const EdgeInsets.all(8.0 * 2),
                   child: AfterCareForm(
+                    isReadonly: widget.readonly,
                     ttItems: ttItems,
                     ironSuppItems: ironSuppItems,
                   ),
@@ -412,6 +436,7 @@ class _PrenatalInfoFormState extends State<PrenatalInfoForm> {
                   child: Padding(
                     padding: const EdgeInsets.all(8.0 * 2),
                     child: CounselingForm(
+                      isReadonly: widget.readonly,
                       questionaire: questionaire,
                       onChange: (String id, bool value) {
                         setState(() {

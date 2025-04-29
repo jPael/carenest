@@ -1,4 +1,7 @@
+import 'dart:developer';
+
 import 'package:flutter/material.dart';
+import 'package:flutter_auto_size_text/flutter_auto_size_text.dart';
 import 'package:smartguide_app/components/barangay/barangay_selector.dart';
 import 'package:smartguide_app/components/button/custom_button.dart';
 import 'package:smartguide_app/components/form/custom_form.dart';
@@ -47,6 +50,8 @@ class _MotherRegistrationState extends State<MotherRegistration> {
   String selectedBarangayId = "";
   String selectedBarangayAddress = "";
   void handleBarangaySelection(String? address, String? id) {
+    log("just got called ${address ?? "NA"} ${id ?? "NA"}");
+
     setState(() {
       selectedBarangayId = id ?? "";
       selectedBarangayAddress = address ?? "";
@@ -84,10 +89,11 @@ class _MotherRegistrationState extends State<MotherRegistration> {
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
                     const Flexible(
-                        child: Text(
+                        child: AutoSizeText(
                       "Mother registration",
-                      style: TextStyle(fontSize: 8 * 6, fontWeight: FontWeight.w500),
+                      style: TextStyle(fontSize: 8 * 5, fontWeight: FontWeight.w500),
                       softWrap: true,
+                      maxLines: 2,
                     )),
                     Hero(
                       tag: "Mother",

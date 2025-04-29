@@ -1,3 +1,5 @@
+import 'dart:developer';
+
 import 'package:flutter/material.dart';
 
 class CardButton extends StatelessWidget {
@@ -6,15 +8,20 @@ class CardButton extends StatelessWidget {
       required this.onPressed,
       required this.label,
       required this.content,
-      this.notifCount = 0});
+      this.notifCount = 0,
+      required this.height,
+      required this.width});
 
   final VoidCallback onPressed;
   final String label;
   final Widget content;
   final int? notifCount;
+  final double height;
+  final double width;
 
   @override
   Widget build(BuildContext context) {
+
     return GestureDetector(
       onTap: onPressed,
       child: Badge.count(
@@ -27,8 +34,10 @@ class CardButton extends StatelessWidget {
           children: [
             Container(
               padding: EdgeInsets.zero,
-              width: 170,
-              height: 170 * 1.5,
+              width: width - 10,
+              height: height - 10,
+              // width: 170,
+              // height: 170 * 1.5,
               decoration: BoxDecoration(
                 borderRadius: BorderRadius.circular(8),
                 boxShadow: [

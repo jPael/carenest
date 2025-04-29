@@ -45,9 +45,9 @@ class _ForumCreatePostFormState extends State<ForumCreatePostForm> {
 
     if (!mounted) return;
     if (res["success"]) {
-      showSuccessMessage(context: context, message: "Posted successfully");
+      Alert.showSuccessMessage(message: "Posted successfully");
     } else {
-      showErrorMessage(context: context, message: res["message"]);
+      Alert.showErrorMessage(message: res["message"]);
     }
 
     Navigator.pop(context);

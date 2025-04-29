@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_auto_size_text/flutter_auto_size_text.dart';
 import 'package:smartguide_app/components/input/custom_input.dart';
 
 class InlineInput extends StatelessWidget {
@@ -9,7 +10,8 @@ class InlineInput extends StatelessWidget {
       this.suffixText,
       this.hint,
       this.isNormal,
-      this.customInput});
+      this.customInput,
+      this.readonly = false});
 
   final String? label;
   final TextEditingController? controller;
@@ -17,6 +19,7 @@ class InlineInput extends StatelessWidget {
   final String? hint;
   final bool? isNormal;
   final Widget? customInput;
+  final bool readonly;
 
   @override
   Widget build(BuildContext context) {
@@ -26,15 +29,18 @@ class InlineInput extends StatelessWidget {
         children: [
           if (label != null)
             Flexible(
-                flex: 1,
-                child: Text(
+                flex: 2,
+                child: AutoSizeText(
                   "$label: ",
-                  style: const TextStyle(fontSize: 4 * 4, fontWeight: FontWeight.w500),
+                  style: const TextStyle(
+                    fontSize: 4 * 4,
+                  ),
                 )),
           Flexible(
               flex: 3,
               child: customInput ??
                   CustomInput.text(
+                    readonly: readonly,
                     context: context,
                     controller: controller,
                     suffixText: suffixText,

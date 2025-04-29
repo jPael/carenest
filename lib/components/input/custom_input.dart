@@ -14,6 +14,7 @@ class CustomInput {
       TextEditingController? controller,
       minLines = 1,
       maxLines = 8,
+      TextInputType textInputType = TextInputType.text,
       String? suffixText,
       Widget? suffixWidget}) {
     assert(maxLines >= minLines, 'maxLines must be greater than or equal to minLines');
@@ -22,6 +23,7 @@ class CustomInput {
       readOnly: readonly,
       validator: validator,
       controller: controller,
+      keyboardType: textInputType,
       onTapOutside: (event) {
         FocusManager.instance.primaryFocus?.unfocus();
       },
@@ -59,8 +61,10 @@ class CustomInput {
       String? suffixText,
       String? hint,
       bool? isNormal,
-      Widget? customInput}) {
+      Widget? customInput,
+      bool readonly = false}) {
     return InlineInput(
+      readonly: readonly,
       controller: controller,
       label: label,
       suffixText: suffixText,

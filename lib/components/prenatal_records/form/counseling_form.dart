@@ -9,10 +9,13 @@ class CounselingForm extends StatelessWidget {
     this.data,
     required this.questionaire,
     // required this.questionaire,
+    this.isReadonly = false,
     required this.onChange,
   });
 
   final Counseling? data;
+
+  final bool isReadonly;
 
   final List<Map<String, dynamic>> questionaire;
   final Function(String, bool) onChange;
@@ -28,6 +31,7 @@ class CounselingForm extends StatelessWidget {
       children: [
         ...questionaire.take(2).map(
               (e) => CustomCheckbox(
+                  readonly: isReadonly,
                   id: e["id"],
                   label: "${e["description"]}",
                   value: e["value"],
@@ -36,6 +40,7 @@ class CounselingForm extends StatelessWidget {
         const Text("The counseling for proper nutrition has been completed"),
         ...questionaire.skip(2).map(
               (e) => CustomCheckbox(
+                  readonly: isReadonly,
                   id: e["id"],
                   label: "${e["description"]} ",
                   value: e["value"],

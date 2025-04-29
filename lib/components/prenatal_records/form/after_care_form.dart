@@ -8,17 +8,20 @@ import 'package:smartguide_app/components/section/custom_section.dart';
 import 'package:smartguide_app/models/after_care.dart';
 
 class AfterCareForm extends StatefulWidget {
-  final List<Map<String, dynamic>> ttItems;
-  final List<Map<String, dynamic>> ironSuppItems;
-
   const AfterCareForm({
     super.key,
     this.data,
     required this.ttItems,
     required this.ironSuppItems,
+    this.isReadonly = false,
   });
 
   final AfterCare? data;
+
+  final bool isReadonly;
+
+  final List<Map<String, dynamic>> ttItems;
+  final List<Map<String, dynamic>> ironSuppItems;
 
   @override
   State<AfterCareForm> createState() => _AfterCareFormState();
@@ -26,6 +29,8 @@ class AfterCareForm extends StatefulWidget {
 
 class _AfterCareFormState extends State<AfterCareForm> {
   Future<void> showImmunzationFormDialog() async {
+    if (widget.isReadonly) return;
+
     await showDialog(
       context: context,
       builder: (BuildContext context) {
@@ -90,6 +95,7 @@ class _AfterCareFormState extends State<AfterCareForm> {
   }
 
   Future<void> showIronSupplementFormDialog() async {
+    if (widget.isReadonly) return;
     await showDialog(
       context: context,
       builder: (BuildContext context) {

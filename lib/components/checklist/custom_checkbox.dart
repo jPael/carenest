@@ -8,6 +8,7 @@ class CustomCheckbox extends StatelessWidget {
     this.onChange,
     this.customOnChange,
     this.id,
+    this.readonly = false,
   }) : assert(
           (onChange == null && customOnChange != null) ||
               (onChange != null && customOnChange == null),
@@ -19,6 +20,7 @@ class CustomCheckbox extends StatelessWidget {
   final bool value;
   final Function(bool?)? onChange;
   final Function(String, bool)? customOnChange;
+  final bool readonly;
 
   void checkListChange(bool? value) {
     if (onChange != null) {
@@ -30,13 +32,16 @@ class CustomCheckbox extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return CheckboxListTile.adaptive(
-      tileColor: Theme.of(context).primaryColor.withValues(alpha: value ? 0.2 : 0.0),
-      shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(4 * 4)),
-      controlAffinity: ListTileControlAffinity.leading,
-      value: value,
-      onChanged: checkListChange,
-      title: Text(label),
+    return AbsorbPointer(
+      absorbing: readonly,
+      child: CheckboxListTile.adaptive(
+        tileColor: Theme.of(context).primaryColor.withValues(alpha: value ? 0.2 : 0.0),
+        shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(4 * 4)),
+        controlAffinity: ListTileControlAffinity.leading,
+        value: value,
+        onChanged: checkListChange,
+        title: Text(label),
+      ),
     );
   }
 }

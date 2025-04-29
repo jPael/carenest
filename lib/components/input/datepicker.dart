@@ -65,6 +65,12 @@ class DatePickerState extends State<DatePicker> {
   }
 
   @override
+  void dispose() {
+    super.dispose();
+    dateController.dispose();
+  }
+
+  @override
   Widget build(BuildContext context) {
     return Flexible(
       child: TextFormField(

@@ -77,7 +77,7 @@ class ReminderServices {
 
     final cleanReminder = data.where((r) => r[ReminderFields.userId].toString() == laravelId);
 
-    await Future.delayed(const Duration(seconds: 5));
+    // await Future.delayed(const Duration(seconds: 5));
 
     final List<Reminder> reminders = cleanReminder.map((r) => Reminder.fromJson(r)).toList();
 

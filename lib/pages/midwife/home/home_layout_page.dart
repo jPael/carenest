@@ -19,7 +19,7 @@ class _HomeLayoutPageState extends State<HomeLayoutPage> {
   List<int> navigationStack = [0];
 
   final List<Widget> views = [
-    const HomeView(),
+    HomeView(),
     ChatView(),
     const ProfileView(),
     const SettingsView(),
@@ -77,7 +77,8 @@ class _HomeLayoutPageState extends State<HomeLayoutPage> {
           automaticallyImplyLeading: false,
           title: Text(
             titles[selectedView],
-            style: const TextStyle(color: Colors.white, fontWeight: FontWeight.w900, fontSize: 8 * 3),
+            style:
+                const TextStyle(color: Colors.white, fontWeight: FontWeight.w900, fontSize: 8 * 3),
           ),
         ),
         extendBodyBehindAppBar: extendBehindAppbar,

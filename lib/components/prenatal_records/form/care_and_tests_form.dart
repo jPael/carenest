@@ -22,7 +22,10 @@ class CareAndTestsForm extends StatefulWidget {
     required this.isBloodPressureNormal,
     required this.advicesControllers,
     required this.servicesControllers,
+    required this.isReadonly,
   });
+
+  final bool isReadonly;
 
   final CareAndTest? data;
   final TrimesterEnum selectedTrimester;
@@ -70,6 +73,7 @@ class _CareAndTestsFormState extends State<CareAndTestsForm> {
       children: [
         // trimester selector
         CustomDropdownButton(
+          readonly: widget.isReadonly,
           value: widget.selectedTrimester,
           data: trimesters,
           onChange: widget.trimesterOnChange,
@@ -86,7 +90,7 @@ class _CareAndTestsFormState extends State<CareAndTestsForm> {
           children: [
             CustomCheckbox(
                 label:
-                    "The women's Health team WHT will help me in my Pregnancyif there's anything I want to know I will consult",
+                    "The women's Health team WHT will help me in my Pregnancyif there's anything I want to know I willconsult",
                 value: widget.consultWht,
                 onChange: handleConsultWhtValue),
             CustomCheckbox(
@@ -105,11 +109,13 @@ class _CareAndTestsFormState extends State<CareAndTestsForm> {
           childrenSpacing: 1,
           children: [
             CustomInput.inline(
+                readonly: widget.isReadonly,
                 controller: widget.fundicHeightController,
                 label: "Fundic height",
                 isNormal: widget.isFundicNormal,
                 suffixText: "cm"),
             CustomInput.inline(
+                readonly: widget.isReadonly,
                 controller: widget.bloodPressureController,
                 label: "Blood pressure",
                 isNormal: widget.isBloodPressureNormal,
@@ -126,19 +132,14 @@ class _CareAndTestsFormState extends State<CareAndTestsForm> {
           headerSpacing: 1,
           childrenSpacing: 1,
           children: [
-            ...widget.advicesControllers.map((controller) => Row(
-                  spacing: 4 * 2,
-                  children: [
-                    const Icon(
-                      Icons.circle,
-                      size: 4 * 3,
-                    ),
-                    CustomInput.inline(
-                      hint: "Type the advice here",
-                      controller: controller,
-                    )
-                  ],
-                )),
+            ...widget.advicesControllers.map((controller) => CustomInput.text(
+                readonly: widget.isReadonly,
+                context: context,
+                label: "I was advice to the following",
+                hint: "Type the advice here",
+                controller: controller,
+                minLines: 3,
+                maxLines: 5)),
           ],
         ),
         // Services section
@@ -150,23 +151,14 @@ class _CareAndTestsFormState extends State<CareAndTestsForm> {
           headerSpacing: 1,
           childrenSpacing: 1,
           children: [
-            ...widget.servicesControllers.map((controller) => Row(
-                  spacing: 4 * 2,
-                  children: [
-                    const Icon(
-                      Icons.circle,
-                      size: 4 * 3,
-                    ),
-                    // Text(
-                    //   content,
-                    //   style: TextStyle(fontSize: 4 * 4),
-                    // ),
-                    CustomInput.inline(
-                      hint: "Type the services here",
-                      controller: controller,
-                    )
-                  ],
-                )),
+            ...widget.servicesControllers.map((controller) => CustomInput.text(
+                readonly: widget.isReadonly,
+                context: context,
+                label: "I was given the following services",
+                hint: "Type the services here",
+                controller: controller,
+                minLines: 3,
+                maxLines: 5)),
           ],
         ),
       ],

@@ -1,16 +1,18 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:intl/intl.dart';
+import 'package:smartguide_app/components/prenatal_records/form/prenatal_info_form.dart';
+import 'package:smartguide_app/models/person.dart';
 import 'package:smartguide_app/models/prenatal.dart';
 import 'package:smartguide_app/models/user.dart';
+import 'package:smartguide_app/pages/midwife/prenatal_records/patients_prenatal_info_form.dart';
 import 'package:smartguide_app/pages/midwife/prenatal_records/prenatal_record_page.dart';
 import 'package:smartguide_app/services/laravel/prenatal_services.dart';
 
 class PatientsHistoryListPage extends StatefulWidget {
-  const PatientsHistoryListPage({super.key, required this.id, required this.fullname});
+  const PatientsHistoryListPage({super.key, required this.person});
 
-  final int id;
-  final String fullname;
+  final Person person;
 
   @override
   State<PatientsHistoryListPage> createState() => _PatientsHistoryListPageState();
@@ -29,11 +31,11 @@ class _PatientsHistoryListPageState extends State<PatientsHistoryListPage> {
 
     final User user = context.read<User>();
 
-    prenatals =
-        await prenatalServices.fetchAllPrenatalByLaravelUserId(token: user.token!, id: widget.id)
-          ..sort(
-            (a, b) => b.createdAt!.compareTo(a.createdAt!),
-          );
+    prenatals = await prenatalServices.fetchAllPrenatalByLaravelUserId(
+        token: user.token!, id: widget.person.id!)
+      ..sort(
+        (a, b) => b.createdAt!.compareTo(a.createdAt!),
+      );
 
     setState(() {
       isLoading = false;
@@ -50,7 +52,17 @@ class _PatientsHistoryListPageState extends State<PatientsHistoryListPage> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text("${widget.fullname.split(" ").first}'s history"),
+        title: Text("${widget.person.name!.split(" ").first}'s history"),
+      ),
+      floatingActionButton: FloatingActionButton.extended(
+        onPressed: () => Navigator.push(
+            context,
+            MaterialPageRoute(
+                builder: (context) => PatientsPrenatalInfoForm(
+                      patient: widget.person,
+                    ))),
+        label: const Text("Create"),
+        icon: const Icon(Icons.edit_rounded),
       ),
       body: isLoading
           ? const Padding(

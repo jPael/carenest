@@ -35,6 +35,8 @@ class _SettingsPrenatalRecordsPageState extends State<SettingsPrenatalRecordsPag
           title: const Text("Prenatal Record"),
           centerTitle: true,
         ),
-        body: const PrenatalInfoForm());
+        body: const PrenatalInfoForm(
+          readonly: true,
+        ));
   }
 }

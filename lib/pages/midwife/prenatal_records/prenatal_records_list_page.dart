@@ -1,10 +1,11 @@
+import 'dart:developer';
+
 import 'package:flutter/material.dart';
-import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:smartguide_app/components/midwife/prenatal_records/midwife_prenatal_records_items.dart';
+import 'package:smartguide_app/components/midwife/prenatal_records/midwife_prenatal_records_search_bar.dart';
 import 'package:smartguide_app/components/section/custom_section.dart';
-import 'package:smartguide_app/models/prenatal.dart';
-import 'package:smartguide_app/models/user.dart';
-import 'package:smartguide_app/services/laravel/prenatal_services.dart';
+import 'package:smartguide_app/models/person.dart';
+import 'package:smartguide_app/services/laravel/mother_services.dart';
 
 class PrenatalRecordsListPage extends StatefulWidget {
   const PrenatalRecordsListPage({super.key});
@@ -15,20 +16,31 @@ class PrenatalRecordsListPage extends StatefulWidget {
 
 class _PrenatalRecordsListPageState extends State<PrenatalRecordsListPage> {
   bool isLoading = false;
-  late final List<Prenatal> prenatals;
+  List<Person> originMothers = [];
+
+  List<Person> mothers = [];
+
+  void onMothersChange(List<Person> values) {
+    log("called ${values.length}");
+
+    setState(() {
+      mothers = values;
+    });
+  }
 
   Future<void> fetchAllPrenatals() async {
     setState(() {
       isLoading = true;
     });
-    final User user = context.read<User>();
+    // final User user = context.read<User>();
 
-    final PrenatalServices prenatalServices = PrenatalServices();
+    // final PrenatalServices prenatalServices = PrenatalServices();
+    // final M m = M();
 
-    prenatals = await prenatalServices.fetchAllPrenatalByMidwifeLaravelUserId(
-        token: user.token!, id: user.laravelId!);
+    originMothers = await fetchAllMothers();
 
     setState(() {
+      mothers = originMothers;
       isLoading = false;
     });
   }
@@ -44,59 +56,26 @@ class _PrenatalRecordsListPageState extends State<PrenatalRecordsListPage> {
     return Scaffold(
       appBar: AppBar(
         centerTitle: true,
-        title: const Text("Prenatal Record List"),
+        title: const Text("Prenatal Records"),
       ),
       body: SingleChildScrollView(
         child: Padding(
           padding: const EdgeInsets.symmetric(horizontal: 8.0 * 2),
           child: CustomSection(
-            // description: MidwifePrenatalRecordsSearchBar(),
+            description: MidwifePrenatalRecordsSearchBar(
+              onMothersChange: onMothersChange,
+              mothers: originMothers,
+            ),
             emptyChildrenContent: const Text("No records found."),
             isLoading: isLoading,
             isLoadingWidget: const MidwifePrenatalRecordsItems(),
-
             children: [
               if (!isLoading)
-                ...prenatals.map((p) => MidwifePrenatalRecordsItems(
-                      prenatal: p,
+                ...mothers.map((p) => MidwifePrenatalRecordsItems(
+                      mother: p,
                     ))
 
-              // MidwifePrenatalRecordsItems(
-              //   user: "Marry",
-              //   lastVisit: DateTime.now(),
-              //   onTap: () => Navigator.push(
-              //       context, MaterialPageRoute(builder: (context) => PatientsHistoryListPage())),
-              // ),
-              // MidwifePrenatalRecordsItems(
-              //   user: "Rose",
-              //   lastVisit: DateTime.now(),
-              //   onTap: () => Navigator.push(
-              //       context,
-              //       MaterialPageRoute(
-              //           builder: (context) => const PrenatalRecordPage(
-              //                 user: "Rose",
-              //               ))),
-              // ),
-              // MidwifePrenatalRecordsItems(
-              //   user: "Ann",
-              //   lastVisit: DateTime.now(),
-              //   onTap: () => Navigator.push(
-              //       context,
-              //       MaterialPageRoute(
-              //           builder: (context) => const PrenatalRecordPage(
-              //                 user: "Ann",
-              //               ))),
-              // ),
-              // MidwifePrenatalRecordsItems(
-              //   user: "Lady",
-              //   lastVisit: DateTime.now(),
-              //   onTap: () => Navigator.push(
-              //       context,
-              //       MaterialPageRoute(
-              //           builder: (context) => const PrenatalRecordPage(
-              //                 user: "Lady",
-              //               ))),
-              // ),
+              
             ],
           ),
         ),

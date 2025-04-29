@@ -1,4 +1,3 @@
-
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:smartguide_app/components/barangay/barangay_selector.dart';
@@ -33,7 +32,9 @@ class PatientInformationForm extends StatefulWidget {
     required this.birthday,
     required this.lmp,
     required this.edc,
+    required this.isReadonly,
   });
+  final bool isReadonly;
 
   final PatientInformation? data;
   final TextEditingController fullnameController;
@@ -60,24 +61,25 @@ class PatientInformationForm extends StatefulWidget {
 }
 
 class _PatientInformationFormState extends State<PatientInformationForm> {
-  bool isExpanded = false;
+  bool isExpanded = true;
 
   void handleBirthdayValue(DateTime d) {
+    if (widget.isReadonly) return;
     widget.onBirthdayChange(d);
   }
 
   void handlePhilhealthValue(bool? v) {
-    if (v == null) return;
+    if (widget.isReadonly || v == null) return;
     widget.onPhilhealthChange(v);
   }
 
   void handleNhtsValue(bool? v) {
-    if (v == null) return;
+    if (widget.isReadonly || v == null) return;
     widget.onNhtsChange(v);
   }
 
   void handleBloodTypeValue(bool? v) {
-    if (v == null) return;
+    if (widget.isReadonly || v == null) return;
     widget.onDonorBloodTypeChange(v);
   }
 
@@ -89,16 +91,16 @@ class _PatientInformationFormState extends State<PatientInformationForm> {
 
     return CustomSection(
       title: "My Information",
-      action: CustomButton(
-          horizontalPadding: 1,
-          verticalPadding: 1,
-          icon: Icon(isExpanded ? Icons.expand_less : Icons.expand_more),
-          onPress: () {
-            setState(() {
-              isExpanded = !isExpanded;
-            });
-          },
-          label: isExpanded ? "Collapse" : "Expand"),
+      // action: CustomButton(
+      //     horizontalPadding: 1,
+      //     verticalPadding: 1,
+      //     icon: Icon(isExpanded ? Icons.expand_less : Icons.expand_more),
+      //     onPress: () {
+      //       setState(() {
+      //         isExpanded = !isExpanded;
+      //       });
+      //     },
+      //     label: isExpanded ? "Collapse" : "Expand"),
       children: [
         AnimatedCrossFade(
           firstChild: Column(
@@ -107,15 +109,28 @@ class _PatientInformationFormState extends State<PatientInformationForm> {
             children: [
               const SizedBox(),
               CustomInput.text(
-                  context: context, controller: widget.fullnameController, label: "Fullname"),
-              CustomInput.text(context: context, controller: widget.ageController, label: "Age"),
+                  readonly: widget.isReadonly,
+                  context: context,
+                  controller: widget.fullnameController,
+                  label: "Fullname"),
               CustomInput.text(
-                  context: context, controller: widget.obStatusController, label: "OB Status"),
+                  textInputType: const TextInputType.numberWithOptions(),
+                  readonly: widget.isReadonly,
+                  context: context,
+                  controller: widget.ageController,
+                  label: "Age"),
+              CustomInput.text(
+                  readonly: widget.isReadonly,
+                  context: context,
+                  controller: widget.obStatusController,
+                  label: "OB Status"),
               BarangaySelector(
+                readonly: widget.isReadonly,
                 onChange: widget.onBarangayChange,
                 barangayName: user.address,
               ),
               CustomInput.datepicker(
+                readonly: widget.isReadonly,
                 context: context,
                 label: "Date of birth",
                 selectedDate: widget.birthday,
@@ -123,11 +138,13 @@ class _PatientInformationFormState extends State<PatientInformationForm> {
               ),
               CustomInput.datepicker(
                   context: context,
+                  readonly: widget.isReadonly,
                   label: "My Last Menstrual Period (LMP)",
                   onChange: widget.onLmpChange,
                   selectedDate: widget.data?.lmp),
               CustomInput.datepicker(
                   context: context,
+                  readonly: widget.isReadonly,
                   label: "I am expected to Give Birth to my Child (EDC) on",
                   onChange: widget.onEdcChange,
                   selectedDate: widget.data?.edc),
@@ -150,11 +167,13 @@ class _PatientInformationFormState extends State<PatientInformationForm> {
                 childrenSpacing: 1,
                 children: [
                   CustomInput.text(
+                      readonly: widget.isReadonly,
                       context: context,
                       controller: widget.donorFullnameController,
                       label: "Full name"),
                   CustomInput.text(
                       context: context,
+                      readonly: widget.isReadonly,
                       controller: widget.donorContactController,
                       label: "Contact number"),
                   CustomCheckbox(

@@ -47,6 +47,7 @@ dependencies:
    provider: ^6.1.2
    timeago: ^3.7.0
    skeletonizer: ^1.4.3
+   flutter_auto_size_text: ^4.1.0
 
 dependency_overrides:
    intl: ^0.20.2

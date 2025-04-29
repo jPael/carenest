@@ -9,10 +9,12 @@ class BarangaySelector extends StatefulWidget {
     super.key,
     required this.onChange,
     this.barangayName,
+    this.readonly = false,
   });
 
   final Function(String? address, String? id) onChange;
   final String? barangayName;
+  final bool readonly;
 
   @override
   BarangaySelectorState createState() => BarangaySelectorState();
@@ -49,7 +51,7 @@ class BarangaySelectorState extends State<BarangaySelector> {
 
       // if (defaultValue?.id == null && defaultValue?.name == null) return;
 
-      widget.onChange(defaultValue?.id, defaultValue?.name);
+      widget.onChange(defaultValue?.name, defaultValue?.id);
       barangays = _barangays;
       fetchingBarangay = false;
     });
@@ -75,30 +77,33 @@ class BarangaySelectorState extends State<BarangaySelector> {
               Text("Fetching barangay")
             ],
           )
-        : DropdownButtonFormField(
-            menuMaxHeight: MediaQuery.of(context).size.height * 0.6,
-            decoration: InputDecoration(
-              labelText: "Barangay",
-              hintText: "Select your barangay",
-              border: OutlineInputBorder(
-                borderRadius: BorderRadius.circular(8 * 2),
+        : AbsorbPointer(
+            absorbing: widget.readonly,
+            child: DropdownButtonFormField(
+              menuMaxHeight: MediaQuery.of(context).size.height * 0.6,
+              decoration: InputDecoration(
+                labelText: "Barangay",
+                hintText: "Select your barangay",
+                border: OutlineInputBorder(
+                  borderRadius: BorderRadius.circular(8 * 2),
+                ),
               ),
+              value: defaultValue,
+              onChanged: (value) {
+                if (value == null) return;
+                widget.onChange(value.name, value.id);
+                setState(() {
+                  defaultValue = value;
+                });
+              },
+              items: barangays.map((b) => DropdownMenuItem(value: b, child: Text(b.name))).toList(),
+              validator: (value) {
+                if (value == null) {
+                  return "Please select your barangay";
+                }
+                return null;
+              },
             ),
-            value: defaultValue,
-            onChanged: (value) {
-              if (value == null) return;
-              widget.onChange(value.name, value.id);
-              setState(() {
-                defaultValue = value;
-              });
-            },
-            items: barangays.map((b) => DropdownMenuItem(value: b, child: Text(b.name))).toList(),
-            validator: (value) {
-              if (value == null) {
-                return "Please select your barangay";
-              }
-              return null;
-            },
           );
   }
 }

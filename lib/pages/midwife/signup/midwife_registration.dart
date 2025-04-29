@@ -85,8 +85,9 @@ class _MidwifeRegistrationState extends State<MidwifeRegistration> {
                     const Flexible(
                         child: Text(
                       "Midwife registration",
-                      style: TextStyle(fontSize: 8 * 6, fontWeight: FontWeight.w500),
+                      style: TextStyle(fontSize: 8 * 5, fontWeight: FontWeight.w500),
                       softWrap: true,
+                      maxLines: 2,
                     )),
                     Hero(
                       tag: "Midwife",

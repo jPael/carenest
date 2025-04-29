@@ -41,7 +41,7 @@ class _ForumLikeButtonState extends State<ForumLikeButton> {
         liked = res["value"];
       });
       if (!mounted) return;
-      showErrorMessage(context: context, message: res["message"]);
+      Alert.showErrorMessage(message: res["message"]);
     }
   }
 

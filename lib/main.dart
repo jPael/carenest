@@ -2,6 +2,7 @@ import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:provider/provider.dart';
+import 'package:smartguide_app/components/alert/alert.dart';
 import 'package:smartguide_app/models/user.dart';
 import 'package:smartguide_app/pages/auth/auth_page.dart';
 
@@ -24,11 +25,12 @@ GlobalKey<NavigatorState> navigatorKey = GlobalKey<NavigatorState>();
 class MyApp extends StatelessWidget {
   const MyApp({super.key});
 
-  final Color primaryColor = const Color(0xFF235ee8);
+  final Color primaryColor = const Color(0xFF696cff);
 
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
+      scaffoldMessengerKey: Alert.scaffoldMessengerKey,
       title: 'CareNest',
       theme: ThemeData(
         primaryColor: primaryColor,

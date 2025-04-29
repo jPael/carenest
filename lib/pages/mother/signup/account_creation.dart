@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_auto_size_text/flutter_auto_size_text.dart';
 import 'package:smartguide_app/components/alert/alert.dart';
 import 'package:smartguide_app/components/button/custom_button.dart';
 import 'package:smartguide_app/components/form/custom_form.dart';
@@ -62,7 +63,7 @@ class AccountCreationState extends State<AccountCreation> {
 
       if (result["error"] != null) {
         if (mounted) {
-          showErrorMessage(context: context, message: errorMessage(result["error"]!));
+          Alert.showErrorMessage(message: errorMessage(result["error"]!));
         }
 
         setState(() {
@@ -72,7 +73,7 @@ class AccountCreationState extends State<AccountCreation> {
       }
 
       if (!mounted) return;
-      showSuccessMessage(context: context, message: errorMessage(result["success"]!));
+      Alert.showSuccessMessage(message: errorMessage(result["success"]!));
       Navigator.pushAndRemoveUntil(
         context,
         MaterialPageRoute(builder: (context) => const AuthPage()),
@@ -123,10 +124,11 @@ class AccountCreationState extends State<AccountCreation> {
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
                     const Flexible(
-                        child: Text(
+                        child: AutoSizeText(
                       "Create your account",
-                      style: TextStyle(fontSize: 8 * 6, fontWeight: FontWeight.w500),
+                      style: TextStyle(fontSize: 8 * 5, fontWeight: FontWeight.w500),
                       softWrap: true,
+                      maxLines: 2,
                     )),
                     Image.asset(
                       "lib/assets/images/mothers_registration_hero.png",

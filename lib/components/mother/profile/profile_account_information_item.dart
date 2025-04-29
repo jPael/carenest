@@ -58,13 +58,12 @@ class _ProfileAccountInformationItemState extends State<ProfileAccountInformatio
 
       if (!mounted) return;
 
-      showSuccessMessage(context: context, message: result, duration: const Duration(seconds: 5));
+      Alert.showSuccessMessage(message: result, duration: const Duration(seconds: 5));
     } catch (e, stackTrace) {
       if (!mounted) {
         return;
       }
-      showErrorMessage(
-          context: context, message: e.toString(), duration: const Duration(seconds: 5));
+      Alert.showErrorMessage(message: e.toString(), duration: const Duration(seconds: 5));
 
       log(e.toString());
       log(stackTrace.toString());
@@ -91,7 +90,11 @@ class _ProfileAccountInformationItemState extends State<ProfileAccountInformatio
       form: Column(
         spacing: 8,
         children: [
-          CustomInput.text(context: context, controller: emailController, label: "Email", hint: "e.g. example@email.com"),
+          CustomInput.text(
+              context: context,
+              controller: emailController,
+              label: "Email",
+              hint: "e.g. example@email.com"),
           CustomInput.text(
             context: context,
             controller: passwordController,
@@ -102,7 +105,10 @@ class _ProfileAccountInformationItemState extends State<ProfileAccountInformatio
             controller: confirmPasswordController,
             label: "Password",
           ),
-          PasswordStrengthChecklist(password: passwordController, confirmPassword: confirmPasswordController, onChange: (_) {}),
+          PasswordStrengthChecklist(
+              password: passwordController,
+              confirmPassword: confirmPasswordController,
+              onChange: (_) {}),
           Row(mainAxisAlignment: MainAxisAlignment.end, children: [
             CustomButton(
               onPress: handleSave,

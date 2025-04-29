@@ -1,5 +1,6 @@
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_auto_size_text/flutter_auto_size_text.dart';
 import 'package:smartguide_app/components/alert/alert.dart';
 import 'package:smartguide_app/components/button/custom_button.dart';
 import 'package:smartguide_app/components/form/custom_form.dart';
@@ -43,7 +44,7 @@ class _LandingPageState extends State<LandingPage> {
       }
 
       if (!mounted) return;
-      showErrorMessage(context: context, message: result["message"]);
+      Alert.showErrorMessage(message: result["message"]);
     } else {
       if (!mounted) return;
       Navigator.pushAndRemoveUntil(
@@ -89,14 +90,14 @@ class _LandingPageState extends State<LandingPage> {
                       mainAxisAlignment: MainAxisAlignment.center,
                       children: [
                         Flexible(
-                          child: Text(
-                            textAlign: TextAlign.center,
-                            "Welcome to CareNest!",
-                            style: TextStyle(
-                                fontSize: 8 * 6, color: Colors.white, fontWeight: FontWeight.w500),
-                            softWrap: true,
-                          ),
-                        ),
+                            child: AutoSizeText(
+                          textAlign: TextAlign.center,
+                          "Welcome to CareNest!",
+                          style: TextStyle(
+                              fontSize: 4 * 10, color: Colors.white, fontWeight: FontWeight.w500),
+                          softWrap: true,
+                          maxLines: 2,
+                        )),
                       ],
                     ),
                   ),
@@ -121,8 +122,8 @@ class _LandingPageState extends State<LandingPage> {
                                   shape: WidgetStateProperty.all(RoundedRectangleBorder(
                                       side: const BorderSide(width: 4, color: Colors.white),
                                       borderRadius: BorderRadius.circular(8.0 * 3))),
-                                  padding: WidgetStateProperty.all(
-                                      const EdgeInsets.symmetric(horizontal: 8.0 * 5, vertical: 8.0 * 3)),
+                                  padding: WidgetStateProperty.all(const EdgeInsets.symmetric(
+                                      horizontal: 8.0 * 5, vertical: 8.0 * 3)),
                                   backgroundColor: WidgetStateProperty.all(
                                       HSLColor.fromColor(Theme.of(context).colorScheme.primary)
                                           .withSaturation(loggingIn ? 0.5 : 1)

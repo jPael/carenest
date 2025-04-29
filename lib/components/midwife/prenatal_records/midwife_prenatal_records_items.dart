@@ -1,15 +1,16 @@
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
+import 'package:smartguide_app/models/person.dart';
 import 'package:smartguide_app/models/prenatal.dart';
 import 'package:smartguide_app/pages/midwife/prenatal_records/patients_history_list_page.dart';
 
 class MidwifePrenatalRecordsItems extends StatelessWidget {
   const MidwifePrenatalRecordsItems({
     super.key,
-    this.prenatal,
+    this.mother,
   });
 
-  final Prenatal? prenatal;
+  final Person? mother;
 
   final double profileImageSize = 60.0;
   @override
@@ -17,9 +18,8 @@ class MidwifePrenatalRecordsItems extends StatelessWidget {
     String fullname = "Default name";
     DateTime date = DateTime.now();
 
-    if (prenatal != null) {
-      fullname = prenatal!.fullname;
-      date = prenatal!.createdAt!;
+    if (mother != null) {
+      fullname = mother!.name!;
     }
 
     return InkWell(
@@ -27,8 +27,7 @@ class MidwifePrenatalRecordsItems extends StatelessWidget {
           context,
           MaterialPageRoute(
               builder: (context) => PatientsHistoryListPage(
-                    fullname: fullname,
-                    id: prenatal!.laravelId,
+                    person: mother!,
                   ))),
       child: Row(
         crossAxisAlignment: CrossAxisAlignment.center,

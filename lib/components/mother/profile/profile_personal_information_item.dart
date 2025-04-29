@@ -82,13 +82,12 @@ class _ProfilePersonalInformationItemState extends State<ProfilePersonalInformat
         return;
       }
 
-      showSuccessMessage(context: context, message: result, duration: const Duration(seconds: 5));
+      Alert.showSuccessMessage(message: result, duration: const Duration(seconds: 5));
     } catch (e, stackTrace) {
       if (!mounted) {
         return;
       }
-      showErrorMessage(
-          context: context, message: e.toString(), duration: const Duration(seconds: 5));
+      Alert.showErrorMessage(message: e.toString(), duration: const Duration(seconds: 5));
 
       log(e.toString());
       log(stackTrace.toString());

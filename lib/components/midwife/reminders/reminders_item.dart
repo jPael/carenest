@@ -45,14 +45,14 @@ class _RemindersItemState extends State<RemindersItem> {
           });
         } else {
           if (!mounted) return;
-          showErrorMessage(context: context, message: "There was an error storing the reminder");
+          Alert.showErrorMessage(message: "There was an error storing the reminder");
           setState(() {
             isFresh = true;
           });
         }
       } catch (e, stackTrace) {
         if (!mounted) return;
-        showErrorMessage(context: context, message: "There was an error storing the reminder");
+        Alert.showErrorMessage(message: "There was an error storing the reminder");
         log("There was an error storing the reminder: $e", stackTrace: stackTrace);
         setState(() {
           isFresh = true;
@@ -79,13 +79,12 @@ class _RemindersItemState extends State<RemindersItem> {
 
       widget.handleDelete(res);
       if (!mounted) return;
-      showSuccessMessage(
-          context: context,
+      Alert.showSuccessMessage(
           message: "Reminder titled ${widget.reminder.title} removed successfully");
     } catch (e, stackTrace) {
       log("Error: $e", stackTrace: stackTrace);
       if (!mounted) return;
-      showErrorMessage(context: context, message: "Error: $e");
+      Alert.showErrorMessage(message: "Error: $e");
     } finally {
       isDeleting = false;
     }
@@ -147,13 +146,13 @@ class _RemindersItemState extends State<RemindersItem> {
 
                   repaint(res);
                   // ignore: use_build_context_synchronously
-                  showSuccessMessage(context: context, message: "Reminder updated successfully");
+                  Alert.showSuccessMessage(message: "Reminder updated successfully");
                 } catch (e, stackTrace) {
                   log("$e", stackTrace: stackTrace);
 
-                  showErrorMessage(
+                  Alert.showErrorMessage(
                       // ignore: use_build_context_synchronously
-                      context: context,
+
                       message: "Unable to update your reminder. Please try again later");
                 } finally {
                   setDialogState(() {
