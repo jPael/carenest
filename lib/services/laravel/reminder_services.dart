@@ -11,7 +11,7 @@ class ReminderServices {
   Future<Map<String, List<Reminder>>> fetchAllSegregatedReminderByUserId(
       String laravelId, String token) async {
     final List<Reminder> reminders =
-        await fetchAllReminderByUserId(laravelId, token) as List<Reminder>;
+        await fetchAllReminderByMotherId(laravelId, token) as List<Reminder>;
 
     final List<Reminder> today = [];
     final List<Reminder> upcoming = [];
@@ -65,7 +65,9 @@ class ReminderServices {
     return d;
   }
 
-  Future<List<Reminder>?>? fetchAllReminderByUserId(String laravelId, String token) async {
+  Future<List<Reminder>?>? fetchAllReminderByMotherId(String laravelId, String token) async {
+    log(laravelId);
+
     if (laravelId.isEmpty) return null;
 
     final url = apiURIBase.replace(path: LaravelPaths.allReminders);
@@ -75,7 +77,32 @@ class ReminderServices {
 
     final data = jsonDecode(res.body) as List<dynamic>;
 
-    final cleanReminder = data.where((r) => r[ReminderFields.userId].toString() == laravelId);
+    // log(data.length.toString());
+
+    final cleanReminder = data.where((r) => r[ReminderFields.motherId].toString() == laravelId);
+
+    // await Future.delayed(const Duration(seconds: 5));
+
+    final List<Reminder> reminders = cleanReminder.map((r) {
+      return Reminder.fromJson(r);
+    }).toList();
+
+    return reminders;
+  }
+
+  Future<List<Reminder>?>? fetchAllReminderByMidwifeId(String laravelId, String token) async {
+    if (laravelId.isEmpty) return null;
+
+    final url = apiURIBase.replace(path: LaravelPaths.allReminderByMidwifeId(int.parse(laravelId)));
+
+    final res = await http
+        .get(url, headers: {'Content-Type': 'application/json', 'Authorization': "Bearer $token"});
+
+    final data = jsonDecode(res.body) as List<dynamic>;
+
+    // log(data.length.toString());
+
+    final cleanReminder = data.where((r) => r[ReminderFields.midwifeId].toString() == laravelId);
 
     // await Future.delayed(const Duration(seconds: 5));
 
@@ -87,7 +114,7 @@ class ReminderServices {
   Future<int> removeReminder(Reminder reminder, String token) async {
     if (reminder.id == null) throw Exception("Reminder ID is not provided");
 
-    log(LaravelPaths.specificReminder(reminder.id!));
+    // log(LaravelPaths.specificReminder(reminder.id!));
 
     await Future.delayed(const Duration(seconds: 5));
 
@@ -114,8 +141,9 @@ class ReminderServices {
       required ReminderTypeEnum type,
       required DateTime date,
       required String token,
-      required int userId,
-      required bool isDone}) async {
+      required int motherId,
+      required bool isDone,
+      required int midwifeId}) async {
     if (token.isEmpty) return false;
 
     final url = apiURIBase.replace(path: LaravelPaths.specificReminder(id));
@@ -129,7 +157,8 @@ class ReminderServices {
           ReminderFields.name: title,
           ReminderFields.icon: type.code,
           ReminderFields.reminderDate: date.toString(),
-          ReminderFields.userId: userId,
+          ReminderFields.motherId: motherId,
+          ReminderFields.midwifeId: midwifeId,
           ReminderFields.isDone: isDone ? 1 : 0
         }));
 
@@ -148,7 +177,8 @@ class ReminderServices {
       ReminderFields.name: reminder.title,
       ReminderFields.icon: reminder.reminderType.code,
       ReminderFields.reminderDate: reminder.date.toString(),
-      ReminderFields.userId: reminder.userId,
+      ReminderFields.motherId: reminder.motherId,
+      ReminderFields.midwifeId: reminder.midwifeId
     };
 
     final res = await http.post(url,

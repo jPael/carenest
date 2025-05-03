@@ -56,12 +56,12 @@ class _CareAndTestsFormState extends State<CareAndTestsForm> {
   ];
 
   void handleConsultWhtValue(bool? v) {
-    if (v == null) return;
+    if (widget.isReadonly || v == null) return;
     widget.consultWhtOnChange(v);
   }
 
   void handleIntroducedBirthPlanValue(bool? v) {
-    if (v == null) return;
+    if (widget.isReadonly || v == null) return;
     widget.introducedBirthPlanOnChange(v);
   }
 

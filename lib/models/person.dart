@@ -7,14 +7,9 @@ class Person {
   String? phone;
   String? email;
   String? address;
+  DateTime? birthday;
 
-  Person({
-    this.id,
-    this.name,
-    this.phone,
-    this.email,
-    this.address,
-  });
+  Person({this.id, this.name, this.phone, this.email, this.address, this.birthday});
 
   void fromJson(Map<String, dynamic> json) {
     id = json[LaravelUserFields.id];

@@ -3,10 +3,10 @@ import 'package:smartguide_app/models/person.dart';
 import 'package:smartguide_app/services/laravel/mother_services.dart';
 
 class MotherSelector extends StatefulWidget {
-  const MotherSelector({super.key, required this.onChange});
+  const MotherSelector({super.key, required this.onChange, this.motherId});
 
   final Function(int? value) onChange;
-
+  final int? motherId;
   @override
   MotherSelectorState createState() => MotherSelectorState();
 }
@@ -26,8 +26,13 @@ class MotherSelectorState extends State<MotherSelector> {
     // final _barangays = await BarangayServices().fetchALlBarangays();
 
     setState(() {
-      defaultValue = mothers.first.id!;
-      widget.onChange(defaultValue);
+      if (widget.motherId == null) {
+        defaultValue = mothers.first.id!;
+        widget.onChange(defaultValue);
+      } else {
+        defaultValue = widget.motherId;
+      }
+
       persons = mothers;
     });
 

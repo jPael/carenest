@@ -35,7 +35,7 @@ int calculateAge(DateTime birthday) {
 // Helper function to parse date from string (optional)
 DateTime parseBirthday(String dateString) {
   try {
-    return DateTime.parse(dateString);
+    return DateTime.parse(dateString).toLocal();
   } catch (e) {
     // Alternative parsing with intl package if needed
     final format = DateFormat('yyyy-MM-dd');

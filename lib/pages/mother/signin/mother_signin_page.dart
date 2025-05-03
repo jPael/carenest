@@ -4,6 +4,7 @@ import 'package:smartguide_app/components/alert/alert.dart';
 import 'package:smartguide_app/components/button/custom_button.dart';
 import 'package:smartguide_app/components/form/custom_form.dart';
 import 'package:smartguide_app/components/input/custom_input.dart';
+import 'package:smartguide_app/error/app_error.dart';
 import 'package:smartguide_app/pages/auth/auth_page.dart';
 import 'package:smartguide_app/services/auth_services.dart';
 
@@ -41,7 +42,7 @@ class _MotherSigninPageState extends State<MotherSigninPage> {
       }
 
       if (!mounted) return;
-      Alert.showErrorMessage(message: result["message"]);
+      Alert.showErrorMessage(message: errorMessage(result["message"]));
     } else {
       if (!mounted) return;
       Navigator.pushAndRemoveUntil(

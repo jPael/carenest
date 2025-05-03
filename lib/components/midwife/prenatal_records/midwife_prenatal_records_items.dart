@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 import 'package:smartguide_app/models/person.dart';
-import 'package:smartguide_app/models/prenatal.dart';
 import 'package:smartguide_app/pages/midwife/prenatal_records/patients_history_list_page.dart';
 
 class MidwifePrenatalRecordsItems extends StatelessWidget {

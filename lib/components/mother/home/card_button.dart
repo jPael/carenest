@@ -1,5 +1,3 @@
-import 'dart:developer';
-
 import 'package:flutter/material.dart';
 
 class CardButton extends StatelessWidget {
@@ -21,7 +19,6 @@ class CardButton extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-
     return GestureDetector(
       onTap: onPressed,
       child: Badge.count(

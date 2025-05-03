@@ -23,7 +23,7 @@ class _CareAndTestsState extends State<CareAndTests> with TickerProviderStateMix
     super.initState();
     tabs = widget.trimesters
         .map(
-          (e) => e.trimester.label,
+          (e) => e.trimester?.label ?? "NA",
         )
         .toList();
     tabController = TabController(length: tabs.length, vsync: this);

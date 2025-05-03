@@ -49,7 +49,7 @@ class AccountCreationState extends State<AccountCreation> {
       // await Future.delayed(const Duration(seconds: 3));
 
       final NewUser user = NewUser(
-          type: UserType.midwife,
+          type: UserTypeEnum.midwife,
           firstname: widget.firstname,
           lastname: widget.lastname,
           barangayId: widget.barangayId,

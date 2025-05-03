@@ -22,11 +22,11 @@ class BirthPlan extends StatelessWidget {
           ),
           BirthPlanItem(
             description: "Assigned by",
-            value: data?.assignedBy.name ?? "Maria dela Cruz",
+            value: data?.assignedBy?.name ?? "Maria dela Cruz",
           ),
           BirthPlanItem(
             description: "Accompanying Midwife/Nurse/Doctor",
-            value: data?.accompaniedBy.name ?? "Maria dela Cruz",
+            value: data?.accompaniedBy?.name ?? "Maria dela Cruz",
           ),
         ],
       ),

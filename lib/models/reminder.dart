@@ -7,17 +7,19 @@ class Reminder {
   String title;
   String? purpose;
   ReminderTypeEnum reminderType;
+  final int midwifeId;
   DateTime? date;
   // final TimeOfDay time;
   bool isFresh;
-  final int userId;
+  final int motherId;
   bool? isDone;
 
   Reminder({
+    required this.midwifeId,
     this.isDone,
     this.id,
     required this.title,
-    required this.userId,
+    required this.motherId,
     this.purpose,
     required this.reminderType,
     required this.date,
@@ -42,9 +44,10 @@ class Reminder {
       isDone: json[ReminderFields.isDone] == 1 ? true : false,
       isFresh: false,
       id: json[ReminderFields.id],
-      userId: json[ReminderFields.userId],
+      motherId: json[ReminderFields.motherId],
       date: DateTime.tryParse(json[ReminderFields.reminderDate]),
       title: json[ReminderFields.name],
+      midwifeId: json[ReminderFields.midwifeId],
       reminderType: getReminderTypeEnumFromReminderInt(json[ReminderFields.icon]) ??
           ReminderTypeEnum.prenatalCheckup);
 
@@ -54,14 +57,15 @@ class Reminder {
         ReminderFields.name: title,
         ReminderFields.icon: reminderType.code,
         ReminderFields.reminderDate: date.toString(),
-        ReminderFields.userId: userId,
+        ReminderFields.motherId: motherId,
       };
 
   Reminder toCopy() {
     return Reminder(
+      midwifeId: midwifeId,
       id: id,
       title: title,
-      userId: userId,
+      motherId: motherId,
       purpose: purpose,
       reminderType: reminderType,
       date: date,
@@ -83,26 +87,40 @@ class Reminder {
   Future<Reminder> updateReminder({
     required String title,
     required ReminderTypeEnum type,
-    required int userId,
+    required int motherId,
     required DateTime date,
     required String token,
     bool isDone = false,
+    required int midwifeId,
   }) async {
+//     log('''
+// $id
+// $title
+// $type
+// $motherId
+// $date
+// $token
+// $isDone
+// $midwifeId
+//     ''');
+
     final bool res = await reminderServices.updateReminder(
         id: id!,
         title: title,
         type: type,
         date: date,
         token: token,
-        userId: userId,
-        isDone: isDone);
+        motherId: motherId,
+        isDone: isDone,
+        midwifeId: midwifeId);
 
     if (res) {
       return Reminder(
+          midwifeId: midwifeId,
           date: date,
           reminderType: type,
           title: title,
-          userId: userId,
+          motherId: motherId,
           id: id,
           isFresh: isFresh,
           purpose: purpose);

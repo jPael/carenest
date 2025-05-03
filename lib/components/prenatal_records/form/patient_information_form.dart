@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:smartguide_app/components/barangay/barangay_selector.dart';
-import 'package:smartguide_app/components/button/custom_button.dart';
 import 'package:smartguide_app/components/checklist/custom_checkbox.dart';
 import 'package:smartguide_app/components/input/custom_input.dart';
 import 'package:smartguide_app/components/section/custom_section.dart';
@@ -87,10 +86,10 @@ class _PatientInformationFormState extends State<PatientInformationForm> {
   Widget build(BuildContext context) {
     final User user = context.read<User>();
 
-    // handleBirthdayValue(DateTime.parse(user.dateOfBirth!));
+    // handleBirthdayValue(DateTime.parse(user.dateOfBirth!).toLocal());
 
     return CustomSection(
-      title: "My Information",
+      title: "Patient Information",
       // action: CustomButton(
       //     horizontalPadding: 1,
       //     verticalPadding: 1,

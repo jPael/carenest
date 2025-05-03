@@ -6,7 +6,7 @@ import 'package:smartguide_app/services/laravel/user_services.dart';
 import 'package:smartguide_app/utils/utils.dart';
 
 class NewUser {
-  final UserType type;
+  final UserTypeEnum type;
   final String firstname;
   final String lastname;
   final String barangayId;
@@ -48,17 +48,18 @@ class NewUser {
         print("firebase data: ${getUserDetails()}");
       }
       final String uid = user.user!.uid;
-      await FirebaseFirestore.instance
-          .collection("users")
-          .doc(uid)
-          .set({UserFields.uid: uid, ...getUserDetails()});
 
-      await registerAccount(
+      final int laravelId = await registerAccount(
           name: "$firstname $lastname",
           email: email,
           password: password,
           type: type,
           barangayId: barangayId);
+
+      await FirebaseFirestore.instance
+          .collection("users")
+          .doc(uid)
+          .set({UserFields.uid: uid, UserFields.laravelId: laravelId, ...getUserDetails()});
 
       return {"success": "Registered successfully! Continue logging in with your new account"};
     } on FirebaseException catch (e, stackTrace) {
@@ -82,4 +83,4 @@ class NewUser {
   }
 }
 
-enum UserType { mother, midwife }
+enum UserTypeEnum { mother, midwife }

@@ -8,7 +8,7 @@ String errorMessage(String code) {
       errorMessage = "The email address is already in use by another account.";
       break;
     case FirebaseAuthError.invalidCredential:
-      errorMessage = "The email does'nt exists.";
+      errorMessage = "The email doesn't exists.";
 
       break;
     case FirebaseAuthError.invalidEmail:

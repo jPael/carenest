@@ -37,7 +37,7 @@ class _PrenatalRecordPageState extends State<PrenatalRecordPage> with TickerProv
 
     data = await prenatalServices.fetchPatientInformationById(
         token: user.token!,
-        userId: widget.prenatal.laravelId,
+        userId: widget.prenatal.laravelId!,
         patientInformationId: widget.prenatal.id!);
 
     // log("sas: " + data.toString());
@@ -61,13 +61,13 @@ class _PrenatalRecordPageState extends State<PrenatalRecordPage> with TickerProv
                 log(e['created_at'].toString());
 
                 return af_model.Immunization(
-                    term: e['term'], date: DateTime.parse(e['created_at']));
+                    term: e['term'], date: DateTime.parse(e['created_at']).toLocal());
               },
             ).toList(),
             ironSupplement: widget.prenatal.ironSuppItems
                 .map(
                   (e) => af_model.IronSupplement(
-                      tabs: e['no_tabs'], date: DateTime.parse(e['created_at'])),
+                      tabs: e['no_tabs'], date: DateTime.parse(e['created_at']).toLocal()),
                 )
                 .toList()),
       ),

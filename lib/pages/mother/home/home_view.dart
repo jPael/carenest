@@ -1,5 +1,3 @@
-import 'dart:developer';
-
 import 'package:flutter/material.dart';
 import 'package:smartguide_app/components/mother/home/card_button.dart';
 import 'package:smartguide_app/features/chatbot/chatbot.dart';

@@ -115,7 +115,7 @@ class _ProfilePersonalInformationItemState extends State<ProfilePersonalInformat
     lastnameController.text = widget.lastname ?? "";
     phoneNumberController.text = widget.phoneNumber ?? "";
     selectedBarangay = widget.address ?? "";
-    dateOfBirth = DateTime.parse(widget.dateOfBirth!);
+    dateOfBirth = DateTime.parse(widget.dateOfBirth!).toLocal().toLocal();
   }
 
   @override

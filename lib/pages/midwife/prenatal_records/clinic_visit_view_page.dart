@@ -1,9 +1,5 @@
-import 'dart:developer';
-
 import 'package:flutter/material.dart';
-import 'package:provider/provider.dart';
-import 'package:smartguide_app/components/alert/alert.dart';
-import 'package:smartguide_app/components/button/custom_button.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:smartguide_app/components/form/custom_form.dart';
 import 'package:smartguide_app/components/prenatal_records/form/after_care_form.dart';
 import 'package:smartguide_app/components/prenatal_records/form/birth_plan_form.dart';
@@ -13,125 +9,31 @@ import 'package:smartguide_app/components/prenatal_records/form/patient_informat
 import 'package:smartguide_app/models/after_care.dart';
 import 'package:smartguide_app/models/birth_plan.dart';
 import 'package:smartguide_app/models/care_and_test.dart';
+import 'package:smartguide_app/models/clinic_visit.dart';
 import 'package:smartguide_app/models/counseling.dart';
-import 'package:smartguide_app/models/donor.dart';
-import 'package:smartguide_app/models/new_user.dart';
 import 'package:smartguide_app/models/patient_information.dart';
 import 'package:smartguide_app/models/person.dart';
-import 'package:smartguide_app/models/prenatal.dart';
 import 'package:smartguide_app/models/trimester.dart';
+import 'package:smartguide_app/models/user.dart';
 import 'package:smartguide_app/services/laravel/prenatal_services.dart';
-import 'package:smartguide_app/utils/const_utils.dart';
+import 'package:smartguide_app/services/user_services.dart';
 import 'package:smartguide_app/utils/date_utils.dart';
 
-import '../../../models/user.dart';
+class ClinicVisitViewPage extends StatefulWidget {
+  const ClinicVisitViewPage({
+    super.key,
+    required this.clinicVisit,
+  });
 
-class PrenatalInfoForm extends StatefulWidget {
-  const PrenatalInfoForm(
-      {super.key, this.patient, this.readonly = false, this.patientInformationId});
-
-  final Person? patient;
-  final bool readonly;
-  final int? patientInformationId;
+  // final int patientId;\
+  final ClinicVisit clinicVisit;
 
   @override
-  State<PrenatalInfoForm> createState() => _PrenatalInfoFormState();
+  State<ClinicVisitViewPage> createState() => _ClinicVisitViewPageState();
 }
 
-class _PrenatalInfoFormState extends State<PrenatalInfoForm> {
+class _ClinicVisitViewPageState extends State<ClinicVisitViewPage> {
   final PrenatalServices prenatalServices = PrenatalServices();
-
-  bool isLoading = true;
-  Map<String, dynamic>? prenatalData;
-  bool isSubmitting = false;
-
-  Future<void> handleSubmit() async {
-    setState(() {
-      isSubmitting = true;
-    });
-    try {
-      final User user = context.read<User>();
-
-      final Map<String, dynamic>? res;
-
-      final bool isMother = getUserEnumFromUserTypeString(user.type!) == UserTypeEnum.mother;
-
-      if (isMother) {
-        final PatientInformation pi = PatientInformation(
-            philhealth: philhealth,
-            userId: user.laravelId!,
-            nhts: nhts,
-            lmp: lmp!,
-            edc: edc!,
-            obStatus: obStatusController.text,
-            bloodDonor: Donor(
-                fullname: donorFullnameController.text,
-                contactNumber: donorContactController.text,
-                bloodTyped: donorTyped));
-
-        res = await pi.storeRecord(token: user.token!);
-      } else {
-        log(assignedByController.text);
-
-        final Prenatal prenatal = Prenatal(
-          id: widget.patientInformationId,
-          assignedBy: int.parse(assignedByController.text),
-          accompaniedBy: int.parse(accompaniedByController.text),
-          userType: getUserEnumFromUserTypeString(user.type!),
-          laravelId: widget.patient?.id,
-          selectedTrimester: selectedTrimester,
-          consultWht: consultWht,
-          introducedBirthPlan: introducedBirthPlan,
-          fundicHeight: fundicHeightController.text,
-          fundicNormal: isFundicNormal,
-          bloodPressure: bloodPressureController.text,
-          bloodPressureNormal: isBloodPressureNormal,
-          advices: adviceControllers.map((a) => a.text).toList(),
-          services: serviceControllers.map((a) => a.text).toList(),
-          birthplace: birthPlaceController.text,
-          ttItems: ttItems,
-          ironSuppItems: ironSuppItems,
-          barangay: barangayController.text,
-          birthday: birthday!,
-          patientInformation: PatientInformation(
-            userId: user.laravelId!,
-            philhealth: philhealth,
-            nhts: nhts,
-            lmp: lmp!,
-            edc: edc!,
-            obStatus: obStatusController.text,
-          ),
-          fullname: fullnameController.text,
-          age: ageController.text,
-          breastFeeding: questionaire[0]['value'],
-          familyPlanning: questionaire[1]['value'],
-          properNutrition: null,
-          properNutritionForChild: questionaire[2]['value'],
-          properNutritionForMyself: questionaire[3]['value'],
-        );
-        res = await prenatal.storeRecord(token: user.token!);
-      }
-
-      if (res['success'] == true) {
-        Alert.showSuccessMessage(message: "Your prenatal has been updated successfully");
-        // Navigator.pushReplacement(
-        //     context, MaterialPageRoute(builder: (_) => const PrenatalRecordsListPage()));
-        if (!isMother) {
-          Navigator.pop(context);
-          Navigator.pop(context);
-        }
-      } else {
-        Alert.showErrorMessage(message: "Something went wrong. Please try again");
-      }
-    } catch (e, stackTrace) {
-      Alert.showErrorMessage(message: "Something went wrong. Please try again");
-      log(e.toString(), stackTrace: stackTrace);
-    }
-
-    setState(() {
-      isSubmitting = false;
-    });
-  }
 
   // patient info
   final TextEditingController fullnameController = TextEditingController();
@@ -195,16 +97,22 @@ class _PrenatalInfoFormState extends State<PrenatalInfoForm> {
 
   // counseling
 
+  bool isLoading = true;
+  Map<String, dynamic>? prenatalData;
+  Person? userData;
+
   Future<void> fetchPrenatalInformation() async {
     final User user = context.read<User>();
 
-    // log(widget.patient?.id.toString() ?? "NA");
+    final Map<String, dynamic>? patientInformationData = await prenatalServices
+        .fetchLatestPatientInformationByToken(user.token!, widget.clinicVisit.userId);
 
-    final Map<String, dynamic>? data = await prenatalServices.fetchLatestPatientInformationByToken(
-        user.token!, widget.patient?.id ?? user.laravelId!);
+    final Person? userInformationData =
+        await getUserByLaravelId(laravelId: widget.clinicVisit.userId);
 
     setState(() {
-      prenatalData = data;
+      prenatalData = patientInformationData;
+      userData = userInformationData;
       isLoading = false;
     });
   }
@@ -213,15 +121,11 @@ class _PrenatalInfoFormState extends State<PrenatalInfoForm> {
     setState(() {
       final User user = context.read<User>();
 
-      // log(prenatalData.toString());
-
       final PatientInformation? pi = prenatalData?['patientInformation'];
 
-      // log(pi?.obStatus ?? "NA");
-
       birthday = DateTime.parse(user.dateOfBirth!).toLocal();
-      fullnameController.text = widget.patient?.name ?? "${user.firstname} ${user.lastname}";
-      ageController.text = calculateAge(DateTime.parse(user.dateOfBirth!).toLocal()).toString();
+      fullnameController.text = userData?.name ?? "NA";
+      ageController.text = calculateAge(userData!.birthday!).toString();
       obStatusController.text = pi?.obStatus ?? "";
       lmp = pi?.lmp;
       edc = pi?.edc;
@@ -231,8 +135,6 @@ class _PrenatalInfoFormState extends State<PrenatalInfoForm> {
       donorFullnameController.text = pi?.bloodDonor?.fullname ?? "";
       donorContactController.text = pi?.bloodDonor?.contactNumber ?? "";
       donorTyped = pi?.bloodDonor?.bloodTyped ?? false;
-
-      if (!widget.readonly) return;
 
       final CareAndTest? cat = prenatalData?['careAndTest'];
 
@@ -291,14 +193,6 @@ class _PrenatalInfoFormState extends State<PrenatalInfoForm> {
         initData();
       },
     );
-
-    fullnameController.text = widget.patient?.name ?? "";
-
-    // log(prenatalData?['careAndTest'].toString() ?? "");
-
-    // handleBirthplaceChange(data?.birthplace, null);
-    // handleAssignedByChange(data?.assignedBy.id.toString());
-    // handleAccompaniedByChange(data?.accompaniedBy.id.toString());
   }
 
   @override
@@ -326,95 +220,78 @@ class _PrenatalInfoFormState extends State<PrenatalInfoForm> {
 
   @override
   Widget build(BuildContext context) {
-    final User user = context.read<User>();
-
-    // final String userType = user.type!;
-
-    final bool userIsMother = getUserEnumFromUserTypeString(user.type!) == UserTypeEnum.mother;
-    final bool userIsMidwife = getUserEnumFromUserTypeString(user.type!) == UserTypeEnum.midwife;
-
-    // log((getUserEnumFromUserTypeString(userType) == UserType.midwife).toString());
-
-    return SingleChildScrollView(
-      child: Padding(
-        padding: const EdgeInsets.all(4 * 2),
-        child: isLoading
-            ? const Center(
-                child: SizedBox.square(
-                  dimension: 8 * 4,
-                  child: CircularProgressIndicator(),
-                ),
-              )
-            : CustomForm(actions: [
-                // if (!widget.readonly)
-                CustomButton(
-                  onPress: handleSubmit,
-                  label: "Submit",
-                  isLoading: isSubmitting,
-                  verticalPadding: 2,
-                  horizontalPadding: 5,
+    return Scaffold(
+      appBar: AppBar(),
+      body: SingleChildScrollView(
+        child: Padding(
+          padding: const EdgeInsets.all(4 * 2),
+          child: isLoading
+              ? const Center(
+                  child: SizedBox.square(
+                    dimension: 8 * 4,
+                    child: CircularProgressIndicator(),
+                  ),
                 )
-              ], children: [
-                Card(
-                  child: Padding(
-                    padding: const EdgeInsets.all(8.0 * 2),
-                    child: PatientInformationForm(
-                      isReadonly: userIsMidwife,
-                      birthday: birthday,
-                      edc: edc,
-                      lmp: lmp,
-                      data: prenatalData?['patientInformation'],
-                      ageController: ageController,
-                      fullnameController: fullnameController,
-                      obStatusController: obStatusController,
-                      onBarangayChange: (String? address, String? id) {
-                        barangayController.text = address!;
-                      },
-                      onBirthdayChange: (DateTime d) {
-                        setState(() {
-                          birthday = d;
-                        });
-                      },
-                      onLmpChange: (DateTime d) {
-                        setState(() {
-                          lmp = d;
-                        });
-                      },
-                      onEdcChange: (DateTime d) {
-                        setState(() {
-                          edc = d;
-                        });
-                      },
-                      philhealth: philhealth,
-                      onPhilhealthChange: (bool v) {
-                        setState(() {
-                          philhealth = v;
-                        });
-                      },
-                      nhts: nhts,
-                      onNhtsChange: (bool v) {
-                        setState(() {
-                          nhts = v;
-                        });
-                      },
-                      donorFullnameController: donorFullnameController,
-                      donorContactController: donorContactController,
-                      donorBloodTyped: donorTyped,
-                      onDonorBloodTypeChange: (bool v) {
-                        setState(() {
-                          donorTyped = v;
-                        });
-                      },
+              : CustomForm(actions: const [], children: [
+                  Card(
+                    child: Padding(
+                      padding: const EdgeInsets.all(8.0 * 2),
+                      child: PatientInformationForm(
+                        isReadonly: true,
+                        birthday: birthday,
+                        edc: edc,
+                        lmp: lmp,
+                        data: prenatalData?['patientInformation'],
+                        ageController: ageController,
+                        fullnameController: fullnameController,
+                        obStatusController: obStatusController,
+                        onBarangayChange: (String? address, String? id) {
+                          barangayController.text = address!;
+                        },
+                        onBirthdayChange: (DateTime d) {
+                          setState(() {
+                            birthday = d;
+                          });
+                        },
+                        onLmpChange: (DateTime d) {
+                          setState(() {
+                            lmp = d;
+                          });
+                        },
+                        onEdcChange: (DateTime d) {
+                          setState(() {
+                            edc = d;
+                          });
+                        },
+                        philhealth: philhealth,
+                        onPhilhealthChange: (bool v) {
+                          setState(() {
+                            philhealth = v;
+                          });
+                        },
+                        nhts: nhts,
+                        onNhtsChange: (bool v) {
+                          setState(() {
+                            nhts = v;
+                          });
+                        },
+                        donorFullnameController: donorFullnameController,
+                        donorContactController: donorContactController,
+                        donorBloodTyped: donorTyped,
+                        onDonorBloodTypeChange: (bool v) {
+                          setState(() {
+                            donorTyped = v;
+                          });
+                        },
+                      ),
                     ),
                   ),
-                ),
-                if (userIsMidwife) ...[
                   const SizedBox(height: 4 * 2),
                   Card(
                     child: Padding(
                       padding: const EdgeInsets.all(8.0 * 2),
                       child: CareAndTestsForm(
-                        isReadonly: userIsMother,
+                        isReadonly: true,
                         data: prenatalData?['careAndTest'],
                         trimesterOnChange: (trimester) {
                           if (trimester == null) return;
@@ -426,15 +303,12 @@ class _PrenatalInfoFormState extends State<PrenatalInfoForm> {
                         selectedTrimester: selectedTrimester,
                         consultWht: consultWht,
                         consultWhtOnChange: (bool v) {
-                          if (userIsMother) return;
-
                           setState(() {
                             consultWht = v;
                           });
                         },
                         introducedBirthPlan: introducedBirthPlan,
                         introducedBirthPlanOnChange: (bool v) {
-                          if (userIsMother) return;
                           setState(() {
                             introducedBirthPlan = v;
                           });
@@ -453,7 +327,7 @@ class _PrenatalInfoFormState extends State<PrenatalInfoForm> {
                     child: Padding(
                       padding: const EdgeInsets.all(8.0 * 2),
                       child: BirthPlanForm(
-                        isReadonly: userIsMother,
+                        isReadonly: true,
                         data: prenatalData?['birthPlan'],
                         birthplaceController: birthPlaceController,
                         assignedByController: assignedByController,
@@ -466,7 +340,7 @@ class _PrenatalInfoFormState extends State<PrenatalInfoForm> {
                       child: Padding(
                     padding: const EdgeInsets.all(8.0 * 2),
                     child: AfterCareForm(
-                      isReadonly: userIsMother,
+                      isReadonly: true,
                       ttItems: ttItems,
                       ironSuppItems: ironSuppItems,
                     ),
@@ -478,7 +352,7 @@ class _PrenatalInfoFormState extends State<PrenatalInfoForm> {
                     child: Padding(
                       padding: const EdgeInsets.all(8.0 * 2),
                       child: CounselingForm(
-                        isReadonly: userIsMother,
+                        isReadonly: true,
                         questionaire: questionaire,
                         onChange: (String id, bool value) {
                           setState(() {
@@ -491,8 +365,8 @@ class _PrenatalInfoFormState extends State<PrenatalInfoForm> {
                       ),
                     ),
                   )
-                ]
-              ]),
+                ]),
+        ),
       ),
     );
   }

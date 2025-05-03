@@ -1,21 +1,37 @@
-// Uri get apiURIBase => Uri(scheme: "https", host: "tagorhu.site");
-Uri get apiURIBase => Uri(scheme: "http", host: "192.168.43.186", port: 8000);
+import 'package:flutter/foundation.dart';
+import 'package:flutter_dotenv/flutter_dotenv.dart'; // For kReleaseMode
 
-// 192.168.1.17:8000
+Uri get apiURIBase {
+  if (kReleaseMode) {
+    return Uri(scheme: "https", host: dotenv.env['REMOTE_BACKEND_API']!);
+  } else {
+    return Uri(
+        scheme: "http",
+        host: dotenv.env['LOCAL_BACKEND_API']!,
+        port: int.parse(dotenv.env['LOCAL_BACKEND_PORT']!));
+  }
+}
 
 class LaravelPaths {
-  static const String register = "/api/v1/register";
-  static const String login = "/api/v1/login";
-  static const String logout = "/api/v1/logout";
-  static const String user = "/api/v1/user";
-  static const String patientInformation = "/api/v1/user/patient-information";
-  static const String barangay = "/api/v1/barangays";
-  static const String prenatal = "/api/v1/prenatal";
-  static const String allPrenatal = "/api/v1/prenatals";
-  static const String reminder = "/api/v1/reminder";
-  static const String allReminders = "/api/v1/reminders";
-  static const String midwife = "/api/v1/midwife";
-  static const String mothers = "/api/v1/mothers";
+  static String get _baseUrl => "/api/v1";
 
-  static String specificReminder(int i) => "/api/v1/reminder/$i";
+  static String register = "$_baseUrl/register";
+  static String login = "$_baseUrl/login";
+  static String logout = "$_baseUrl/logout";
+  static String user = "$_baseUrl/user";
+  static String patientInformation = "$_baseUrl/user/patient-information";
+  static String barangay = "$_baseUrl/barangays";
+  static String createMotherPatientInformation = "$_baseUrl/mothers-prenatals-records";
+  static String createMotherPrenatalRecord = "$_baseUrl/midwife-prenatals-records";
+  static String allPrenatal = "$_baseUrl/prenatals";
+  static String prenatal = "$_baseUrl/prenatal";
+  static String reminder = "$_baseUrl/reminder";
+  static String allReminders = "$_baseUrl/reminders";
+  static String midwife = "$_baseUrl/midwife";
+  static String mothers = "$_baseUrl/mothers";
+
+  static String getClinicVisitsById(int i) => '$_baseUrl/clinic-visits/$i';
+  static String specificReminder(int i) => "$_baseUrl/reminder/$i";
+  static String allReminderByMidwifeId(int i) => "$_baseUrl/reminder/midwife/$i";
+  static String motherPrenatalById(int i) => "$_baseUrl/mothers-prenatals-records/$i/show";
 }

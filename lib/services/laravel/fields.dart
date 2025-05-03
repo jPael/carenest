@@ -32,6 +32,7 @@ class LaravelUserFields {
 
 class PrenatalFields {
   static const String patientInformationAccompaniedBy = 'patient_information_accompany_by';
+  static const String birthplace = "barangay_name";
   static const String patientInformationUserId = 'patient_information_user_id';
   static const String immunizationTerm = 'tt_imunizations';
   static const String ironSupplements = 'iron_supplements';

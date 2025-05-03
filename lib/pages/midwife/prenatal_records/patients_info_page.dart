@@ -1,4 +1,3 @@
-
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:smartguide_app/components/checklist/custom_checklist.dart';
@@ -55,9 +54,9 @@ class PatientsInfoPage extends StatelessWidget {
         'expectedDateOfConfinement': prenatal.patientInformation.edc,
         'bloodDonors': [
           {
-            'fullname': prenatal.donorFullname,
-            'phoneNumber': prenatal.donorContact,
-            'verified': prenatal.donorBloodTyped
+            'fullname': prenatal.patientInformation.bloodDonor?.fullname,
+            'phoneNumber': prenatal.patientInformation.bloodDonor?.contactNumber,
+            'verified': prenatal.patientInformation.bloodDonor?.bloodTyped
           },
         ]
       };

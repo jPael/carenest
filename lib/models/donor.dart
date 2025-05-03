@@ -1,11 +1,11 @@
 class Donor {
-  int id;
+  int? id;
   String fullname;
   String contactNumber;
   bool bloodTyped;
 
   Donor({
-    required this.id,
+    this.id,
     required this.fullname,
     required this.contactNumber,
     required this.bloodTyped,

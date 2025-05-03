@@ -1,13 +1,15 @@
 import 'dart:developer';
 
+import 'package:smartguide_app/models/new_user.dart';
 import 'package:smartguide_app/models/patient_information.dart';
 import 'package:smartguide_app/models/trimester.dart';
 import 'package:smartguide_app/services/laravel/prenatal_services.dart';
 
 class Prenatal {
   Prenatal({
-    required this.laravelId,
-    required this.selectedTrimester,
+    this.userType,
+    this.laravelId,
+    this.selectedTrimester,
     required this.consultWht,
     required this.introducedBirthPlan,
     required this.fundicHeight,
@@ -29,11 +31,10 @@ class Prenatal {
     this.properNutrition,
     required this.properNutritionForChild,
     required this.properNutritionForMyself,
-    required this.donorFullname,
-    required this.donorContact,
-    required this.donorBloodTyped,
     this.createdAt,
     this.updatedAt,
+    this.assignedBy,
+    this.accompaniedBy,
     this.id,
   });
 
@@ -42,13 +43,10 @@ class Prenatal {
   final bool? properNutrition;
   final bool properNutritionForChild;
   final bool properNutritionForMyself;
-  final String donorFullname;
-  final String donorContact;
-  final bool donorBloodTyped;
   final String fullname;
   final String age;
-  final int laravelId;
-  TrimesterEnum selectedTrimester;
+  final int? laravelId;
+  TrimesterEnum? selectedTrimester;
   String barangay;
   DateTime birthday;
   PatientInformation patientInformation;
@@ -66,12 +64,15 @@ class Prenatal {
   DateTime? createdAt;
   DateTime? updatedAt;
   final int? id;
+  final UserTypeEnum? userType;
+  final int? assignedBy;
+  final int? accompaniedBy;
 
   final PrenatalServices prenatalServices = PrenatalServices();
 
-  Future<Map<String, dynamic>> storeRecord() async {
+  Future<Map<String, dynamic>> storeRecord({required String token}) async {
     try {
-      await prenatalServices.storePrenatalRecord(this);
+      await prenatalServices.storePrenatalRecord(prenatal: this, token: token);
       return {"success": true, "message": "Prenatal record saved successfully"};
     } catch (e, stackTrace) {
       log('Error storing prenatal record: $e', stackTrace: stackTrace);
@@ -85,9 +86,6 @@ class Prenatal {
         'properNutrition': properNutrition,
         'properNutritionForChild': properNutritionForChild,
         'properNutritionForMyself': properNutritionForMyself,
-        'donorFullname': donorFullname,
-        'donorContact': donorContact,
-        'donorBloodTyped': donorBloodTyped,
         'fullname': fullname,
         'age': age,
         'laravelId': laravelId,

@@ -2,7 +2,7 @@ import 'package:smartguide_app/models/person.dart';
 import 'package:smartguide_app/models/trimester.dart';
 
 class CareAndTest {
-  final TrimesterEnum trimester;
+  final TrimesterEnum? trimester;
   final bool consultWht;
   final bool introducedBirthPlann;
   final String fundicHeight;

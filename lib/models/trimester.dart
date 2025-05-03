@@ -26,7 +26,7 @@ class Trimester {
   });
 
   // static Trimester fromJson(Map<String, dynamic> json) => Trimester(
-  //     whtPersonnel: whtPersonnel,
+  //     whtPersonnel: json[PatientInformationFields.],
   //     trimester: trimester,
   //     dateOfVisit: dateOfVisit,
   //     consultWht: consultWht,
@@ -50,6 +50,17 @@ extension TrimesterEnumExtenion on TrimesterEnum {
         return "Second Trimester";
       case TrimesterEnum.third:
         return "Third Trimester";
+    }
+  }
+
+  String get laravelValue {
+    switch (this) {
+      case TrimesterEnum.first:
+        return "1ST_TRIMESTER";
+      case TrimesterEnum.second:
+        return "2ND_TRIMESTER";
+      case TrimesterEnum.third:
+        return "3RD_TRIMESTER";
     }
   }
 

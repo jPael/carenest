@@ -94,7 +94,7 @@ class _RemindersItemState extends State<RemindersItem> {
     final User user = context.read<User>();
     final formKey = GlobalKey<FormState>();
     ReminderTypeEnum? reminderType = widget.reminder.reminderType;
-    int? userId;
+    int? motherId = widget.reminder.motherId;
     final TextEditingController titleController =
         TextEditingController(text: widget.reminder.title);
     final TextEditingController purposeController =
@@ -118,7 +118,7 @@ class _RemindersItemState extends State<RemindersItem> {
 
             void onMotherChange(int? i) {
               setDialogState(() {
-                userId = i;
+                motherId = i;
               });
             }
 
@@ -138,9 +138,10 @@ class _RemindersItemState extends State<RemindersItem> {
 
                 try {
                   final res = await widget.reminder.updateReminder(
+                      midwifeId: user.laravelId!,
                       title: titleController.text,
                       type: reminderType!,
-                      userId: userId!,
+                      motherId: motherId!,
                       date: date,
                       token: user.token!);
 
@@ -169,6 +170,7 @@ class _RemindersItemState extends State<RemindersItem> {
             return AlertDialog(
               title: const Text('Update reminder'),
               content: AddReminderForm(
+                motherId: widget.reminder.motherId,
                 date: date,
                 onMotherChange: onMotherChange,
                 formKey: formKey,

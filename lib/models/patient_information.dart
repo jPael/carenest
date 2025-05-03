@@ -1,8 +1,8 @@
 import 'dart:developer';
 
 import 'package:smartguide_app/models/donor.dart';
-import 'package:smartguide_app/models/person.dart';
 import 'package:smartguide_app/services/laravel/fields.dart';
+import 'package:smartguide_app/services/laravel/patient_information_services.dart';
 
 class PatientInformation {
   final int? id;
@@ -11,26 +11,20 @@ class PatientInformation {
   final DateTime lmp;
   final DateTime edc;
   final String obStatus;
-  final int assignById;
-  final Person? assignedByData;
-  final int accompanyById;
-  final Person? accompaniedByData;
   final Donor? bloodDonor;
+  final int userId;
   final DateTime? createdAt;
   final DateTime? updatedAt;
 
   PatientInformation(
       {this.id,
       this.bloodDonor,
-      this.assignedByData,
       required this.philhealth,
       required this.nhts,
+      required this.userId,
       required this.lmp,
       required this.edc,
       required this.obStatus,
-      required this.assignById,
-      required this.accompanyById,
-      this.accompaniedByData,
       this.createdAt,
       this.updatedAt});
 
@@ -47,7 +41,7 @@ class PatientInformation {
     log(donor.toString());
 
     return PatientInformation(
-      assignedByData: Person.fromJsonStatic(json["assigned_by"]),
+      userId: json[LaravelUserFields.userId],
       bloodDonor: Donor(
           id: donor['id'],
           fullname: donor[PrenatalFields.donorFullname],
@@ -57,20 +51,28 @@ class PatientInformation {
       philhealth: json[PatientInformationFields.philhealth] == 1 ? true : false,
       nhts: json[PatientInformationFields.nhts] == 1 ? true : false,
       lmp: json[PatientInformationFields.lmp] != null
-          ? DateTime.parse(json[PatientInformationFields.lmp])
+          ? DateTime.parse(json[PatientInformationFields.lmp]).toLocal()
           : DateTime.now(),
       edc: json[PatientInformationFields.edc] != null
-          ? DateTime.parse(json[PatientInformationFields.edc])
+          ? DateTime.parse(json[PatientInformationFields.edc]).toLocal()
           : DateTime.now(),
       obStatus: json[PatientInformationFields.obStatus],
-      assignById: json[PatientInformationFields.assignedBy],
-      accompanyById: json[PatientInformationFields.accompanyBy],
       createdAt: json[PatientInformationFields.createdAt] != null
-          ? DateTime.parse(json[PatientInformationFields.createdAt])
+          ? DateTime.parse(json[PatientInformationFields.createdAt]).toLocal()
           : null,
       updatedAt: json[PatientInformationFields.createdAt] != null
-          ? DateTime.parse(json[PatientInformationFields.updatedAt])
+          ? DateTime.parse(json[PatientInformationFields.updatedAt]).toLocal()
           : null,
     );
+  }
+
+  Future<Map<String, dynamic>> storeRecord({required String token}) async {
+    try {
+      await storePatientInformation(patientInformation: this, token: token);
+      return {"success": true, "message": "Prenatal record saved successfully"};
+    } catch (e, stackTrace) {
+      log('Error storing prenatal record: $e', stackTrace: stackTrace);
+      return {"success": false, "message": "Failed to save prenatal record"};
+    }
   }
 }

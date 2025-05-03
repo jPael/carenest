@@ -36,7 +36,7 @@ class SettingsView extends StatelessWidget {
                 title: "Bookmark",
                 onTap: () {},
               ),
-              if (role == getUserStringFromUserTypeEnum(UserType.mother)) ...[
+              if (role == getUserStringFromUserTypeEnum(UserTypeEnum.mother)) ...[
                 SettingsItem(
                   icon: const Icon(Ionicons.list_outline),
                   title: "Prenatal Record",

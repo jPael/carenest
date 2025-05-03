@@ -15,31 +15,31 @@ ReminderTypeEnum? getReminderTypeEnumFromReminderInt(int i) {
   }
 }
 
-String getUserStringFromUserTypeEnum(UserType type) {
+String getUserStringFromUserTypeEnum(UserTypeEnum type) {
   switch (type) {
-    case UserType.mother:
+    case UserTypeEnum.mother:
       return "MOTHER";
-    case UserType.midwife:
+    case UserTypeEnum.midwife:
       return "MIDWIFE";
   }
 }
 
-UserType getUserEnumFromUserTypeString(String type) {
+UserTypeEnum getUserEnumFromUserTypeString(String type) {
   switch (type) {
     case "MOTHER":
-      return UserType.mother;
+      return UserTypeEnum.mother;
     case "MIDWIFE":
-      return UserType.midwife;
+      return UserTypeEnum.midwife;
     default:
       throw ArgumentError("Invalid user type: $type");
   }
 }
 
-int getIntegerFromUserTypeEnum(UserType type) {
+int getIntegerFromUserTypeEnum(UserTypeEnum type) {
   switch (type) {
-    case UserType.mother:
+    case UserTypeEnum.mother:
       return 2;
-    case UserType.midwife:
+    case UserTypeEnum.midwife:
       return 1;
   }
 }
@@ -68,7 +68,7 @@ TrimesterEnum getTrimesterEnumFromTrimesterString(String t) {
   }
 }
 
-int getIntegerTrimesterEnum(TrimesterEnum t) {
+int? getIntegerTrimesterEnum(TrimesterEnum? t) {
   switch (t) {
     case TrimesterEnum.first:
       return 1;
@@ -76,5 +76,7 @@ int getIntegerTrimesterEnum(TrimesterEnum t) {
       return 2;
     case TrimesterEnum.third:
       return 3;
+    default:
+      return null;
   }
 }

@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:smartguide_app/components/input/custom_input.dart';
 import 'package:smartguide_app/models/person.dart';
-import 'package:smartguide_app/pages/mother/signup/mother_registration.dart';
 
 class MidwifePrenatalRecordsSearchBar extends StatefulWidget {
   const MidwifePrenatalRecordsSearchBar(

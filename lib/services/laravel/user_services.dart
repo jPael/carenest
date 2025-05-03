@@ -8,12 +8,12 @@ import 'package:smartguide_app/services/laravel/api_url.dart';
 import 'package:smartguide_app/services/laravel/fields.dart';
 import 'package:smartguide_app/utils/utils.dart';
 
-Future<void> registerAccount(
+Future<int> registerAccount(
     {required String name,
     required String email,
     required String password,
     required String barangayId,
-    required UserType type}) async {
+    required UserTypeEnum type}) async {
   Map<String, dynamic> body = {
     RegistrationFields.name: name,
     RegistrationFields.email: email,
@@ -41,7 +41,7 @@ Future<void> registerAccount(
     throw Exception(message);
   }
 
-  return;
+  return data['data']['user']['id'];
 }
 
 Future<Map<String, dynamic>> loginAccount({required String email, required String password}) async {
@@ -84,7 +84,9 @@ Future<Map<String, dynamic>> fetchUserByToken(String token) async {
   return jsonDecode(res.body) as Map<String, dynamic>;
 }
 
-Future<Map<String, dynamic>> fetchUserByUserId({required int id, required String token}) async {
+Future<Map<String, dynamic>?> fetchUserByUserId({required int? id, required String token}) async {
+  if (id == null) return null;
+
   final url = apiURIBase.replace(path: "${LaravelPaths.user}/$id");
 
   final res = await http

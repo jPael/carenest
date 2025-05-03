@@ -15,6 +15,7 @@ class AddReminderForm extends StatefulWidget {
     required this.onChangeReminderType,
     required this.onReminderDateChange,
     required this.onMotherChange,
+    this.motherId,
   });
 
   final GlobalKey<FormState> formKey;
@@ -25,6 +26,7 @@ class AddReminderForm extends StatefulWidget {
   final Function(ReminderTypeEnum?) onChangeReminderType;
   final Function(int? userId) onMotherChange;
   final Function(DateTime) onReminderDateChange;
+  final int? motherId;
 
   @override
   AddReminderFormState createState() => AddReminderFormState();
@@ -40,7 +42,7 @@ class AddReminderFormState extends State<AddReminderForm> {
           mainAxisSize: MainAxisSize.min,
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            MotherSelector(onChange: widget.onMotherChange),
+            MotherSelector(motherId: widget.motherId, onChange: widget.onMotherChange),
             DropdownButton(
               alignment: Alignment.centerLeft,
               value: widget.reminderType,

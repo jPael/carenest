@@ -48,7 +48,7 @@ class _AfterCareFormState extends State<AfterCareForm> {
                   onPress: () {
                     setState(() {
                       widget.ttItems.add({
-                        "term": termController.text,
+                        "term": int.tryParse(termController.text) ?? 1,
                         "datetime": datetime,
                       });
                     });

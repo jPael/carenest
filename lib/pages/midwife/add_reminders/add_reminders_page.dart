@@ -21,17 +21,20 @@ class _AddRemindersPageState extends State<AddRemindersPage> {
   bool fetchingReminders = true;
   List<Reminder> reminders = [];
 
+  final ReminderServices reminderServices = ReminderServices();
+
   void handleAddReminders({
     required String title,
     required String purpose,
     required ReminderTypeEnum reminderType,
     required DateTime date,
-    required int userId,
+    required int motherId,
   }) {
-    // final User user = context.read<User>();
+    final User user = context.read<User>();
     setState(() {
       reminders.add(Reminder(
-        userId: userId,
+        midwifeId: user.laravelId!,
+        motherId: motherId,
         date: date,
         purpose: purpose,
         reminderType: reminderType,
@@ -55,7 +58,7 @@ class _AddRemindersPageState extends State<AddRemindersPage> {
     final TextEditingController titleController = TextEditingController();
     final TextEditingController purposeController = TextEditingController();
 
-    int? userId;
+    int? motherId;
 
     DateTime date = DateTime.now();
     // TimeOfDay time = TimeOfDay.now();
@@ -80,7 +83,7 @@ class _AddRemindersPageState extends State<AddRemindersPage> {
 
             void onMotherChange(int? i) {
               setDialogState(() {
-                userId = i;
+                motherId = i;
               });
             }
 
@@ -111,11 +114,11 @@ class _AddRemindersPageState extends State<AddRemindersPage> {
                 ),
                 TextButton(
                   onPressed: () {
-                    if (formKey.currentState!.validate() && userId != null) {
+                    if (formKey.currentState!.validate() && motherId != null) {
                       formKey.currentState!.save();
 
                       handleAddReminders(
-                          userId: userId!,
+                          motherId: motherId!,
                           date: date,
                           purpose: purposeController.text,
                           reminderType: reminderType!,
@@ -134,11 +137,12 @@ class _AddRemindersPageState extends State<AddRemindersPage> {
   }
 
   void fetchReminders() async {
-    final ReminderServices reminderServices = ReminderServices();
     final User user = context.read<User>();
 
     try {
-      final List<Reminder> r = await reminderServices.fetchAllReminderByUserId(
+      // log("fetching reminder, ${user.laravelId!}");
+
+      final List<Reminder> r = await reminderServices.fetchAllReminderByMidwifeId(
               user.laravelId!.toString(), user.token!) ??
           [];
 

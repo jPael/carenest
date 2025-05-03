@@ -46,14 +46,14 @@ class _AuthPageState extends State<AuthPage> {
 
               if (data[UserFields.isVerified]) {
                 // log(data.toString());
-                final UserType role = getUserEnumFromUserTypeString(data[UserFields.userType]);
+                final UserTypeEnum role = getUserEnumFromUserTypeString(data[UserFields.userType]);
                 log(data[UserFields.token].toString());
 
                 WidgetsBinding.instance.addPostFrameCallback((_) {
                   context.read<current_user.User>().setUser(data);
                 });
 
-                return role == UserType.mother
+                return role == UserTypeEnum.mother
                     ? const mother.HomeLayoutPage()
                     : const midwife.HomeLayoutPage();
               } else {
