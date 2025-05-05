@@ -1,4 +1,5 @@
-import 'dart:developer';
+import 'dart:developer' show log;
+import 'dart:math' show Random;
 
 import 'package:flutter/material.dart';
 import 'package:ionicons/ionicons.dart';
@@ -23,6 +24,8 @@ class _AddRemindersPageState extends State<AddRemindersPage> {
 
   final ReminderServices reminderServices = ReminderServices();
 
+  // void updateReminderById(Reminder reminder, )
+
   void handleAddReminders({
     required String title,
     required String purpose,
@@ -31,8 +34,31 @@ class _AddRemindersPageState extends State<AddRemindersPage> {
     required int motherId,
   }) {
     final User user = context.read<User>();
+
+    int? _tempId;
+
+    // while(reminders.firstWhere((r)=> r.id != null && _tempId && r.id == _tempId  ))
+    while (true) {
+      int id = Random().nextInt(1000);
+
+      if (_tempId == null) {
+        _tempId = id;
+        continue;
+      }
+
+      if (reminders.any(
+        (r) => r.id != null && r.id == _tempId,
+      )) {
+        continue;
+      }
+
+      _tempId = id;
+      break;
+    }
+
     setState(() {
       reminders.add(Reminder(
+        id: _tempId,
         midwifeId: user.laravelId!,
         motherId: motherId,
         date: date,
@@ -197,6 +223,8 @@ class _AddRemindersPageState extends State<AddRemindersPage> {
             children: fetchingReminders
                 ? [const Center(child: SizedBox(child: CircularProgressIndicator()))]
                 : reminders.map((reminder) {
+                    // log("id: ${reminder.id.toString()} | ${reminder.isFresh}");
+
                     return RemindersItem(
                         key: UniqueKey(),
                         handleRepaint: updateReminder,

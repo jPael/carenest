@@ -94,10 +94,19 @@ class _HomeLayoutPageState extends State<HomeLayoutPage> {
           backgroundColor:
               extendBehindAppbar ? Colors.transparent : Theme.of(context).colorScheme.primary,
           automaticallyImplyLeading: false,
-          title: Text(
-            titles[selectedView],
-            style:
-                const TextStyle(color: Colors.white, fontWeight: FontWeight.w900, fontSize: 8 * 3),
+          title: Row(
+            children: [
+              Text(
+                titles[selectedView],
+                style: const TextStyle(
+                    color: Colors.white, fontWeight: FontWeight.w900, fontSize: 8 * 3),
+              ),
+              const Spacer(),
+              const Text(
+                "V 1",
+                style: TextStyle(color: Colors.white, fontSize: 8 * 2),
+              )
+            ],
           ),
         ),
         extendBodyBehindAppBar: extendBehindAppbar,

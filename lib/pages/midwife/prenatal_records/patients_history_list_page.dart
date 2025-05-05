@@ -6,7 +6,7 @@ import 'package:smartguide_app/models/person.dart';
 import 'package:smartguide_app/models/prenatal.dart';
 import 'package:smartguide_app/models/user.dart';
 import 'package:smartguide_app/pages/midwife/prenatal_records/clinic_visit_page.dart';
-import 'package:smartguide_app/pages/midwife/prenatal_records/patients_prenatal_info_form.dart';
+import 'package:smartguide_app/pages/midwife/prenatal_records/create_new_prenatal_page.dart';
 import 'package:smartguide_app/services/laravel/prenatal_services.dart';
 
 class PatientsHistoryListPage extends StatefulWidget {
@@ -58,9 +58,9 @@ class _PatientsHistoryListPageState extends State<PatientsHistoryListPage> {
         onPressed: () => Navigator.push(
             context,
             MaterialPageRoute(
-                builder: (context) => PatientsPrenatalInfoForm(
+                builder: (context) => CreateNewPrenatalPage(
                       patient: widget.person,
-                      isCreating: true,
+                      patientInformationId: prenatals.first.id,
                     ))),
         label: const Text("Create"),
         icon: const Icon(Icons.edit_rounded),
@@ -101,10 +101,11 @@ class _PatientsHistoryListPageState extends State<PatientsHistoryListPage> {
                     final Prenatal currPrenatal = prenatals[index];
 
                     return Container(
-                      margin: const EdgeInsets.symmetric(vertical: 8),
+                      margin: const EdgeInsets.symmetric(vertical: 4),
                       clipBehavior: Clip.antiAlias,
                       decoration: BoxDecoration(
-                          border: Border.all(), borderRadius: BorderRadius.circular(8 * 2)),
+                          border: Border.all(color: Colors.black.withValues(alpha: 0.3)),
+                          borderRadius: BorderRadius.circular(8 * 2)),
                       child: InkWell(
                         onTap: () => Navigator.push(
                             context,
@@ -113,13 +114,17 @@ class _PatientsHistoryListPageState extends State<PatientsHistoryListPage> {
                         child: Padding(
                           padding: const EdgeInsets.all(8 * 2),
                           child: Column(
+                            spacing: 4 * 2,
                             children: [
                               Row(
+                                crossAxisAlignment: CrossAxisAlignment.center,
                                 children: [
                                   const Expanded(
                                       child: AutoSizeText(
                                     "Clinic visit",
-                                    style: TextStyle(fontWeight: FontWeight.bold),
+                                    style: TextStyle(
+                                      fontSize: 4 * 3,
+                                    ),
                                   )),
                                   if (index == 0)
                                     Container(
@@ -139,9 +144,10 @@ class _PatientsHistoryListPageState extends State<PatientsHistoryListPage> {
                                 crossAxisAlignment: CrossAxisAlignment.center,
                                 children: [
                                   AutoSizeText(
-                                    DateFormat("EE MMMM dd, yyyy | hh:MM aa")
+                                    DateFormat("EEEE MMMM dd, yyyy - hh:mm aa")
                                         .format(currPrenatal.createdAt!),
-                                    style: const TextStyle(fontSize: 4 * 3),
+                                    style: const TextStyle(
+                                        fontSize: 4 * 3, fontWeight: FontWeight.bold),
                                   ),
                                 ],
                               ),

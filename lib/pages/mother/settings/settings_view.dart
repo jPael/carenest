@@ -1,5 +1,3 @@
-import 'dart:developer';
-
 import 'package:flutter/material.dart';
 import 'package:ionicons/ionicons.dart';
 import 'package:provider/provider.dart';
@@ -20,7 +18,7 @@ class SettingsView extends StatelessWidget {
         padding: const EdgeInsets.all(8.0 * 2),
         child: Consumer<User>(builder: (context, user, child) {
           final role = user.type;
-          log(role ?? "none");
+          // log(role ?? "none");
 
           return CustomSection(
             childrenSpacing: 0,

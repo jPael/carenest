@@ -59,6 +59,7 @@ class PrenatalFields {
   static const String bloodPressure = 'blood_pressure';
   static const String patientInformationId = 'patient_information_id';
   static const String birthPlace = 'birth_place';
+  static const String bokenBirthPlace = 'barangay_name';
   static const String barangay = 'barangay';
   static const String birthday = 'birthday';
   static const String counselings = 'counselings';

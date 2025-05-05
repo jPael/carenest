@@ -68,11 +68,11 @@ class PatientInformation {
 
   Future<Map<String, dynamic>> storeRecord({required String token}) async {
     try {
-      await storePatientInformation(patientInformation: this, token: token);
-      return {"success": true, "message": "Prenatal record saved successfully"};
+      final int id = await storePatientInformation(patientInformation: this, token: token);
+      return {"success": true, "message": "Patient information  saved successfully", 'id': id};
     } catch (e, stackTrace) {
       log('Error storing prenatal record: $e', stackTrace: stackTrace);
-      return {"success": false, "message": "Failed to save prenatal record"};
+      return {"success": false, "message": "Failed to save patient information"};
     }
   }
 }

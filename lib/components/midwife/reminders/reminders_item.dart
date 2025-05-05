@@ -1,6 +1,7 @@
 import 'dart:developer';
 
 import 'package:flutter/material.dart';
+import 'package:flutter_auto_size_text/flutter_auto_size_text.dart';
 import 'package:ionicons/ionicons.dart';
 import 'package:provider/provider.dart';
 import 'package:smartguide_app/components/alert/alert.dart';
@@ -42,6 +43,7 @@ class _RemindersItemState extends State<RemindersItem> {
         if (res) {
           setState(() {
             isFresh = false;
+            widget.reminder.isFresh = false;
           });
         } else {
           if (!mounted) return;
@@ -234,51 +236,28 @@ class _RemindersItemState extends State<RemindersItem> {
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
-                    Flexible(
-                      flex: 3,
-                      child: Text(
+                    Expanded(
+                      child: AutoSizeText(
                         widget.reminder.title,
-                        softWrap: true,
-                        style: const TextStyle(fontSize: 4 * 5, fontWeight: FontWeight.w500),
+                        softWrap: false,
+                        maxLines: 2,
+                        style: const TextStyle(fontSize: 4 * 4, fontWeight: FontWeight.w500),
                       ),
                     ),
-                    const Spacer(),
-                    // if (isSyncing == true)
-                    Expanded(
-                        flex: 2,
+                    Flexible(
                         child: isSyncing
-                            ? Container(
-                                decoration: BoxDecoration(
-                                  color: Colors.blue,
-                                  borderRadius: BorderRadius.circular(4 * 2),
-                                ),
-                                padding: const EdgeInsets.all(4),
-                                child: const Row(
-                                  children: [
-                                    SizedBox.square(
-                                      dimension: 4 * 4,
-                                      child: CircularProgressIndicator(
-                                        color: Colors.white,
-                                        strokeWidth: 2,
-                                      ),
-                                    ),
-                                    SizedBox(width: 4 * 2),
-                                    Text(
-                                      "Syncing...",
-                                      style: TextStyle(
-                                          color: Colors.white, fontWeight: FontWeight.w500),
-                                    )
-                                  ],
+                            ? SizedBox.square(
+                                dimension: 4 * 4,
+                                child: CircularProgressIndicator(
+                                  color: Theme.of(context).colorScheme.primary,
+                                  strokeWidth: 2,
                                 ),
                               )
                             : Container())
                   ],
                 ),
-                // Text(
-                //   "${DateFormat("MMMM dd, yyyy").format(widget.reminder.date)} @ ${DateFormat.jm().format(DateTime(2021, 1, 1, widget.reminder.time.hour, widget.reminder.time.minute))}",
-                //   style: TextStyle(fontSize: 4 * 4),
-                // ),
               ],
             ),
           ),

@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:ionicons/ionicons.dart';
-import 'package:smartguide_app/pages/mother/home/chat_view.dart';
 import 'package:smartguide_app/pages/midwife/home/home_view.dart';
+import 'package:smartguide_app/pages/mother/home/chat_view.dart';
 import 'package:smartguide_app/pages/mother/profile/profile_view.dart';
 import 'package:smartguide_app/pages/mother/settings/settings_view.dart';
 
@@ -75,10 +75,19 @@ class _HomeLayoutPageState extends State<HomeLayoutPage> {
           backgroundColor:
               extendBehindAppbar ? Colors.transparent : Theme.of(context).colorScheme.primary,
           automaticallyImplyLeading: false,
-          title: Text(
-            titles[selectedView],
-            style:
-                const TextStyle(color: Colors.white, fontWeight: FontWeight.w900, fontSize: 8 * 3),
+          title: Row(
+            children: [
+              Text(
+                titles[selectedView],
+                style: const TextStyle(
+                    color: Colors.white, fontWeight: FontWeight.w900, fontSize: 8 * 3),
+              ),
+              const Spacer(),
+              const Text(
+                "V 1",
+                style: TextStyle(color: Colors.white, fontSize: 8 * 2),
+              )
+            ],
           ),
         ),
         extendBodyBehindAppBar: extendBehindAppbar,

@@ -24,6 +24,7 @@ class PatientsPrenatalInfoForm extends StatelessWidget {
         ),
         body: PrenatalInfoForm(
           patient: patient,
+          readonly: false,
         ));
   }
 }

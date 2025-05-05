@@ -79,7 +79,8 @@ class DatePickerState extends State<DatePicker> {
         validator: widget.validator,
         controller: dateController,
         decoration: InputDecoration(
-          label: Text(widget.label),
+          // floatingLabelBehavior: FloatingLabelBehavior.always,
+          labelText: widget.label,
           hintText: widget.hint,
           prefixIcon: Icon(Icons.date_range_outlined, color: Theme.of(context).colorScheme.primary),
           suffixIcon: IconButton(

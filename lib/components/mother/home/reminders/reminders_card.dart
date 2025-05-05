@@ -66,7 +66,7 @@ class _RemindersCardState extends State<RemindersCard> with TickerProviderStateM
                 height: 8,
               ),
               Text(date),
-              Text(time),
+              // Text(time),
               const SizedBox(
                 height: 4 * 6,
               ),

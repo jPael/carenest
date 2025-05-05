@@ -71,8 +71,6 @@ class _PrenatalInfoFormState extends State<PrenatalInfoForm> {
 
         res = await pi.storeRecord(token: user.token!);
       } else {
-        log(assignedByController.text);
-
         final Prenatal prenatal = Prenatal(
           id: widget.patientInformationId,
           assignedBy: int.parse(assignedByController.text),
@@ -213,11 +211,7 @@ class _PrenatalInfoFormState extends State<PrenatalInfoForm> {
     setState(() {
       final User user = context.read<User>();
 
-      // log(prenatalData.toString());
-
       final PatientInformation? pi = prenatalData?['patientInformation'];
-
-      // log(pi?.obStatus ?? "NA");
 
       birthday = DateTime.parse(user.dateOfBirth!).toLocal();
       fullnameController.text = widget.patient?.name ?? "${user.firstname} ${user.lastname}";

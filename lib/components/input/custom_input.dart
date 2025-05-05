@@ -122,6 +122,8 @@ class CustomInput {
     firstDate ??= DateTime(1900);
     lastDate ??= DateTime(3000);
 
+    selectedDate = DateTime.now();
+
     return DatePicker(
       selectedDate: selectedDate,
       firstDate: firstDate,

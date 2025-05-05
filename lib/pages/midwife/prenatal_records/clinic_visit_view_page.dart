@@ -104,8 +104,13 @@ class _ClinicVisitViewPageState extends State<ClinicVisitViewPage> {
   Future<void> fetchPrenatalInformation() async {
     final User user = context.read<User>();
 
-    final Map<String, dynamic>? patientInformationData = await prenatalServices
-        .fetchLatestPatientInformationByToken(user.token!, widget.clinicVisit.userId);
+    // log(widget.clinicVisit.patientInformationId.toString());
+
+    final Map<String, dynamic>? patientInformationData =
+        await prenatalServices.fetchPatientInformationByIdWithClinicId(
+            token: user.token!,
+            clinicId: widget.clinicVisit.id,
+            patientInformationId: widget.clinicVisit.patientInformationId);
 
     final Person? userInformationData =
         await getUserByLaravelId(laravelId: widget.clinicVisit.userId);
@@ -162,6 +167,9 @@ class _ClinicVisitViewPageState extends State<ClinicVisitViewPage> {
       final BirthPlan? bp = prenatalData?['birthPlan'];
 
       birthPlaceController.text = bp?.birthplace ?? "";
+
+      // log("assigned by: ${bp?.assignedBy?.id}");
+
       assignedByController.text = bp?.assignedBy?.id.toString() ?? "";
       accompaniedByController.text = bp?.accompaniedBy?.id.toString() ?? "";
 

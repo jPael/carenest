@@ -60,19 +60,23 @@ class ClinicVisit {
     this.midwifeId,
   });
 
-  static ClinicVisit fromJson(Map<String, dynamic> json) => ClinicVisit(
-      id: json[PrenatalFields.id],
-      birthplace: json[PrenatalFields.birthplace],
-      trimester: getTrimesterEnumFromTrimesterString(json[PrenatalFields.trimester]),
-      consulWht: json[PrenatalFields.consultWht] == 1 ? true : false,
-      whtIntroducedBirthPlan: json[PrenatalFields.whtIntroducedBirthPlan] == 1 ? true : false,
-      fundicHeigh: json[PrenatalFields.fundicHeight],
-      patientInformationId: json[PrenatalFields.patientInformationId],
-      advices: (json[PrenatalFields.advices] as Map<String, dynamic>)['content'],
-      services: (json[PrenatalFields.services] as Map<String, dynamic>)['content'],
-      accompanyBy: Person.fromJsonStatic(json[PatientInformationFields.accompanyBy])!,
-      assignedBy: Person.fromJsonStatic(json[PatientInformationFields.assignedBy])!,
-      userId: json['patient_information']['user_id']);
+  static ClinicVisit fromJson(Map<String, dynamic> json) {
+    log(json[PatientInformationFields.accompanyBy].toString());
+
+    return ClinicVisit(
+        id: json[PrenatalFields.id],
+        birthplace: json[PrenatalFields.birthplace],
+        trimester: getTrimesterEnumFromTrimesterString(json[PrenatalFields.trimester]),
+        consulWht: json[PrenatalFields.consultWht] == 1 ? true : false,
+        whtIntroducedBirthPlan: json[PrenatalFields.whtIntroducedBirthPlan] == 1 ? true : false,
+        fundicHeigh: json[PrenatalFields.fundicHeight],
+        patientInformationId: json[PrenatalFields.patientInformationId],
+        advices: (json[PrenatalFields.advices] as Map<String, dynamic>)['content'],
+        services: (json[PrenatalFields.services] as Map<String, dynamic>)['content'],
+        accompanyBy: Person.fromJsonStatic(json[PatientInformationFields.accompanyBy])!,
+        assignedBy: Person.fromJsonStatic(json[PatientInformationFields.assignedBy])!,
+        userId: json['patient_information']['user_id']);
+  }
 
   final PrenatalServices prenatalServices = PrenatalServices();
 

@@ -57,7 +57,7 @@ class RemindersScheduleItem extends StatelessWidget {
                     style: const TextStyle(fontWeight: FontWeight.w600, fontSize: 8 * 2),
                   ),
                   Text(date),
-                  Text(time)
+                  // Text(time)
                 ],
               )
             ],

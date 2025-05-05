@@ -1,8 +1,6 @@
 import 'dart:convert';
-import 'dart:developer';
 
 import 'package:http/http.dart' as http;
-
 import 'package:smartguide_app/models/person.dart';
 import 'package:smartguide_app/services/laravel/api_url.dart';
 
@@ -23,9 +21,9 @@ Future<List<Person>> fetchAllMothers() async {
       .whereType<Person>()
       .toList();
 
-  for (var m in mothers) {
-    log(m.toJson().toString());
-  }
+  // for (var m in mothers) {
+  //   log(m.toJson().toString());
+  // }
 
   return mothers;
 }

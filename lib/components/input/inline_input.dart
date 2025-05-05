@@ -33,7 +33,7 @@ class InlineInput extends StatelessWidget {
                 child: AutoSizeText(
                   "$label: ",
                   style: const TextStyle(
-                    fontSize: 4 * 4,
+                    fontSize: 4 * 3,
                   ),
                 )),
           Flexible(

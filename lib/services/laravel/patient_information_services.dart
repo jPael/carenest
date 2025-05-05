@@ -7,7 +7,7 @@ import 'package:smartguide_app/models/patient_information.dart';
 import 'package:smartguide_app/services/laravel/api_url.dart';
 import 'package:smartguide_app/services/laravel/fields.dart';
 
-Future<void> storePatientInformation(
+Future<int> storePatientInformation(
     {required PatientInformation patientInformation, required String token}) async {
   final Map<String, dynamic> payload = {
     PatientInformationFields.philhealth: patientInformation.philhealth == true ? 1 : 0,
@@ -23,8 +23,6 @@ Future<void> storePatientInformation(
     PrenatalFields.donorBloodType: patientInformation.bloodDonor!.bloodTyped ? 1 : 0,
   };
 
-  log(payload.toString());
-
   try {
     final Uri url = apiURIBase.replace(path: LaravelPaths.createMotherPatientInformation);
 
@@ -36,11 +34,18 @@ Future<void> storePatientInformation(
         },
         body: jsonEncode(payload));
 
+    // log("pi: " + res.body);
+
+    final json = jsonDecode(res.body);
+
     if (res.statusCode > 299 || res.statusCode < HttpStatus.ok) {
       log(res.statusCode.toString());
       throw Exception();
     }
+
+    return json['id'];
   } catch (e, stackTrace) {
     log(e.toString(), stackTrace: stackTrace);
+    rethrow;
   }
 }

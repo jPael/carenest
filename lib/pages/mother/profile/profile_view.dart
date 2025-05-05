@@ -1,5 +1,3 @@
-import 'dart:developer';
-
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:smartguide_app/components/mother/profile/profile_account_information_item.dart';
@@ -44,7 +42,7 @@ class _ProfileViewState extends State<ProfileView> {
         builder: (context, user, child) {
           final data = user.getUser;
 
-          log(data.toString());
+          // log(data.toString());
           return Column(
             children: [
               ProfileUserSection(

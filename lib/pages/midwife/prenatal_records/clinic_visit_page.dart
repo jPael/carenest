@@ -52,7 +52,7 @@ class _ClinicVisitPageState extends State<ClinicVisitPage> {
           children: [
             const Text("Clinic Visits"),
             AutoSizeText(
-              DateFormat("EEE MMMM dd, yyyyy").format(widget.prenatal.createdAt!),
+              DateFormat("EEEE MMMM dd, yyyy").format(widget.prenatal.createdAt!),
               style: const TextStyle(fontSize: 4 * 3),
               maxLines: 1,
             )
@@ -70,13 +70,19 @@ class _ClinicVisitPageState extends State<ClinicVisitPage> {
         icon: const Icon(Icons.note_add_rounded),
       ),
       body: isLoading
-          ? const Column(
-              children: [
-                SizedBox.square(
-                  dimension: 8 * 3,
-                  child: CircularProgressIndicator(),
-                )
-              ],
+          ? const Padding(
+              padding: EdgeInsets.all(8 * 5.0),
+              child: Center(
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.center,
+                  children: [
+                    SizedBox.square(
+                      dimension: 8 * 3,
+                      child: CircularProgressIndicator(),
+                    )
+                  ],
+                ),
+              ),
             )
           : ListView.builder(
               itemCount: clinicVisits.length,

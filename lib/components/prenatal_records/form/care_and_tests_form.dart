@@ -5,6 +5,7 @@ import 'package:smartguide_app/components/input/custom_input.dart';
 import 'package:smartguide_app/components/section/custom_section.dart';
 import 'package:smartguide_app/models/care_and_test.dart';
 import 'package:smartguide_app/models/trimester.dart';
+import 'package:url_launcher/url_launcher.dart';
 
 class CareAndTestsForm extends StatefulWidget {
   const CareAndTestsForm({
@@ -114,12 +115,13 @@ class _CareAndTestsFormState extends State<CareAndTestsForm> {
                 label: "Fundic height",
                 isNormal: widget.isFundicNormal,
                 suffixText: "cm"),
-            CustomInput.inline(
-                readonly: widget.isReadonly,
-                controller: widget.bloodPressureController,
-                label: "Blood pressure",
-                isNormal: widget.isBloodPressureNormal,
-                suffixText: "mmHg"),
+            fundicWarning(),
+            // CustomInput.inline(
+            //     readonly: widget.isReadonly,
+            //     controller: widget.bloodPressureController,
+            //     label: "Blood pressure",
+            //     isNormal: widget.isBloodPressureNormal,
+            //     suffixText: "mmHg"),
           ],
         ),
         const SizedBox(),
@@ -162,6 +164,156 @@ class _CareAndTestsFormState extends State<CareAndTestsForm> {
           ],
         ),
       ],
+    );
+  }
+
+  Widget fundicWarning() {
+    Future<void> _launchURL() async {
+      const url = 'https://www.who.int/publications/i/item/9789241549912';
+      final Uri uri = Uri.parse(url);
+      try {
+        await launchUrl(
+          uri,
+          mode: LaunchMode.externalNonBrowserApplication, // Android-only
+        );
+      } catch (e) {
+        // Fallback to default browser
+        await launchUrl(uri, mode: LaunchMode.externalApplication);
+      }
+    }
+
+    return Container(
+      decoration: BoxDecoration(
+          color: Colors.red.withValues(alpha: 0.2),
+          border: Border.all(color: Colors.redAccent.withValues(alpha: 0.4), width: 2),
+          borderRadius: BorderRadius.circular(8 * 2)),
+      padding: const EdgeInsets.all(8 * 2),
+      child: Column(
+        spacing: 8,
+        children: [
+          const Row(
+            spacing: 8,
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              Icon(Icons.info_outline_rounded),
+              Text(
+                "When to Be Concerned?",
+                style: TextStyle(fontWeight: FontWeight.bold, fontSize: 4 * 5),
+              ),
+            ],
+          ),
+          const Row(
+            spacing: 4 * 2,
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              Padding(
+                padding: EdgeInsets.only(top: 4.0),
+                child: Icon(
+                  Icons.circle,
+                  size: 4 * 2,
+                ),
+              ),
+              Flexible(
+                child: Text(
+                    "Fundic height calculation are less accurate in obese women, fibroids, or multiple pregnancies"),
+              ),
+            ],
+          ),
+          const Row(
+            spacing: 4 * 2,
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              Padding(
+                padding: EdgeInsets.only(top: 4.0),
+                child: Icon(
+                  Icons.circle,
+                  size: 4 * 2,
+                ),
+              ),
+              Flexible(
+                child: Text(
+                    "After 36 weeks, the fundal height may not increase (or even decrease slightly) as the baby engages in the pelvis"),
+              ),
+            ],
+          ),
+          const Row(
+            spacing: 4 * 2,
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              Padding(
+                padding: EdgeInsets.only(top: 4.0),
+                child: Icon(
+                  Icons.circle,
+                  size: 4 * 2,
+                ),
+              ),
+              Flexible(
+                child: Text(
+                    "If the fundal height is >3 cm off from gestational age, further evaluation (ultrasound, amniotic fluid assessment) may be needed."),
+              ),
+            ],
+          ),
+          const Row(
+            spacing: 4 * 2,
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              Padding(
+                padding: EdgeInsets.only(top: 4.0),
+                child: Icon(
+                  Icons.circle,
+                  size: 4 * 2,
+                ),
+              ),
+              Flexible(
+                child: Text("Consistently abnormal measurements may require fetal monitoring"),
+              ),
+            ],
+          ),
+          const Row(
+            spacing: 4 * 2,
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              Padding(
+                padding: EdgeInsets.only(top: 4.0),
+                child: Icon(
+                  Icons.circle,
+                  size: 4 * 2,
+                ),
+              ),
+              Flexible(
+                child: Text("Normal Range = (Gestational Age in Weeks) ± 2 cm"),
+              ),
+            ],
+          ),
+          const Row(
+            spacing: 4 * 2,
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              Flexible(
+                child: Text(
+                  "Source:",
+                ),
+              ),
+            ],
+          ),
+          Row(
+            spacing: 4 * 2,
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              Flexible(
+                child: GestureDetector(
+                  onTap: _launchURL,
+                  child: const Text(
+                    "https://www.who.int/publications/i/item/9789241549912",
+                    style: TextStyle(fontStyle: FontStyle.italic),
+                    softWrap: true,
+                  ),
+                ),
+              ),
+            ],
+          ),
+        ],
+      ),
     );
   }
 }

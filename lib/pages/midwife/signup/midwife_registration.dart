@@ -138,6 +138,7 @@ class _MidwifeRegistrationState extends State<MidwifeRegistration> {
                       height: 8 * 2,
                     ),
                     CustomInput.datepicker(
+                        label: "Birthday",
                         validator: (v) {
                           if (v == null || v.isEmpty || dateOfBirth == null) {
                             return "Please enter your birthday";

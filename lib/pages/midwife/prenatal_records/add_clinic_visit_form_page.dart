@@ -18,7 +18,7 @@ import 'package:smartguide_app/models/trimester.dart';
 import 'package:smartguide_app/models/user.dart';
 import 'package:smartguide_app/services/laravel/prenatal_services.dart';
 import 'package:smartguide_app/services/user_services.dart';
-import 'package:smartguide_app/utils/date_utils.dart';
+import 'package:smartguide_app/utils/utils.dart';
 
 class AddClinicVisitFormPage extends StatefulWidget {
   const AddClinicVisitFormPage({
@@ -148,7 +148,7 @@ class AddClinicVisitFormPageState extends State<AddClinicVisitFormPage> {
     });
 
     try {
-      log(widget.prenatal.id!.toString());
+      // log(widget.prenatal.id!.toString());
       final ClinicVisit clinicVisit = ClinicVisit(
           userId: widget.prenatal.laravelId!,
           //just to fill it out it doesnt affect anything
@@ -176,6 +176,7 @@ class AddClinicVisitFormPageState extends State<AddClinicVisitFormPage> {
       if (res['success'] == true) {
         Alert.showSuccessMessage(message: "Your prenatal has been updated successfully");
         Navigator.pop(context);
+        Navigator.pop(context);
       } else {
         Alert.showErrorMessage(message: "Something went wrong. Please try again");
       }
@@ -185,9 +186,32 @@ class AddClinicVisitFormPageState extends State<AddClinicVisitFormPage> {
     }
   }
 
+  void fundicHeightListener() {
+    if (lmp == null || fundicHeightController.text.isEmpty) {
+      if (isFundicNormal != false) {
+        setState(() => isFundicNormal = false);
+      }
+      return;
+    }
+
+    final height = int.tryParse(fundicHeightController.text);
+    if (height == null) {
+      if (isFundicNormal != false) {
+        setState(() => isFundicNormal = false);
+      }
+      return;
+    }
+
+    final newStatus = isFundalHeightNormal(lmp!, height);
+    if (isFundicNormal != newStatus) {
+      setState(() => isFundicNormal = newStatus);
+    }
+  }
+
   @override
   void initState() {
     super.initState();
+    fundicHeightController.addListener(fundicHeightListener);
 
     fetchPrenatalInformation().then(
       (value) {
@@ -206,6 +230,7 @@ class AddClinicVisitFormPageState extends State<AddClinicVisitFormPage> {
     donorFullnameController.dispose();
     donorContactController.dispose();
     fundicHeightController.dispose();
+    fundicHeightController.removeListener(fundicHeightListener);
     bloodPressureController.dispose();
     birthPlaceController.dispose();
     assignedByController.dispose();
@@ -223,7 +248,7 @@ class AddClinicVisitFormPageState extends State<AddClinicVisitFormPage> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text("Create clinic visit"),
+        title: const Text("Create clinic visit"),
       ),
       body: SingleChildScrollView(
         child: Padding(
