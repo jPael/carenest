@@ -1,4 +1,4 @@
 class AppConstants {
-  static const String appName = 'CareNest';
+  static const String appName = 'MEDICARE';
   static const String chatbotName = 'MOMI AI';
 }

@@ -93,7 +93,7 @@ class _LandingPageState extends State<LandingPage> {
                         Flexible(
                             child: AutoSizeText(
                           textAlign: TextAlign.center,
-                          "Welcome to CareNest!",
+                          "Welcome to MEDICARE!",
                           style: TextStyle(
                               fontSize: 4 * 10, color: Colors.white, fontWeight: FontWeight.w500),
                           softWrap: true,
@@ -117,18 +117,6 @@ class _LandingPageState extends State<LandingPage> {
                               label: "Sign in",
                               onPress: handleSignin,
                               isLoading: loggingIn,
-                              buttonStyle: ButtonStyle(
-                                  elevation: WidgetStateProperty.all(loggingIn ? 0 : null),
-                                  iconColor: WidgetStateProperty.all(Colors.white),
-                                  shape: WidgetStateProperty.all(RoundedRectangleBorder(
-                                      side: const BorderSide(width: 4, color: Colors.white),
-                                      borderRadius: BorderRadius.circular(8.0 * 3))),
-                                  padding: WidgetStateProperty.all(const EdgeInsets.symmetric(
-                                      horizontal: 8.0 * 5, vertical: 8.0 * 3)),
-                                  backgroundColor: WidgetStateProperty.all(
-                                      HSLColor.fromColor(Theme.of(context).colorScheme.primary)
-                                          .withSaturation(loggingIn ? 0.5 : 1)
-                                          .toColor())),
                             ),
                           )
                         ],

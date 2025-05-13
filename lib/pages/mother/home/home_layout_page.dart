@@ -27,7 +27,7 @@ class _HomeLayoutPageState extends State<HomeLayoutPage> {
 
   late List<Widget?> floatingButtons;
 
-  final List<String> titles = ["CareNest", "Chat", "", "Settings"];
+  final List<String> titles = ["MEDICARE", "Chat", "", "Settings"];
 
   void _onItemTapped(int index) {
     if (index == selectedView) return;
@@ -103,7 +103,7 @@ class _HomeLayoutPageState extends State<HomeLayoutPage> {
               ),
               const Spacer(),
               const Text(
-                "V 1",
+                "V 2",
                 style: TextStyle(color: Colors.white, fontSize: 8 * 2),
               )
             ],
@@ -132,7 +132,7 @@ class _HomeLayoutPageState extends State<HomeLayoutPage> {
             BottomNavigationBarItem(
               icon: const Icon(Ionicons.chatbubble_outline),
               activeIcon: const Icon(Ionicons.chatbubble),
-              label: "Accuracy",
+              label: "Chats",
               backgroundColor: Theme.of(context).colorScheme.primary,
             ),
             BottomNavigationBarItem(

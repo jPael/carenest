@@ -109,22 +109,25 @@ class CustomInput {
     );
   }
 
-  static Widget datepicker(
-      {required BuildContext context,
-      DateTime? selectedDate,
-      DateTime? firstDate,
-      DateTime? lastDate,
-      String label = "",
-      String hint = "",
-      bool readonly = false,
-      required void Function(DateTime) onChange,
-      String? Function(String?)? validator}) {
+  static Widget datepicker({
+    required BuildContext context,
+    DateTime? selectedDate,
+    DateTime? firstDate,
+    DateTime? lastDate,
+    String label = "",
+    String hint = "",
+    bool readonly = false,
+    required void Function(DateTime) onChange,
+    String? Function(String?)? validator,
+    DatePickerEnum type = DatePickerEnum.input,
+  }) {
     firstDate ??= DateTime(1900);
     lastDate ??= DateTime(3000);
 
-    selectedDate = DateTime.now();
+    selectedDate ??= DateTime.now();
 
     return DatePicker(
+      type: type,
       selectedDate: selectedDate,
       firstDate: firstDate,
       lastDate: lastDate,

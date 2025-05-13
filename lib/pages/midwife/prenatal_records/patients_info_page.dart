@@ -52,13 +52,6 @@ class PatientsInfoPage extends StatelessWidget {
         'lastMenstrualPeriod': prenatal.patientInformation.lmp,
         'obStatus': prenatal.patientInformation.obStatus,
         'expectedDateOfConfinement': prenatal.patientInformation.edc,
-        'bloodDonors': [
-          {
-            'fullname': prenatal.patientInformation.bloodDonor?.fullname,
-            'phoneNumber': prenatal.patientInformation.bloodDonor?.contactNumber,
-            'verified': prenatal.patientInformation.bloodDonor?.bloodTyped
-          },
-        ]
       };
     }
   }

@@ -31,7 +31,7 @@ class MyApp extends StatelessWidget {
   Widget build(BuildContext context) {
     return MaterialApp(
       scaffoldMessengerKey: Alert.scaffoldMessengerKey,
-      title: 'CareNest',
+      title: 'MEDICARE',
       theme: ThemeData(
         primaryColor: primaryColor,
         colorScheme: ColorScheme.light(

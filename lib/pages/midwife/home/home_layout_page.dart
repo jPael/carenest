@@ -25,7 +25,7 @@ class _HomeLayoutPageState extends State<HomeLayoutPage> {
     const SettingsView(),
   ];
 
-  final List<String> titles = ["CareNest", "Chat", "", "Settings"];
+  final List<String> titles = ["MEDICARE", "Chat", "", "Settings"];
 
   void _onItemTapped(int index) {
     if (index == selectedView) return;
@@ -84,7 +84,7 @@ class _HomeLayoutPageState extends State<HomeLayoutPage> {
               ),
               const Spacer(),
               const Text(
-                "V 1",
+                "V 2",
                 style: TextStyle(color: Colors.white, fontSize: 8 * 2),
               )
             ],

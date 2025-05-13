@@ -40,16 +40,17 @@ class _ClinicVisitViewPageState extends State<ClinicVisitViewPage> {
   final TextEditingController ageController = TextEditingController();
   final TextEditingController obStatusController = TextEditingController();
   final TextEditingController barangayController = TextEditingController();
-  final TextEditingController donorFullnameController = TextEditingController();
-  final TextEditingController donorContactController = TextEditingController();
+  // final TextEditingController donorFullnameController = TextEditingController();
+  // final TextEditingController donorContactController = TextEditingController();
 
   DateTime? birthday;
   DateTime? lmp;
   DateTime? edc;
 
-  bool philhealth = false;
-  bool nhts = false;
-  bool donorTyped = false;
+  final TextEditingController philhealthController = TextEditingController();
+  final TextEditingController nhtsController = TextEditingController();
+
+  // bool donorTyped = false;
   // patient info
 
   // care and test info
@@ -134,12 +135,8 @@ class _ClinicVisitViewPageState extends State<ClinicVisitViewPage> {
       obStatusController.text = pi?.obStatus ?? "";
       lmp = pi?.lmp;
       edc = pi?.edc;
-      philhealth = pi?.philhealth ?? false;
-      nhts = pi?.nhts ?? false;
-
-      donorFullnameController.text = pi?.bloodDonor?.fullname ?? "";
-      donorContactController.text = pi?.bloodDonor?.contactNumber ?? "";
-      donorTyped = pi?.bloodDonor?.bloodTyped ?? false;
+      philhealthController.text = pi?.philhealth ?? "";
+      nhtsController.text = pi?.nhts ?? "";
 
       final CareAndTest? cat = prenatalData?['careAndTest'];
 
@@ -210,8 +207,6 @@ class _ClinicVisitViewPageState extends State<ClinicVisitViewPage> {
     ageController.dispose();
     obStatusController.dispose();
     barangayController.dispose();
-    donorFullnameController.dispose();
-    donorContactController.dispose();
     fundicHeightController.dispose();
     bloodPressureController.dispose();
     birthPlaceController.dispose();
@@ -271,26 +266,8 @@ class _ClinicVisitViewPageState extends State<ClinicVisitViewPage> {
                             edc = d;
                           });
                         },
-                        philhealth: philhealth,
-                        onPhilhealthChange: (bool v) {
-                          setState(() {
-                            philhealth = v;
-                          });
-                        },
-                        nhts: nhts,
-                        onNhtsChange: (bool v) {
-                          setState(() {
-                            nhts = v;
-                          });
-                        },
-                        donorFullnameController: donorFullnameController,
-                        donorContactController: donorContactController,
-                        donorBloodTyped: donorTyped,
-                        onDonorBloodTypeChange: (bool v) {
-                          setState(() {
-                            donorTyped = v;
-                          });
-                        },
+                        philhealthController: philhealthController,
+                        nhtsController: nhtsController,
                       ),
                     ),
                   ),

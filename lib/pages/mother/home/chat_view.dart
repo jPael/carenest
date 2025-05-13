@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 import 'package:smartguide_app/components/mother/chat/chat_item.dart';
 import 'package:smartguide_app/components/section/custom_section.dart';
+import 'package:smartguide_app/models/user.dart';
 import 'package:smartguide_app/services/chat_services.dart';
 import 'package:smartguide_app/services/user_services.dart';
 
@@ -13,11 +15,13 @@ class ChatView extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final User user = context.read<User>();
+
     return SingleChildScrollView(
       child: Padding(
           padding: const EdgeInsets.symmetric(vertical: 4, horizontal: 8 * 2),
           child: StreamBuilder<Object>(
-              stream: chatServices.getUsersStream(),
+              stream: chatServices.getUsersStream(address: user.address!),
               builder: (context, snapshot) {
                 if (snapshot.hasError) {
                   return Padding(
@@ -57,7 +61,7 @@ class ChatView extends StatelessWidget {
 
                 final items = [
                   ...(snapshot.data as List<Map<String, dynamic>>).map((d) {
-                    if (d["email"] == user!.email) {
+                    if (d["email"] == user.email) {
                       return null;
                     }
                     return ChatItem(

@@ -14,6 +14,7 @@ class CustomSection extends StatelessWidget {
       this.headerSpacing = 2,
       this.isLoading = false,
       this.action,
+      this.sectionIcon,
       this.isLoadingWidget});
 
   final String? title;
@@ -27,6 +28,7 @@ class CustomSection extends StatelessWidget {
   final int childrenSpacing;
   final bool? isLoading;
   final Widget? isLoadingWidget;
+  final Widget? sectionIcon;
 
   @override
   Widget build(BuildContext context) {
@@ -54,6 +56,7 @@ class CustomSection extends StatelessWidget {
             crossAxisAlignment: CrossAxisAlignment.center,
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
+              if (sectionIcon != null) sectionIcon!,
               Flexible(
                 child: Text(
                   title!,

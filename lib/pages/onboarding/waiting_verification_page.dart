@@ -15,7 +15,7 @@ class WaitingVerificationPage extends StatelessWidget {
             // mainAxisAlignment: MainAxisAlignment.center,
             children: [
               const Text(
-                "CareNest",
+                "MEDICARE",
                 style: TextStyle(fontSize: 8 * 4, fontWeight: FontWeight.bold),
               ),
               const SizedBox(

@@ -1,5 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
+import 'package:smartguide_app/utils/date_utils.dart';
+
+enum DatePickerEnum { input, text }
 
 class DatePicker extends StatefulWidget {
   const DatePicker(
@@ -11,6 +14,7 @@ class DatePicker extends StatefulWidget {
       this.hint = "",
       required this.onChange,
       this.validator,
+      this.type = DatePickerEnum.input,
       required this.readonly});
 
   final DateTime? selectedDate;
@@ -21,6 +25,7 @@ class DatePicker extends StatefulWidget {
   final void Function(DateTime) onChange;
   final String? Function(String?)? validator;
   final bool readonly;
+  final DatePickerEnum type;
 
   @override
   DatePickerState createState() => DatePickerState();
@@ -60,6 +65,9 @@ class DatePickerState extends State<DatePicker> {
       setState(() {
         dateController.text = DateFormat("MMMM d, y").format(picked);
       });
+
+      // log(picked.toString());
+
       widget.onChange(picked);
     }
   }
@@ -72,12 +80,29 @@ class DatePickerState extends State<DatePicker> {
 
   @override
   Widget build(BuildContext context) {
+    if (widget.type == DatePickerEnum.input) {
+      return input(context);
+    } else {
+      return GestureDetector(
+        onTap: () => _selectDate(context),
+        child: Text(
+          "Given at ${DateFormat("d'${getOrdinalSuffix(widget.selectedDate!.day)}' of MMMM yyyy").format(widget.selectedDate!)}",
+          style: const TextStyle(fontSize: 4 * 4),
+        ),
+      );
+    }
+  }
+
+  Flexible input(BuildContext context) {
     return Flexible(
       child: TextFormField(
         readOnly: true,
         onTap: () => _selectDate(context),
         validator: widget.validator,
         controller: dateController,
+        onTapOutside: (event) {
+          FocusManager.instance.primaryFocus?.unfocus();
+        },
         decoration: InputDecoration(
           // floatingLabelBehavior: FloatingLabelBehavior.always,
           labelText: widget.label,

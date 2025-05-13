@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_auto_size_text/flutter_auto_size_text.dart';
 
 class Alert {
   // Global key for scaffold messenger
@@ -7,13 +8,15 @@ class Alert {
 
   static ScaffoldFeatureController<SnackBar, SnackBarClosedReason> showErrorMessage({
     required String message,
-    Duration duration = const Duration(seconds: 10),
+    Duration duration = const Duration(seconds: 3),
   }) {
     return scaffoldMessengerKey.currentState!.showSnackBar(
       SnackBar(
-        content: Text(
+        content: AutoSizeText(
           message,
           style: const TextStyle(fontWeight: FontWeight.w500),
+          maxLines: 1,
+          overflow: TextOverflow.ellipsis,
         ),
         duration: duration,
         action: SnackBarAction(
@@ -27,13 +30,15 @@ class Alert {
 
   static ScaffoldFeatureController<SnackBar, SnackBarClosedReason> showSuccessMessage({
     required String message,
-    Duration duration = const Duration(seconds: 5),
+    Duration duration = const Duration(seconds: 3),
   }) {
     return scaffoldMessengerKey.currentState!.showSnackBar(
       SnackBar(
-        content: Text(
+        content: AutoSizeText(
           message,
           style: const TextStyle(fontWeight: FontWeight.w500),
+          maxLines: 1,
+          overflow: TextOverflow.ellipsis,
         ),
         duration: duration,
         action: SnackBarAction(

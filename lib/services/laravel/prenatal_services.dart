@@ -9,10 +9,10 @@ import 'package:smartguide_app/models/birth_plan.dart';
 import 'package:smartguide_app/models/care_and_test.dart';
 import 'package:smartguide_app/models/clinic_visit.dart';
 import 'package:smartguide_app/models/counseling.dart';
-import 'package:smartguide_app/models/donor.dart';
 import 'package:smartguide_app/models/patient_information.dart';
 import 'package:smartguide_app/models/person.dart';
 import 'package:smartguide_app/models/prenatal.dart';
+import 'package:smartguide_app/models/revamp/person_history.dart';
 import 'package:smartguide_app/models/trimester.dart';
 import 'package:smartguide_app/services/laravel/api_url.dart';
 import 'package:smartguide_app/services/laravel/fields.dart';
@@ -21,6 +21,28 @@ import 'package:smartguide_app/services/user_services.dart';
 import 'package:smartguide_app/utils/utils.dart';
 
 class PrenatalServices {
+  Future<PatientInformation?> fetchMotherPatientInformationById(
+      {required int id, required String token}) async {
+    final url = apiURIBase.replace(path: LaravelPaths.motherPatientInformationById(id));
+
+    log(url.toString());
+
+    final res = await http
+        .get(url, headers: {'Content-Type': 'application/json', 'Authorization': "Bearer $token"});
+
+    final json = jsonDecode(res.body);
+
+    try {
+      final PatientInformation patientInformation = PatientInformation.fromJson(json);
+
+      return patientInformation;
+    } catch (e, StackTrace) {
+      log("$e", stackTrace: StackTrace);
+
+      return null;
+    }
+  }
+
   Future<List<ClinicVisit>> fetchClinicVisitByPrenatalId(
       {required int prenatalId, required String token}) async {
     final Uri url = apiURIBase.replace(path: LaravelPaths.getClinicVisitsById(prenatalId));
@@ -175,7 +197,7 @@ class PrenatalServices {
     final Person? assignedByData = Person.fromJsonStatic(assignedByJson);
     final Person? accompaniedBy = Person.fromJsonStatic(accompanyByJson);
 
-    final CareAndTest ci = CareAndTest(
+    final CareAndTest? ci = CareAndTest(
         whtPersonnel: assignedByData,
         trimester: prenatal.selectedTrimester,
         consultWht: prenatal.consultWht,
@@ -188,20 +210,25 @@ class PrenatalServices {
         advices: prenatal.advices,
         services: prenatal.services);
 
-    final BirthPlan bi = BirthPlan(
+    final BirthPlan? bi = BirthPlan(
         birthplace: prenatal.birthplace, assignedBy: assignedByData, accompaniedBy: accompaniedBy);
 
-    final AfterCare afi = AfterCare(
-        immunzation: prenatal.ttItems
-            .map((i) =>
-                Immunization(term: i['term'], date: DateTime.parse(i['created_at']).toLocal()))
-            .toList(),
-        ironSupplement: prenatal.ironSuppItems
-            .map((i) =>
-                IronSupplement(tabs: i['no_tabs'], date: DateTime.parse(i['created_at']).toLocal()))
-            .toList());
+    final AfterCare? afi = AfterCare(
+      immunzation: prenatal.ttItems.where((i) => i.isNotEmpty).map<Immunization>((i) {
+        return Immunization(
+          term: i['term'],
+          date: DateTime.parse(i['created_at'] as String).toLocal(),
+        );
+      }).toList(),
+      ironSupplement: prenatal.ironSuppItems.where((i) => i.isNotEmpty).map<IronSupplement>((i) {
+        return IronSupplement(
+          tabs: i['no_tabs'],
+          date: DateTime.parse(i['created_at'] as String).toLocal(),
+        );
+      }).toList(),
+    );
 
-    final Counseling co = Counseling(
+    final Counseling? co = Counseling(
         breastFeeding: prenatal.breastFeeding,
         familyPlanning: prenatal.familyPlanning,
         properNutrition: prenatal.properNutrition,
@@ -222,6 +249,51 @@ class PrenatalServices {
   Future<Prenatal?> fetchPrenatalByPrenatalId({required String token, required int id}) async {
     final List<Prenatal> prenatals = await fetchAllPrenatal(token);
     return prenatals.where((p) => p.id == id).firstOrNull;
+  }
+
+  Future<PersonHistory> fetchAllClinicHistoryByUserId(
+      {required String token, required int id}) async {
+    final url = apiURIBase.replace(path: LaravelPaths.allPrenatal);
+    // log(message)
+    final res = await http.get(url);
+
+    if (res.statusCode != 200) {
+      log('Failed to fetch prenatal data. Status code: ${res.statusCode}');
+      throw Exception('Failed to fetch prenatal data. Status code: ${res.statusCode}');
+    }
+
+    final List<dynamic> prenatalsMap = jsonDecode(res.body)
+      ..sort(
+        (a, b) => DateTime.parse(a[PrenatalFields.createdAt])
+            .compareTo(DateTime.parse(b[PrenatalFields.createdAt])),
+      );
+
+    // for (var p in prenatalsMap) {
+    //   log(DateFormat('hh:MM aa')
+    //       .format(DateTime.parse(p[PrenatalFields.createdAt]).toLocal())
+    //       .toString());
+    // }
+
+    if (prenatalsMap.isEmpty) {
+      throw Exception('Failed to fetch prenatal data. Status code: ${res.statusCode}');
+    }
+
+    final currentHistory = prenatalsMap.firstWhere((t) => t['user_id'] == id);
+
+    List<Map<String, dynamic>> clinicVisits = [];
+    for (var prenatal in prenatalsMap) {
+      if (prenatal['user_id'] == id) {
+        clinicVisits.addAll((prenatal["clinic_visits"] as List).cast<Map<String, dynamic>>());
+      }
+    }
+
+    clinicVisits.sort(
+      (a, b) => DateTime.parse(b['created_at']).compareTo(DateTime.parse(a['created_at'])),
+    );
+
+    currentHistory['clinic_visits'] = clinicVisits;
+
+    return PersonHistory.fromJson(currentHistory);
   }
 
   Future<List<Prenatal>> fetchAllPrenatalByLaravelUserId(
@@ -328,14 +400,9 @@ class PrenatalServices {
           birthplace: clinicVisit?[PrenatalFields.bokenBirthPlace] ?? "NA",
           patientInformation: PatientInformation(
             userId: p[LaravelUserFields.userId],
-            bloodDonor: Donor(
-              id: bloodDonor['id'] ?? 0,
-              fullname: bloodDonor[PrenatalFields.donorFullname] ?? 'NA',
-              contactNumber: bloodDonor[PrenatalFields.donorContactNumber] ?? 'NA',
-              bloodTyped: bloodDonor[PrenatalFields.donorBloodType] == 1,
-            ),
-            philhealth: p[PatientInformationFields.philhealth] == 1,
-            nhts: p[PatientInformationFields.nhts] == 1,
+            birthday: p['date_of_birth'],
+            philhealth: p[PatientInformationFields.philhealth],
+            nhts: p[PatientInformationFields.nhts],
             lmp: DateTime.parse(p[PatientInformationFields.lmp]).toLocal(),
             edc: DateTime.parse(p[PatientInformationFields.edc]).toLocal(),
             obStatus: p[PatientInformationFields.obStatus] ?? 'NA',
@@ -402,10 +469,7 @@ class PrenatalServices {
             ? null
             : p[PrenatalFields.bloodDonors].first;
 
-        if (donor != null &&
-            donor is Map &&
-            donor.isNotEmpty &&
-            donor[PrenatalFields.donorFullname] != null) {
+        if (donor != null && donor.isNotEmpty && donor[PrenatalFields.donorFullname] != null) {
           bloodDonorsById[userId] = donor;
         }
 
@@ -468,15 +532,10 @@ class PrenatalServices {
           ],
           birthplace: clinicVisit?[PrenatalFields.bokenBirthPlace] ?? "NA",
           patientInformation: PatientInformation(
+            birthday: p['date_of_birth'],
             userId: p[LaravelUserFields.userId],
-            bloodDonor: Donor(
-              id: bloodDonor['id'] ?? 0,
-              fullname: bloodDonor[PrenatalFields.donorFullname] ?? 'NA',
-              contactNumber: bloodDonor[PrenatalFields.donorContactNumber] ?? 'NA',
-              bloodTyped: bloodDonor[PrenatalFields.donorBloodType] == 1,
-            ),
-            philhealth: p[PatientInformationFields.philhealth] == 1,
-            nhts: p[PatientInformationFields.nhts] == 1,
+            philhealth: p[PatientInformationFields.philhealth],
+            nhts: p[PatientInformationFields.nhts],
             lmp: DateTime.parse(p[PatientInformationFields.lmp]).toLocal(),
             edc: DateTime.parse(p[PatientInformationFields.edc]).toLocal(),
             obStatus: p[PatientInformationFields.obStatus] ?? 'NA',
@@ -576,11 +635,6 @@ class PrenatalServices {
       PrenatalFields.isFamilyPlanning: prenatal.familyPlanning ? 1 : 0,
       PrenatalFields.isChildProperNutrition: prenatal.properNutritionForChild ? 1 : 0,
       PrenatalFields.isSelfProperNutrition: prenatal.properNutritionForMyself ? 1 : 0,
-      PrenatalFields.donorFullname: prenatal.patientInformation.bloodDonor?.fullname ?? "",
-      PrenatalFields.donorContactNumber:
-          prenatal.patientInformation.bloodDonor?.contactNumber ?? "",
-      PrenatalFields.donorBloodType:
-          (prenatal.patientInformation.bloodDonor?.bloodTyped ?? false) ? 1 : 0,
       PrenatalFields.clinicVisitTrimester: getIntegerTrimesterEnum(prenatal.selectedTrimester),
       PrenatalFields.clinicVisitConsultWht: prenatal.consultWht ? 1 : 0,
       PrenatalFields.clinicVisitWhtIntroducedBirthPlan: prenatal.introducedBirthPlan ? 1 : 0,

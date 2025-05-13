@@ -1,9 +1,13 @@
+import 'dart:developer';
+
+import 'package:smartguide_app/components/alert/alert.dart';
 import 'package:smartguide_app/fields/reminder_fields.dart';
+import 'package:smartguide_app/models/person.dart';
 import 'package:smartguide_app/services/laravel/reminder_services.dart';
 import 'package:smartguide_app/utils/utils.dart';
 
 class Reminder {
-  final int? id;
+  int? id;
   String title;
   String? purpose;
   ReminderTypeEnum reminderType;
@@ -13,6 +17,11 @@ class Reminder {
   bool isFresh;
   final int motherId;
   bool? isDone;
+  Person? mother;
+  Person? midwife;
+
+  DateTime? createdAt;
+  DateTime? updatedAt;
 
   Reminder({
     required this.midwifeId,
@@ -25,12 +34,17 @@ class Reminder {
     required this.date,
     // required this.time,
     this.isFresh = true,
+    this.mother,
+    this.midwife,
+    this.createdAt,
+    this.updatedAt,
   });
 
   final ReminderServices reminderServices = ReminderServices();
 
-  Future<bool> storeReminder(String token) async {
-    final bool res = await reminderServices.storeReminder(this, token);
+  Future<Map<String, dynamic>> storeReminder(String token) async {
+    final Map<String, dynamic> res = await reminderServices.storeReminder(this, token);
+
     return res;
   }
 
@@ -41,15 +55,20 @@ class Reminder {
   }
 
   static Reminder fromJson(Map<String, dynamic> json) => Reminder(
-      isDone: json[ReminderFields.isDone] == 1 ? true : false,
-      isFresh: false,
-      id: json[ReminderFields.id],
-      motherId: json[ReminderFields.motherId],
-      date: DateTime.tryParse(json[ReminderFields.reminderDate]),
-      title: json[ReminderFields.name],
-      midwifeId: json[ReminderFields.midwifeId],
-      reminderType: getReminderTypeEnumFromReminderInt(json[ReminderFields.icon]) ??
-          ReminderTypeEnum.prenatalCheckup);
+        isDone: json[ReminderFields.isDone] == true || json[ReminderFields.isDone] == 1,
+        isFresh: false,
+        id: json[ReminderFields.id],
+        motherId: json[ReminderFields.motherId],
+        date: DateTime.tryParse(json[ReminderFields.reminderDate]),
+        title: json[ReminderFields.name],
+        midwifeId: json[ReminderFields.midwifeId],
+        reminderType: getReminderTypeEnumFromReminderInt(json[ReminderFields.icon]) ??
+            ReminderTypeEnum.prenatalCheckup,
+        mother: Person.fromJsonStatic(json[ReminderFields.mother]),
+        midwife: Person.fromJsonStatic(json[ReminderFields.midwife]),
+        createdAt: DateTime.parse(json[ReminderFields.createdAt]).toLocal(),
+        updatedAt: DateTime.parse(json[ReminderFields.updatedAt]).toLocal(),
+      );
 
   Map<String, dynamic> toJson() => {
         ReminderFields.id: id,
@@ -73,15 +92,20 @@ class Reminder {
     );
   }
 
-  Future<void> markAsDone(String token) async {
-    // final bool res = await reminderServices.updateReminder(
-    //     id: id!,
-    //     title: title,
-    //     type: reminderType,
-    //     date: date!,
-    //     token: token,
-    //     userId: userId,
-    //     isDone: true);
+  Future<Reminder> markAsDone(String token) async {
+    try {
+      final Reminder newReminder =
+          await reminderServices.setRemindersAsDone(token: token, reminder: this);
+
+      log(newReminder.isDone!.toString());
+
+      Alert.showSuccessMessage(message: "Reminder has been set to done succesfully");
+      return newReminder;
+    } catch (e, stackTrace) {
+      log("Error: $e", stackTrace: stackTrace);
+      Alert.showErrorMessage(message: e.toString());
+      rethrow;
+    }
   }
 
   Future<Reminder> updateReminder({
@@ -90,21 +114,11 @@ class Reminder {
     required int motherId,
     required DateTime date,
     required String token,
+    required DateTime createdAt,
     bool isDone = false,
     required int midwifeId,
   }) async {
-//     log('''
-// $id
-// $title
-// $type
-// $motherId
-// $date
-// $token
-// $isDone
-// $midwifeId
-//     ''');
-
-    final bool res = await reminderServices.updateReminder(
+    return await reminderServices.updateReminder(
         id: id!,
         title: title,
         type: type,
@@ -113,20 +127,6 @@ class Reminder {
         motherId: motherId,
         isDone: isDone,
         midwifeId: midwifeId);
-
-    if (res) {
-      return Reminder(
-          midwifeId: midwifeId,
-          date: date,
-          reminderType: type,
-          title: title,
-          motherId: motherId,
-          id: id,
-          isFresh: isFresh,
-          purpose: purpose);
-    } else {
-      throw Exception("There was an error updating your reminder");
-    }
   }
 }
 

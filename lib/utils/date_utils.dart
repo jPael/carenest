@@ -42,3 +42,46 @@ DateTime parseBirthday(String dateString) {
     return format.parse(dateString);
   }
 }
+
+// final diff = widget.reminder.date!.toLocal().difference(DateTime.now().toLocal());
+// final bool isNow = diff.inHours.abs() <= 24;  // Past or future 24 hours
+
+bool isNow(DateTime date) {
+  final now = DateTime.now().toLocal();
+  final localDate = date.toLocal();
+
+  return now.year == localDate.year && now.month == localDate.month && now.day == localDate.day;
+}
+
+bool hasPassed(DateTime date) {
+  final now = DateTime.now().toLocal();
+  final localDate = date.toLocal();
+
+  return DateTime(now.year, now.month, now.day).isAfter(localDate);
+}
+
+String getOrdinalSuffix(int day) {
+  if (day >= 11 && day <= 13) return 'th';
+  switch (day % 10) {
+    case 1:
+      return 'st';
+    case 2:
+      return 'nd';
+    case 3:
+      return 'rd';
+    default:
+      return 'th';
+  }
+}
+
+String getGreeting() {
+  final hour = DateTime.now().hour;
+
+  if (hour < 12) {
+    return 'Good morning';
+  } else if (hour < 17) {
+    return 'Good afternoon';
+  } else {
+    return 'Good evening';
+  }
+}

@@ -34,22 +34,6 @@ class RemindersTodaysScheduleSection extends StatelessWidget {
                     title: r.title,
                     markAsDone: () => markAsDone(r),
                   ))
-
-              // RemindersCard(
-              //   title: "Prenatal Check-up",
-              //   datetime: DateTime(2025, 3, 15, 9, 0),
-              //   iconSrc: "lib/assets/images/reminders_card_prenatal_checkup_icon.png",
-              // ),
-              // RemindersCard(
-              //   title: "Nutrition Seminar",
-              //   datetime: DateTime(2025, 3, 22, 8, 0),
-              //   iconSrc: "lib/assets/images/reminders_card_nutrition_seminar_icon.png",
-              // ),
-              // RemindersCard(
-              //   title: "Vaccination drive",
-              //   datetime: DateTime(2025, 4, 20, 10, 0),
-              //   iconSrc: "lib/assets/images/reminders_card_vaccination_drive_icon.png",
-              // )
             ],
           ),
         )

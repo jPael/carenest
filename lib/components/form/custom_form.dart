@@ -1,24 +1,31 @@
 import 'package:flutter/material.dart';
 
 class CustomForm extends StatelessWidget {
-  const CustomForm({
-    super.key,
-    this.label,
-    required this.children,
-    required this.actions,
-    this.socials = const [],
-    this.actionMainAxisAlignment,
-  });
+  const CustomForm(
+      {super.key,
+      this.label,
+      required this.actions,
+      required this.children,
+      this.socials = const [],
+      this.actionMainAxisAlignment,
+      this.alignment,
+      this.childrenSpacing = 0,
+      this.headerSpacing = 3.0});
 
   final String? label;
   final List<Widget> children;
   final List<Widget> actions;
   final List<Widget> socials;
   final MainAxisAlignment? actionMainAxisAlignment;
+  final CrossAxisAlignment? alignment;
+  final double? childrenSpacing;
+  final double headerSpacing;
 
   @override
   Widget build(BuildContext context) {
     return Column(
+      spacing: childrenSpacing ?? 8,
+      crossAxisAlignment: alignment ?? CrossAxisAlignment.start,
       mainAxisSize: MainAxisSize.min,
       children: [
         if (label != null) ...[
@@ -30,8 +37,8 @@ class CustomForm extends StatelessWidget {
               )
             ],
           ),
-          const SizedBox(
-            height: 8 * 3,
+          SizedBox(
+            height: 8 * headerSpacing,
           )
         ],
         ...children,

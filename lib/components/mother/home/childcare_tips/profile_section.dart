@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:smartguide_app/models/user.dart';
+import 'package:smartguide_app/utils/utils.dart';
 
 class ProfileSection extends StatelessWidget {
   const ProfileSection({super.key, required this.label});
@@ -10,6 +11,8 @@ class ProfileSection extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final User user = context.read<User>();
+
+    final String g = getGreeting();
 
     return Row(
       crossAxisAlignment: CrossAxisAlignment.center,
@@ -37,8 +40,8 @@ class ProfileSection extends StatelessWidget {
         Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            const Text(
-              "Good day!",
+            Text(
+              g,
               style: TextStyle(fontSize: 8 * 4, fontWeight: FontWeight.w500),
             ),
             Text(

@@ -3,7 +3,8 @@ import 'package:flutter_auto_size_text/flutter_auto_size_text.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:intl/intl.dart';
 import 'package:smartguide_app/models/person.dart';
-import 'package:smartguide_app/models/prenatal.dart';
+import 'package:smartguide_app/models/revamp/clinic_history.dart';
+import 'package:smartguide_app/models/revamp/person_history.dart';
 import 'package:smartguide_app/models/user.dart';
 import 'package:smartguide_app/pages/midwife/prenatal_records/clinic_visit_page.dart';
 import 'package:smartguide_app/pages/midwife/prenatal_records/create_new_prenatal_page.dart';
@@ -21,7 +22,7 @@ class PatientsHistoryListPage extends StatefulWidget {
 class _PatientsHistoryListPageState extends State<PatientsHistoryListPage> {
   final PrenatalServices prenatalServices = PrenatalServices();
 
-  late final List<Prenatal> prenatals;
+  late final PersonHistory prenatals;
   bool isLoading = false;
 
   Future<void> fetchPrenatals() async {
@@ -31,11 +32,8 @@ class _PatientsHistoryListPageState extends State<PatientsHistoryListPage> {
 
     final User user = context.read<User>();
 
-    prenatals = await prenatalServices.fetchAllPrenatalByLaravelUserId(
-        token: user.token!, id: widget.person.id!)
-      ..sort(
-        (a, b) => b.createdAt!.compareTo(a.createdAt!),
-      );
+    prenatals = await prenatalServices.fetchAllClinicHistoryByUserId(
+        token: user.token!, id: widget.person.id!);
 
     setState(() {
       isLoading = false;
@@ -55,13 +53,8 @@ class _PatientsHistoryListPageState extends State<PatientsHistoryListPage> {
         title: Text("${widget.person.name!.split(" ").first}'s history"),
       ),
       floatingActionButton: FloatingActionButton.extended(
-        onPressed: () => Navigator.push(
-            context,
-            MaterialPageRoute(
-                builder: (context) => CreateNewPrenatalPage(
-                      patient: widget.person,
-                      patientInformationId: prenatals.first.id,
-                    ))),
+        onPressed: () => Navigator.push(context,
+            MaterialPageRoute(builder: (context) => CreateNewPrenatalPage(person: prenatals))),
         label: const Text("Create"),
         icon: const Icon(Icons.edit_rounded),
       ),
@@ -84,7 +77,7 @@ class _PatientsHistoryListPageState extends State<PatientsHistoryListPage> {
                 ),
               ),
             )
-          : prenatals.isEmpty
+          : prenatals.clinicVisits.isEmpty
               ? const Padding(
                   padding: EdgeInsets.symmetric(vertical: 10 * 8.0),
                   child: Center(
@@ -95,10 +88,10 @@ class _PatientsHistoryListPageState extends State<PatientsHistoryListPage> {
                   ),
                 )
               : ListView.builder(
-                  itemCount: prenatals.length,
+                  itemCount: prenatals.clinicVisits.length,
                   padding: const EdgeInsets.all(8 * 3),
                   itemBuilder: (context, index) {
-                    final Prenatal currPrenatal = prenatals[index];
+                    final ClinicHistory currPrenatal = prenatals.clinicVisits[index];
 
                     return Container(
                       margin: const EdgeInsets.symmetric(vertical: 4),
@@ -110,7 +103,8 @@ class _PatientsHistoryListPageState extends State<PatientsHistoryListPage> {
                         onTap: () => Navigator.push(
                             context,
                             MaterialPageRoute(
-                                builder: (context) => ClinicVisitPage(prenatal: currPrenatal))),
+                                builder: (context) =>
+                                    ClinicVisitPage(clinicHistory: currPrenatal))),
                         child: Padding(
                           padding: const EdgeInsets.all(8 * 2),
                           child: Column(
@@ -145,7 +139,7 @@ class _PatientsHistoryListPageState extends State<PatientsHistoryListPage> {
                                 children: [
                                   AutoSizeText(
                                     DateFormat("EEEE MMMM dd, yyyy - hh:mm aa")
-                                        .format(currPrenatal.createdAt!),
+                                        .format(currPrenatal.createdAt),
                                     style: const TextStyle(
                                         fontSize: 4 * 3, fontWeight: FontWeight.bold),
                                   ),

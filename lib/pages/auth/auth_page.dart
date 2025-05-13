@@ -76,7 +76,7 @@ class _AuthPageState extends State<AuthPage> {
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
             Text(
-              "CareNest",
+              "MEDICARE",
               style: TextStyle(fontSize: 40, fontWeight: FontWeight.bold),
             ),
             Text(

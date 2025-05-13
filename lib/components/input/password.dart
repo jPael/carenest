@@ -30,6 +30,9 @@ class PasswordState extends State<Password> {
       controller: widget.controller,
       validator: widget.validator,
       obscureText: !showPassword,
+      onTapOutside: (event) {
+        FocusManager.instance.primaryFocus?.unfocus();
+      },
       decoration: InputDecoration(
           label: Text(widget.label),
           hintText: widget.hint,

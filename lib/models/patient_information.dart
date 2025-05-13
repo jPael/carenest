@@ -1,24 +1,25 @@
 import 'dart:developer';
 
-import 'package:smartguide_app/models/donor.dart';
 import 'package:smartguide_app/services/laravel/fields.dart';
 import 'package:smartguide_app/services/laravel/patient_information_services.dart';
 
 class PatientInformation {
   final int? id;
-  final bool philhealth;
-  final bool nhts;
+  final String philhealth;
+  final String nhts;
   final DateTime lmp;
   final DateTime edc;
   final String obStatus;
-  final Donor? bloodDonor;
+  final DateTime birthday;
+  // final Donor? bloodDonor;
   final int userId;
   final DateTime? createdAt;
   final DateTime? updatedAt;
 
   PatientInformation(
       {this.id,
-      this.bloodDonor,
+      // this.bloodDonor,
+      required this.birthday,
       required this.philhealth,
       required this.nhts,
       required this.userId,
@@ -37,19 +38,17 @@ class PatientInformation {
     //   midwifePerson = Person.fromJsonStatic(midwifeJsonData);
     // }
 
-    final Map<String, dynamic> donor = (json[PrenatalFields.bloodDonors] as List).first;
-    log(donor.toString());
+    // final Map<String, dynamic> donor = (json[PrenatalFields.bloodDonors] as List).first;
+    // log(donor.toString());
+
+    log(json.toString());
 
     return PatientInformation(
+      birthday: DateTime.parse(json['date_of_birth']),
       userId: json[LaravelUserFields.userId],
-      bloodDonor: Donor(
-          id: donor['id'],
-          fullname: donor[PrenatalFields.donorFullname],
-          contactNumber: donor[PrenatalFields.donorContactNumber],
-          bloodTyped: donor[PrenatalFields.donorBloodType] == 1 ? true : false),
       id: json[PatientInformationFields.id],
-      philhealth: json[PatientInformationFields.philhealth] == 1 ? true : false,
-      nhts: json[PatientInformationFields.nhts] == 1 ? true : false,
+      philhealth: json[PatientInformationFields.philhealth],
+      nhts: json[PatientInformationFields.nhts],
       lmp: json[PatientInformationFields.lmp] != null
           ? DateTime.parse(json[PatientInformationFields.lmp]).toLocal()
           : DateTime.now(),
@@ -66,10 +65,18 @@ class PatientInformation {
     );
   }
 
-  Future<Map<String, dynamic>> storeRecord({required String token}) async {
+  Future<Map<String, dynamic>> storeRecord(
+      {required int userId, required String token, bool create = true}) async {
     try {
-      final int id = await storePatientInformation(patientInformation: this, token: token);
-      return {"success": true, "message": "Patient information  saved successfully", 'id': id};
+      if (create) {
+        final int id = await storePatientInformation(patientInformation: this, token: token);
+        return {"success": true, "message": "Patient information  saved successfully", 'id': id};
+      } else {
+        final int id =
+            await updatePatientInformation(id: userId, patientInformation: this, token: token);
+
+        return {"success": true, "message": "Patient information  updated successfully", 'id': id};
+      }
     } catch (e, stackTrace) {
       log('Error storing prenatal record: $e', stackTrace: stackTrace);
       return {"success": false, "message": "Failed to save patient information"};

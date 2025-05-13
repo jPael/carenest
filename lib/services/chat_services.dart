@@ -5,8 +5,12 @@ import 'package:smartguide_app/services/user_services.dart';
 class ChatServices {
   final FirebaseFirestore _firestore = FirebaseFirestore.instance;
 
-  Stream<List<Map<String, dynamic>>> getUsersStream() {
-    return _firestore.collection("users").snapshots().map((snapshot) {
+  Stream<List<Map<String, dynamic>>> getUsersStream({required String address}) {
+    return _firestore
+        .collection("users")
+        .where('address', isEqualTo: address)
+        .snapshots()
+        .map((snapshot) {
       return snapshot.docs.map((doc) {
         final user = doc.data();
 

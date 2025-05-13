@@ -6,8 +6,31 @@ import 'package:http/http.dart' as http;
 import 'package:smartguide_app/fields/reminder_fields.dart';
 import 'package:smartguide_app/models/reminder.dart';
 import 'package:smartguide_app/services/laravel/api_url.dart';
+import 'package:smartguide_app/utils/date_utils.dart';
 
 class ReminderServices {
+  Future<Reminder> setRemindersAsDone({required String token, required Reminder reminder}) async {
+    final url = apiURIBase.replace(path: LaravelPaths.reminderMarkAsDone);
+
+    final Map<String, dynamic> payload = {'id': reminder.id!};
+
+    final res = await http.post(url,
+        headers: {'Content-Type': 'application/json', 'Authorization': "Bearer $token"},
+        body: jsonEncode(payload));
+
+    if (res.statusCode > HttpStatus.badRequest &&
+        res.statusCode < HttpStatus.networkConnectTimeoutError) {
+      log(url.toString());
+      log(res.statusCode.toString());
+
+      throw Exception("There was an error in the server. Please try again");
+    }
+
+    log(res.body);
+
+    return Reminder.fromJson(jsonDecode(res.body)['data']);
+  }
+
   Future<Map<String, List<Reminder>>> fetchAllSegregatedReminderByUserId(
       String laravelId, String token) async {
     final List<Reminder> reminders =
@@ -19,8 +42,8 @@ class ReminderServices {
     final List<Reminder> missed = [];
 
     final DateTime now = DateTime.now();
-    final DateTime todayStart = DateTime(now.year, now.month, now.day);
-    final DateTime todayEnd = DateTime(now.year, now.month, now.day, 23, 59, 59);
+    // final DateTime todayStart = DateTime(now.year, now.month, now.day);
+    // final DateTime todayEnd = DateTime(now.year, now.month, now.day, 23, 59, 59);
 
     for (Reminder reminder in reminders) {
       if (reminder.isDone == true) {
@@ -30,9 +53,9 @@ class ReminderServices {
 
       if (reminder.date == null) continue;
 
-      if (reminder.date!.isAfter(todayStart) && reminder.date!.isBefore(todayEnd)) {
+      if (isNow(reminder.date!)) {
         today.add(reminder);
-      } else if (reminder.date!.isAfter(now)) {
+      } else if (reminder.date!.toLocal().isAfter(now)) {
         upcoming.add(reminder);
       } else {
         missed.add(reminder);
@@ -66,7 +89,7 @@ class ReminderServices {
   }
 
   Future<List<Reminder>?>? fetchAllReminderByMotherId(String laravelId, String token) async {
-    log(laravelId);
+    // log(laravelId);
 
     if (laravelId.isEmpty) return null;
 
@@ -74,6 +97,8 @@ class ReminderServices {
 
     final res = await http
         .get(url, headers: {'Content-Type': 'application/json', 'Authorization': "Bearer $token"});
+
+    log(url.toString());
 
     final data = jsonDecode(res.body) as List<dynamic>;
 
@@ -98,6 +123,8 @@ class ReminderServices {
     final res = await http
         .get(url, headers: {'Content-Type': 'application/json', 'Authorization': "Bearer $token"});
 
+    // log(res.body);
+
     final data = jsonDecode(res.body) as List<dynamic>;
 
     // log(data.length.toString());
@@ -116,7 +143,7 @@ class ReminderServices {
 
     // log(LaravelPaths.specificReminder(reminder.id!));
 
-    await Future.delayed(const Duration(seconds: 5));
+    // await Future.delayed(const Duration(seconds: 5));
 
     final url = apiURIBase.replace(path: LaravelPaths.specificReminder(reminder.id!));
 
@@ -135,7 +162,7 @@ class ReminderServices {
     return reminder.id!;
   }
 
-  Future<bool> updateReminder(
+  Future<Reminder> updateReminder(
       {required int id,
       required String title,
       required ReminderTypeEnum type,
@@ -144,34 +171,38 @@ class ReminderServices {
       required int motherId,
       required bool isDone,
       required int midwifeId}) async {
-    if (token.isEmpty) return false;
+    if (token.isEmpty) throw Exception("Error needs authentication");
 
     final url = apiURIBase.replace(path: LaravelPaths.specificReminder(id));
+
+    final Map<String, dynamic> payload = {
+      ReminderFields.name: title,
+      ReminderFields.icon: type.code,
+      ReminderFields.reminderDate: date.toString(),
+      ReminderFields.motherId: motherId,
+      ReminderFields.midwifeId: midwifeId,
+      ReminderFields.isDone: isDone ? 1 : 0
+    };
+
+    // log(url.toString());
+    // log(payload.toString());
 
     final res = await http.put(url,
         headers: {
           'Content-Type': 'application/json',
           'Authorization': 'Bearer $token',
         },
-        body: jsonEncode({
-          ReminderFields.name: title,
-          ReminderFields.icon: type.code,
-          ReminderFields.reminderDate: date.toString(),
-          ReminderFields.motherId: motherId,
-          ReminderFields.midwifeId: midwifeId,
-          ReminderFields.isDone: isDone ? 1 : 0
-        }));
+        body: jsonEncode(payload));
 
     if (res.statusCode != HttpStatus.ok) {
-      log("service error: ${res.body}");
-
-      return false;
+      throw Exception("Error there was an error on the server. Please try again");
     }
 
-    return true;
+    final json = jsonDecode(res.body);
+    return Reminder.fromJson(json['data']);
   }
 
-  Future<bool> storeReminder(Reminder reminder, String token) async {
+  Future<Map<String, dynamic>> storeReminder(Reminder reminder, String token) async {
     final url = apiURIBase.replace(path: LaravelPaths.reminder);
     final Map<String, dynamic> payload = {
       ReminderFields.name: reminder.title,
@@ -193,6 +224,6 @@ class ReminderServices {
       throw Exception("There was an error syncing your reminder");
     }
 
-    return true;
+    return {"success": true, "data": jsonDecode(res.body)['data']};
   }
 }

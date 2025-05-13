@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
-import 'package:smartguide_app/components/button/custom_button.dart';
 
 class RemindersCard extends StatefulWidget {
   const RemindersCard(
@@ -34,7 +33,7 @@ class _RemindersCardState extends State<RemindersCard> with TickerProviderStateM
   @override
   Widget build(BuildContext context) {
     final String date = DateFormat("MMMM d, y").format(widget.datetime);
-    final String time = DateFormat("hh:mm a").format(widget.datetime);
+    // final String time = DateFormat("hh:mm a").format(widget.datetime);
 
     return Card(
       // color: done
@@ -72,14 +71,14 @@ class _RemindersCardState extends State<RemindersCard> with TickerProviderStateM
               ),
 
               // CustomCheckbox(customOnChange: (p0, p1) {}, label: "Done", value: done)
-              CustomButton(
-                onPress: markAsDone,
-                label: "Done",
-                icon: done ? const Icon(Icons.check) : null,
-                horizontalPadding: 3,
-                type: done ? CustomButtonType.success : CustomButtonType.ghost,
-                verticalPadding: 1,
-              )
+              // CustomButton(
+              //   onPress: markAsDone,
+              //   label: "Done",
+              //   icon: done ? const Icon(Icons.check) : null,
+              //   horizontalPadding: 3,
+              //   type: done ? CustomButtonType.success : CustomButtonType.ghost,
+              //   verticalPadding: 1,
+              // )
             ],
           ),
         ),

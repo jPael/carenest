@@ -2,14 +2,18 @@ import 'dart:developer';
 
 import 'package:flutter/material.dart';
 import 'package:flutter_auto_size_text/flutter_auto_size_text.dart';
+import 'package:intl/intl.dart';
 import 'package:ionicons/ionicons.dart';
 import 'package:provider/provider.dart';
 import 'package:smartguide_app/components/alert/alert.dart';
 import 'package:smartguide_app/components/button/custom_button.dart';
+import 'package:smartguide_app/fields/reminder_fields.dart';
+import 'package:smartguide_app/models/person.dart';
 import 'package:smartguide_app/models/reminder.dart';
 import 'package:smartguide_app/models/user.dart';
 import 'package:smartguide_app/pages/midwife/add_reminders/add_reminder_form.dart';
 import 'package:smartguide_app/pages/midwife/add_reminders/view_reminders_page.dart';
+import 'package:smartguide_app/utils/date_utils.dart';
 
 class RemindersItem extends StatefulWidget {
   const RemindersItem(
@@ -40,10 +44,15 @@ class _RemindersItemState extends State<RemindersItem> {
 
       try {
         final res = await widget.reminder.storeReminder(user.token!);
-        if (res) {
+        // log(res.toString());
+        // log(res['data'][ReminderFields.mother].toString());
+        if (res['success']) {
           setState(() {
             isFresh = false;
             widget.reminder.isFresh = false;
+            widget.reminder.id = res['data']['id'];
+            widget.reminder.mother = Person.fromJsonStatic(res['data'][ReminderFields.mother]);
+            widget.reminder.midwife = Person.fromJsonStatic(res['data'][ReminderFields.midwife]);
           });
         } else {
           if (!mounted) return;
@@ -144,6 +153,7 @@ class _RemindersItemState extends State<RemindersItem> {
                       title: titleController.text,
                       type: reminderType!,
                       motherId: motherId!,
+                      createdAt: widget.reminder.createdAt!,
                       date: date,
                       token: user.token!);
 
@@ -217,68 +227,122 @@ class _RemindersItemState extends State<RemindersItem> {
 
   @override
   Widget build(BuildContext context) {
-    return InkWell(
-      onTap: () => Navigator.push(context,
-          MaterialPageRoute(builder: (context) => ViewRemindersPage(reminder: widget.reminder))),
-      child: Row(
-        spacing: 4 * 2,
-        children: [
-          CircleAvatar(
-            backgroundColor: Colors.transparent,
-            radius: 20,
-            child: Image.asset(
-              widget.reminder.reminderType.image,
-              fit: BoxFit.cover,
-            ),
-          ),
-          Expanded(
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+    // final nHours = widget.reminder.date!.toLocal().difference(DateTime.now()).inHours;
+    // log(nHours.toString());
+    // final bool isNow = nHours <= 24;
+
+    return Card(
+      child: Padding(
+        padding: const EdgeInsets.all(8.0),
+        child: InkWell(
+          onLongPress: () => _showAddReminderDialog(context, widget.handleRepaint),
+          onTap: isFresh
+              ? () {}
+              : () => Navigator.push(
+                  context,
+                  MaterialPageRoute(
+                      builder: (context) => ViewRemindersPage(
+                            reminder: widget.reminder,
+                            handleRepaint: widget.handleRepaint,
+                          ))),
+          child: Row(
+            spacing: 4 * 2,
+            children: [
+              CircleAvatar(
+                backgroundColor: Colors.transparent,
+                radius: 20,
+                child: Image.asset(
+                  widget.reminder.reminderType.image,
+                  fit: BoxFit.cover,
+                ),
+              ),
+              Expanded(
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
-                    Expanded(
-                      child: AutoSizeText(
-                        widget.reminder.title,
-                        softWrap: false,
-                        maxLines: 2,
-                        style: const TextStyle(fontSize: 4 * 4, fontWeight: FontWeight.w500),
-                      ),
-                    ),
-                    Flexible(
-                        child: isSyncing
-                            ? SizedBox.square(
+                    Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      children: [
+                        Expanded(
+                          flex: 3,
+                          child: AutoSizeText(
+                            widget.reminder.title,
+                            softWrap: false,
+                            maxLines: 1,
+                            overflow: TextOverflow.ellipsis,
+                            style: const TextStyle(fontSize: 4 * 4, fontWeight: FontWeight.w500),
+                          ),
+                        ),
+                        if (isSyncing)
+                          Flexible(
+                              flex: 1,
+                              child: SizedBox.square(
                                 dimension: 4 * 4,
                                 child: CircularProgressIndicator(
                                   color: Theme.of(context).colorScheme.primary,
                                   strokeWidth: 2,
                                 ),
-                              )
-                            : Container())
+                              ))
+                      ],
+                    ),
+                    Row(
+                      children: [
+                        Text(widget.reminder.mother?.name ?? ""),
+                      ],
+                    ),
+                    const SizedBox(
+                      height: 8,
+                    ),
+                    Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      children: [
+                        AutoSizeText(
+                          DateFormat("EEEE dd MMMM yyyy").format(widget.reminder.date!),
+                          style: const TextStyle(fontSize: 8),
+                        ),
+                        if (isNow(widget.reminder.date!) && !widget.reminder.isDone!)
+                          const Text("Now",
+                              style: TextStyle(
+                                color: Colors.green,
+                                fontWeight: FontWeight.bold,
+                              ))
+                        else if (widget.reminder.isDone!)
+                          const Text("Done",
+                              style: TextStyle(
+                                color: Colors.green,
+                                fontWeight: FontWeight.bold,
+                              ))
+                        else if (widget.reminder.date!.isBefore(DateTime.now()))
+                          Text("Missed",
+                              style: TextStyle(
+                                color: Colors.red[700],
+                                fontWeight: FontWeight.bold,
+                              ))
+                      ],
+                    ),
                   ],
                 ),
-              ],
-            ),
-          ),
-          Column(
-            crossAxisAlignment: CrossAxisAlignment.center,
-            children: [
-              CustomButton.link(
-                  context: context,
-                  label: "Edit",
-                  onPressed: () => _showAddReminderDialog(context, widget.handleRepaint)),
-              isDeleting
-                  ? Container(
-                      height: 4 * 4,
-                      width: 4 * 4,
-                      margin: const EdgeInsets.all(4 * 4),
-                      child: const CircularProgressIndicator(),
-                    )
-                  : IconButton(onPressed: handleRemove, icon: const Icon(Ionicons.trash))
+              ),
+              Column(
+                crossAxisAlignment: CrossAxisAlignment.center,
+                children: [
+                  CustomButton.link(
+                      context: context,
+                      label: "Edit",
+                      onPressed: () => _showAddReminderDialog(context, widget.handleRepaint)),
+                  isDeleting
+                      ? Container(
+                          height: 4 * 4,
+                          width: 4 * 4,
+                          margin: const EdgeInsets.all(4 * 4),
+                          child: const CircularProgressIndicator(),
+                        )
+                      : IconButton(onPressed: handleRemove, icon: const Icon(Ionicons.trash))
+                ],
+              )
             ],
-          )
-        ],
+          ),
+        ),
       ),
     );
   }

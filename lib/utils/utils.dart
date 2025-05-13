@@ -1,5 +1,3 @@
-import 'dart:developer';
-
 import 'package:flutter/material.dart';
 
 export 'package:smartguide_app/utils/const_utils.dart';
@@ -32,10 +30,10 @@ bool isFundalHeightNormal(DateTime? lastMenstrualPeriod, int? fundalHeightCm) {
   int lowerBound = gestationalAgeWeeks - 2;
   int upperBound = gestationalAgeWeeks + 2;
 
-  log("$fundalHeightCm >= $lowerBound");
-  log("$fundalHeightCm <= $upperBound");
-  log("${fundalHeightCm >= lowerBound}");
-  log("${fundalHeightCm <= upperBound}");
-  log("returns ${(fundalHeightCm >= lowerBound && fundalHeightCm <= upperBound)}");
+  // log("$fundalHeightCm >= $lowerBound");
+  // log("$fundalHeightCm <= $upperBound");
+  // log("${fundalHeightCm >= lowerBound}");
+  // log("${fundalHeightCm <= upperBound}");
+  // log("returns ${(fundalHeightCm >= lowerBound && fundalHeightCm <= upperBound)}");
   return (fundalHeightCm >= lowerBound && fundalHeightCm <= upperBound);
 }

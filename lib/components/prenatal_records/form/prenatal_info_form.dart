@@ -14,7 +14,6 @@ import 'package:smartguide_app/models/after_care.dart';
 import 'package:smartguide_app/models/birth_plan.dart';
 import 'package:smartguide_app/models/care_and_test.dart';
 import 'package:smartguide_app/models/counseling.dart';
-import 'package:smartguide_app/models/donor.dart';
 import 'package:smartguide_app/models/new_user.dart';
 import 'package:smartguide_app/models/patient_information.dart';
 import 'package:smartguide_app/models/person.dart';
@@ -58,18 +57,16 @@ class _PrenatalInfoFormState extends State<PrenatalInfoForm> {
 
       if (isMother) {
         final PatientInformation pi = PatientInformation(
-            philhealth: philhealth,
-            userId: user.laravelId!,
-            nhts: nhts,
-            lmp: lmp!,
-            edc: edc!,
-            obStatus: obStatusController.text,
-            bloodDonor: Donor(
-                fullname: donorFullnameController.text,
-                contactNumber: donorContactController.text,
-                bloodTyped: donorTyped));
+          philhealth: philhealthController.text,
+          userId: user.laravelId!,
+          birthday: DateTime.parse(user.dateOfBirth!),
+          nhts: nhtsController.text,
+          lmp: lmp!,
+          edc: edc!,
+          obStatus: obStatusController.text,
+        );
 
-        res = await pi.storeRecord(token: user.token!);
+        res = await pi.storeRecord(userId: user.laravelId!, token: user.token!);
       } else {
         final Prenatal prenatal = Prenatal(
           id: widget.patientInformationId,
@@ -93,8 +90,9 @@ class _PrenatalInfoFormState extends State<PrenatalInfoForm> {
           birthday: birthday!,
           patientInformation: PatientInformation(
             userId: user.laravelId!,
-            philhealth: philhealth,
-            nhts: nhts,
+            birthday: DateTime.parse(user.dateOfBirth!),
+            philhealth: philhealthController.text,
+            nhts: nhtsController.text,
             lmp: lmp!,
             edc: edc!,
             obStatus: obStatusController.text,
@@ -112,8 +110,7 @@ class _PrenatalInfoFormState extends State<PrenatalInfoForm> {
 
       if (res['success'] == true) {
         Alert.showSuccessMessage(message: "Your prenatal has been updated successfully");
-        // Navigator.pushReplacement(
-        //     context, MaterialPageRoute(builder: (_) => const PrenatalRecordsListPage()));
+
         if (!isMother) {
           Navigator.pop(context);
           Navigator.pop(context);
@@ -131,7 +128,6 @@ class _PrenatalInfoFormState extends State<PrenatalInfoForm> {
     });
   }
 
-  // patient info
   final TextEditingController fullnameController = TextEditingController();
   final TextEditingController ageController = TextEditingController();
   final TextEditingController obStatusController = TextEditingController();
@@ -143,12 +139,9 @@ class _PrenatalInfoFormState extends State<PrenatalInfoForm> {
   DateTime? lmp;
   DateTime? edc;
 
-  bool philhealth = false;
-  bool nhts = false;
+  final TextEditingController philhealthController = TextEditingController();
+  final TextEditingController nhtsController = TextEditingController();
   bool donorTyped = false;
-  // patient info
-
-  // care and test info
 
   final TextEditingController fundicHeightController = TextEditingController();
   final TextEditingController bloodPressureController = TextEditingController();
@@ -163,22 +156,12 @@ class _PrenatalInfoFormState extends State<PrenatalInfoForm> {
   bool isFundicNormal = false;
   bool isBloodPressureNormal = false;
 
-  // care and test info
-
-  // birth plan
-
   final TextEditingController birthPlaceController = TextEditingController();
   final TextEditingController assignedByController = TextEditingController();
   final TextEditingController accompaniedByController = TextEditingController();
 
-  // birth plan
-  // after care
-
   List<Map<String, dynamic>> ttItems = [];
   List<Map<String, dynamic>> ironSuppItems = [];
-
-  // after care
-  // counseling
 
   final List<Map<String, dynamic>> questionaire = [
     {"id": "breastfeeding", "description": "Breastfeeding", "value": false},
@@ -191,12 +174,8 @@ class _PrenatalInfoFormState extends State<PrenatalInfoForm> {
     {"id": "selfProperNutrition", "description": "I am having proper nutrition", "value": false},
   ];
 
-  // counseling
-
   Future<void> fetchPrenatalInformation() async {
     final User user = context.read<User>();
-
-    // log(widget.patient?.id.toString() ?? "NA");
 
     final Map<String, dynamic>? data = await prenatalServices.fetchLatestPatientInformationByToken(
         user.token!, widget.patient?.id ?? user.laravelId!);
@@ -219,12 +198,12 @@ class _PrenatalInfoFormState extends State<PrenatalInfoForm> {
       obStatusController.text = pi?.obStatus ?? "";
       lmp = pi?.lmp;
       edc = pi?.edc;
-      philhealth = pi?.philhealth ?? false;
-      nhts = pi?.nhts ?? false;
+      philhealthController.text = pi?.philhealth ?? "";
+      nhtsController.text = pi?.nhts ?? "";
 
-      donorFullnameController.text = pi?.bloodDonor?.fullname ?? "";
-      donorContactController.text = pi?.bloodDonor?.contactNumber ?? "";
-      donorTyped = pi?.bloodDonor?.bloodTyped ?? false;
+      // donorFullnameController.text = pi?.bloodDonor?.fullname ?? "";
+      // donorContactController.text = pi?.bloodDonor?.contactNumber ?? "";
+      // donorTyped = pi?.bloodDonor?.bloodTyped ?? false;
 
       if (!widget.readonly) return;
 
@@ -287,12 +266,6 @@ class _PrenatalInfoFormState extends State<PrenatalInfoForm> {
     );
 
     fullnameController.text = widget.patient?.name ?? "";
-
-    // log(prenatalData?['careAndTest'].toString() ?? "");
-
-    // handleBirthplaceChange(data?.birthplace, null);
-    // handleAssignedByChange(data?.assignedBy.id.toString());
-    // handleAccompaniedByChange(data?.accompaniedBy.id.toString());
   }
 
   @override
@@ -322,12 +295,8 @@ class _PrenatalInfoFormState extends State<PrenatalInfoForm> {
   Widget build(BuildContext context) {
     final User user = context.read<User>();
 
-    // final String userType = user.type!;
-
     final bool userIsMother = getUserEnumFromUserTypeString(user.type!) == UserTypeEnum.mother;
     final bool userIsMidwife = getUserEnumFromUserTypeString(user.type!) == UserTypeEnum.midwife;
-
-    // log((getUserEnumFromUserTypeString(userType) == UserType.midwife).toString());
 
     return SingleChildScrollView(
       child: Padding(
@@ -340,7 +309,6 @@ class _PrenatalInfoFormState extends State<PrenatalInfoForm> {
                 ),
               )
             : CustomForm(actions: [
-                // if (!widget.readonly)
                 CustomButton(
                   onPress: handleSubmit,
                   label: "Submit",
@@ -379,26 +347,13 @@ class _PrenatalInfoFormState extends State<PrenatalInfoForm> {
                           edc = d;
                         });
                       },
-                      philhealth: philhealth,
-                      onPhilhealthChange: (bool v) {
-                        setState(() {
-                          philhealth = v;
-                        });
-                      },
-                      nhts: nhts,
-                      onNhtsChange: (bool v) {
-                        setState(() {
-                          nhts = v;
-                        });
-                      },
-                      donorFullnameController: donorFullnameController,
-                      donorContactController: donorContactController,
-                      donorBloodTyped: donorTyped,
-                      onDonorBloodTypeChange: (bool v) {
-                        setState(() {
-                          donorTyped = v;
-                        });
-                      },
+                      philhealthController: philhealthController,
+                      nhtsController: nhtsController,
+                      // onDonorBloodTypeChange: (bool v) {
+                      //   setState(() {
+                      //     donorTyped = v;
+                      //   });
+                      // },
                     ),
                   ),
                 ),

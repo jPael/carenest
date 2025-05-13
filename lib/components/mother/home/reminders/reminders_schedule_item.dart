@@ -21,7 +21,7 @@ class RemindersScheduleItem extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final String date = DateFormat("MMMM d, y").format(datetime);
-    final String time = DateFormat("hh:mm a").format(datetime);
+    // final String time = DateFormat("hh:mm a").format(datetime);
 
     Map<ScheduleItemStatusType, Widget> statusIcon = {
       ScheduleItemStatusType.done: const Icon(

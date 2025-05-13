@@ -8,19 +8,19 @@ enum SocialButtonType { google }
 enum CustomButtonType { success, primary, secondary, destructive, ghost }
 
 extension CustomButtonTypeExtension on CustomButtonType {
-  Color color(BuildContext context) {
+  Color color(BuildContext context, {bool isLoading = false}) {
     switch (this) {
       case CustomButtonType.ghost:
-        return Colors.white;
+        return Colors.white.withValues(alpha: isLoading ? 0.6 : 1);
       case CustomButtonType.success:
-        return Colors.green;
+        return Colors.green.withValues(alpha: isLoading ? 0.6 : 1);
       case CustomButtonType.primary:
-        return Theme.of(context).colorScheme.primary;
+        return Theme.of(context).colorScheme.primary.withValues(alpha: isLoading ? 0.6 : 1);
       case CustomButtonType.secondary:
-        return Theme.of(context).colorScheme.secondary;
+        return Theme.of(context).colorScheme.secondary.withValues(alpha: isLoading ? 0.6 : 1);
 
       case CustomButtonType.destructive:
-        return Theme.of(context).colorScheme.error;
+        return Theme.of(context).colorScheme.error.withValues(alpha: isLoading ? 0.6 : 1);
     }
   }
 
@@ -103,7 +103,7 @@ class CustomButton extends StatelessWidget {
   const CustomButton(
       {super.key,
       required this.onPress,
-      required this.label,
+      this.label,
       this.icon,
       this.radius = 1,
       this.horizontalPadding = 4,
@@ -115,7 +115,7 @@ class CustomButton extends StatelessWidget {
       this.labelStyle});
 
   final VoidCallback onPress;
-  final String label;
+  final String? label;
   final Icon? icon;
   final int radius;
 
@@ -151,11 +151,11 @@ class CustomButton extends StatelessWidget {
 
     return ElevatedButton.icon(
         icon: isLoading ? loadingIndicator() : icon,
-        style: type.style(
-            context, isLoading, radius, horizontalPadding, verticalPadding, type.color(context)),
-        onPressed: onPress,
+        style: type.style(context, isLoading, radius, horizontalPadding, verticalPadding,
+            type.color(context, isLoading: isLoading)),
+        onPressed: isLoading ? () {} : onPress,
         label: Text(
-          label,
+          label ?? "",
           style: type.textStyle(context),
         ));
   }

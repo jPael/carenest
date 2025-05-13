@@ -24,8 +24,6 @@ class _AddRemindersPageState extends State<AddRemindersPage> {
 
   final ReminderServices reminderServices = ReminderServices();
 
-  // void updateReminderById(Reminder reminder, )
-
   void handleAddReminders({
     required String title,
     required String purpose,
@@ -37,7 +35,6 @@ class _AddRemindersPageState extends State<AddRemindersPage> {
 
     int? _tempId;
 
-    // while(reminders.firstWhere((r)=> r.id != null && _tempId && r.id == _tempId  ))
     while (true) {
       int id = Random().nextInt(1000);
 
@@ -65,6 +62,9 @@ class _AddRemindersPageState extends State<AddRemindersPage> {
         purpose: purpose,
         reminderType: reminderType,
         title: title,
+        isDone: false,
+        createdAt: DateTime.now(),
+        updatedAt: DateTime.now(),
       ));
     });
   }
@@ -87,7 +87,6 @@ class _AddRemindersPageState extends State<AddRemindersPage> {
     int? motherId;
 
     DateTime date = DateTime.now();
-    // TimeOfDay time = TimeOfDay.now();
 
     showDialog(
       context: context,
@@ -113,12 +112,6 @@ class _AddRemindersPageState extends State<AddRemindersPage> {
               });
             }
 
-            // void onReminderTimeChange(TimeOfDay t) {
-            //   setState(() {
-            //     time = t;
-            //   });
-            // }
-
             return AlertDialog(
               title: const Text('Add Reminder'),
               content: AddReminderForm(
@@ -127,10 +120,8 @@ class _AddRemindersPageState extends State<AddRemindersPage> {
                 onMotherChange: onMotherChange,
                 onChangeReminderType: onChangeReminderType,
                 onReminderDateChange: onReminderDateChange,
-                // onReminderTimeChange: onReminderTimeChange,
                 purposeController: purposeController,
                 reminderType: reminderType,
-                // time: time,
                 titleController: titleController,
               ),
               actions: [
@@ -166,8 +157,6 @@ class _AddRemindersPageState extends State<AddRemindersPage> {
     final User user = context.read<User>();
 
     try {
-      // log("fetching reminder, ${user.laravelId!}");
-
       final List<Reminder> r = await reminderServices.fetchAllReminderByMidwifeId(
               user.laravelId!.toString(), user.token!) ??
           [];
@@ -188,13 +177,20 @@ class _AddRemindersPageState extends State<AddRemindersPage> {
     setState(() {
       final index = reminders.indexWhere((r) => r.id == newReminder.id);
       if (index != -1) {
-        // Create a new list and replace the item
         reminders = List.from(reminders)
           ..removeAt(index)
           ..insert(index, newReminder);
       }
     });
   }
+
+  final List<String> sortBy = ["Nearest Schedule", "Created date", "Reminder's date"];
+  final List<IconData> sortAs = [
+    Icons.arrow_drop_down_sharp,
+    Icons.arrow_drop_up_sharp,
+  ];
+  int selectedSort = 0;
+  int selectedSortAs = 0;
 
   @override
   void initState() {
@@ -204,9 +200,55 @@ class _AddRemindersPageState extends State<AddRemindersPage> {
 
   @override
   Widget build(BuildContext context) {
+    reminders.sort((a, b) {
+      if (selectedSort == 0) {
+        final now = DateTime.now();
+        final today = DateTime(now.year, now.month, now.day);
+
+        final diffA = (a.date!.difference(today)).inHours.abs();
+        final diffB = (b.date!.difference(today)).inHours.abs();
+
+        return selectedSortAs == 0 ? diffA.compareTo(diffB) : diffB.compareTo(diffA);
+      } else if (selectedSort == 1) {
+        return selectedSortAs == 0
+            ? b.createdAt!.compareTo(a.createdAt!)
+            : a.createdAt!.compareTo(b.createdAt!);
+      } else {
+        return selectedSortAs == 2 ? b.date!.compareTo(a.date!) : a.date!.compareTo(b.date!);
+      }
+    });
+
     return Scaffold(
       appBar: AppBar(
         title: const Text('Reminders'),
+        actions: [
+          IconButton(
+            onPressed: () {
+              setState(() {
+                if (selectedSortAs < sortAs.length - 1) {
+                  selectedSortAs++;
+                } else {
+                  selectedSortAs = 0;
+                }
+              });
+            },
+            icon: Icon(sortAs[selectedSortAs]),
+          ),
+          Text(sortBy[selectedSort]),
+          IconButton(
+              onPressed: () {
+                setState(() {
+                  if (selectedSort < sortBy.length - 1) {
+                    selectedSort++;
+                  } else {
+                    selectedSort = 0;
+                  }
+                });
+              },
+              icon: const Icon(
+                Icons.sort,
+              ))
+        ],
       ),
       floatingActionButton: FloatingActionButton.extended(
         onPressed: () => _showAddReminderDialog(context),
@@ -219,12 +261,10 @@ class _AddRemindersPageState extends State<AddRemindersPage> {
           child: CustomSection(
             isLoading: fetchingReminders,
             headerSpacing: 1,
-            childrenSpacing: 1,
+            childrenSpacing: 0,
             children: fetchingReminders
                 ? [const Center(child: SizedBox(child: CircularProgressIndicator()))]
                 : reminders.map((reminder) {
-                    // log("id: ${reminder.id.toString()} | ${reminder.isFresh}");
-
                     return RemindersItem(
                         key: UniqueKey(),
                         handleRepaint: updateReminder,

@@ -41,7 +41,7 @@ class ChatItem extends StatelessWidget {
                   Row(
                     children: [
                       Text(
-                        "${user[UserFields.firstname]} ${user[UserFields.lastname]}",
+                        "${user[UserFields.firstname]} ${user[UserFields.lastname]} ",
                         style: const TextStyle(fontWeight: FontWeight.w500, fontSize: 8 * 3),
                       ),
                     ],

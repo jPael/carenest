@@ -4,7 +4,6 @@ import 'package:smartguide_app/components/alert/alert.dart';
 import 'package:smartguide_app/components/button/custom_button.dart';
 import 'package:smartguide_app/components/form/custom_form.dart';
 import 'package:smartguide_app/components/prenatal_records/form/patient_information_form.dart';
-import 'package:smartguide_app/models/donor.dart';
 import 'package:smartguide_app/models/patient_information.dart';
 import 'package:smartguide_app/models/user.dart';
 
@@ -24,16 +23,16 @@ class MotherPrenatalInfoFormState extends State<MotherPrenatalInfoForm> {
   final TextEditingController ageController = TextEditingController();
   final TextEditingController obStatusController = TextEditingController();
   final TextEditingController barangayController = TextEditingController();
-  final TextEditingController donorFullnameController = TextEditingController();
-  final TextEditingController donorContactController = TextEditingController();
+  // final TextEditingController donorFullnameController = TextEditingController();
+  // final TextEditingController donorContactController = TextEditingController();
 
   DateTime? birthday;
   DateTime? lmp;
   DateTime? edc;
 
-  bool philhealth = false;
-  bool nhts = false;
-  bool donorTyped = false;
+  final TextEditingController philhealthController = TextEditingController();
+  final TextEditingController nhtsController = TextEditingController();
+  // bool donorTyped = false;
   // patient info
 
   // Future<void>
@@ -46,24 +45,27 @@ class MotherPrenatalInfoFormState extends State<MotherPrenatalInfoForm> {
     });
 
     final PatientInformation pi = PatientInformation(
-        philhealth: philhealth,
-        userId: user.laravelId!,
-        nhts: nhts,
-        lmp: lmp!,
-        edc: edc!,
-        obStatus: obStatusController.text,
-        bloodDonor: Donor(
-            fullname: donorFullnameController.text,
-            contactNumber: donorContactController.text,
-            bloodTyped: donorTyped));
+      philhealth: philhealthController.text,
+      userId: user.laravelId!,
+      nhts: nhtsController.text,
+      lmp: lmp!,
+      birthday: DateTime.parse(user.dateOfBirth!),
+      edc: edc!,
+      obStatus: obStatusController.text,
+    );
 
-    final Map<String, dynamic> res = await pi.storeRecord(token: user.token!);
+    final Map<String, dynamic> res =
+        await pi.storeRecord(userId: user.laravelId!, token: user.token!);
 
     if (res['success']) {
       Alert.showSuccessMessage(message: "Patient information saved successfully");
     } else {
       Alert.showSuccessMessage(message: res['message']);
     }
+
+    setState(() {
+      isSubmittingData = false;
+    });
   }
 
   @override
@@ -119,26 +121,8 @@ class MotherPrenatalInfoFormState extends State<MotherPrenatalInfoForm> {
                           edc = d;
                         });
                       },
-                      philhealth: philhealth,
-                      onPhilhealthChange: (bool v) {
-                        setState(() {
-                          philhealth = v;
-                        });
-                      },
-                      nhts: nhts,
-                      onNhtsChange: (bool v) {
-                        setState(() {
-                          nhts = v;
-                        });
-                      },
-                      donorFullnameController: donorFullnameController,
-                      donorContactController: donorContactController,
-                      donorBloodTyped: donorTyped,
-                      onDonorBloodTypeChange: (bool v) {
-                        setState(() {
-                          donorTyped = v;
-                        });
-                      },
+                      philhealthController: philhealthController,
+                      nhtsController: nhtsController,
                     ),
                   ),
                 ),

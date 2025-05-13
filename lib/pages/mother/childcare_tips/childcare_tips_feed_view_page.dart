@@ -2,11 +2,12 @@ import 'package:flutter/material.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:smartguide_app/components/mother/home/childcare_tips/feed_view_content_section.dart';
 import 'package:smartguide_app/components/mother/home/childcare_tips/feed_view_title_section.dart';
+import 'package:smartguide_app/models/revamp/child_care_tips.dart';
 
 class ChildcareTipsFeedViewPage extends StatefulWidget {
-  const ChildcareTipsFeedViewPage({super.key, required this.title});
+  const ChildcareTipsFeedViewPage({super.key, required this.data});
 
-  final String title;
+  final ChildCareTips data;
 
   @override
   State<ChildcareTipsFeedViewPage> createState() => _ChildcareTipsFeedViewPageState();
@@ -48,16 +49,20 @@ class _ChildcareTipsFeedViewPageState extends State<ChildcareTipsFeedViewPage> {
           )
         ],
       ),
-      body: Padding(
-        padding: const EdgeInsets.symmetric(horizontal: 8 * 3),
-        child: Column(
-          children: [
-            FeedViewTitleSection(title: widget.title),
-            const SizedBox(
-              height: 8 * 3,
-            ),
-            const FeedViewContentSection()
-          ],
+      body: SingleChildScrollView(
+        child: Padding(
+          padding: const EdgeInsets.symmetric(horizontal: 8 * 3),
+          child: Column(
+            children: [
+              FeedViewTitleSection(title: widget.data.title),
+              const SizedBox(
+                height: 8 * 3,
+              ),
+              FeedViewContentSection(
+                data: widget.data,
+              )
+            ],
+          ),
         ),
       ),
     );

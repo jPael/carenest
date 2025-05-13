@@ -13,7 +13,7 @@ import 'package:smartguide_app/components/prenatal_records/form/patient_informat
 import 'package:smartguide_app/models/clinic_visit.dart';
 import 'package:smartguide_app/models/patient_information.dart';
 import 'package:smartguide_app/models/person.dart';
-import 'package:smartguide_app/models/prenatal.dart';
+import 'package:smartguide_app/models/revamp/clinic_history.dart';
 import 'package:smartguide_app/models/trimester.dart';
 import 'package:smartguide_app/models/user.dart';
 import 'package:smartguide_app/services/laravel/prenatal_services.dart';
@@ -23,10 +23,10 @@ import 'package:smartguide_app/utils/utils.dart';
 class AddClinicVisitFormPage extends StatefulWidget {
   const AddClinicVisitFormPage({
     super.key,
-    required this.prenatal,
+    required this.clinicHistory,
   });
 
-  final Prenatal prenatal;
+  final ClinicHistory clinicHistory;
 
   @override
   AddClinicVisitFormPageState createState() => AddClinicVisitFormPageState();
@@ -40,16 +40,16 @@ class AddClinicVisitFormPageState extends State<AddClinicVisitFormPage> {
   final TextEditingController ageController = TextEditingController();
   final TextEditingController obStatusController = TextEditingController();
   final TextEditingController barangayController = TextEditingController();
-  final TextEditingController donorFullnameController = TextEditingController();
-  final TextEditingController donorContactController = TextEditingController();
+  // final TextEditingController donorFullnameController = TextEditingController();
+  // final TextEditingController donorContactController = TextEditingController();
 
   DateTime? birthday;
   DateTime? lmp;
   DateTime? edc;
 
-  bool philhealth = false;
-  bool nhts = false;
-  bool donorTyped = false;
+  final TextEditingController philhealthController = TextEditingController();
+  final TextEditingController nhtsController = TextEditingController();
+  // bool donorTyped = false;
   // patient info
 
   // care and test info
@@ -105,10 +105,10 @@ class AddClinicVisitFormPageState extends State<AddClinicVisitFormPage> {
     final User user = context.read<User>();
 
     final Map<String, dynamic>? patientInformationData = await prenatalServices
-        .fetchLatestPatientInformationByToken(user.token!, widget.prenatal.laravelId!);
+        .fetchLatestPatientInformationByToken(user.token!, widget.clinicHistory.userId);
 
     final Person? userInformationData =
-        await getUserByLaravelId(laravelId: widget.prenatal.laravelId!);
+        await getUserByLaravelId(laravelId: widget.clinicHistory.userId);
 
     setState(() {
       prenatalData = patientInformationData;
@@ -119,22 +119,20 @@ class AddClinicVisitFormPageState extends State<AddClinicVisitFormPage> {
 
   void initData() {
     setState(() {
-      final User user = context.read<User>();
+      // final User user = context.read<User>();
 
       final PatientInformation? pi = prenatalData?['patientInformation'];
 
-      birthday = DateTime.parse(user.dateOfBirth!).toLocal();
+      birthday = DateTime.parse(userData!.birthday!.toString()).toLocal();
       fullnameController.text = userData?.name ?? "NA";
+      log(userData!.birthday!.toString());
+
       ageController.text = calculateAge(userData!.birthday!).toString();
       obStatusController.text = pi?.obStatus ?? "";
       lmp = pi?.lmp;
       edc = pi?.edc;
-      philhealth = pi?.philhealth ?? false;
-      nhts = pi?.nhts ?? false;
-
-      donorFullnameController.text = pi?.bloodDonor?.fullname ?? "";
-      donorContactController.text = pi?.bloodDonor?.contactNumber ?? "";
-      donorTyped = pi?.bloodDonor?.bloodTyped ?? false;
+      philhealthController.text = pi?.philhealth ?? "";
+      nhtsController.text = pi?.nhts ?? "";
     });
   }
 
@@ -150,7 +148,7 @@ class AddClinicVisitFormPageState extends State<AddClinicVisitFormPage> {
     try {
       // log(widget.prenatal.id!.toString());
       final ClinicVisit clinicVisit = ClinicVisit(
-          userId: widget.prenatal.laravelId!,
+          userId: widget.clinicHistory.userId,
           //just to fill it out it doesnt affect anything
           id: 0,
           birthplace: birthPlaceController.text,
@@ -158,7 +156,7 @@ class AddClinicVisitFormPageState extends State<AddClinicVisitFormPage> {
           consulWht: consultWht,
           whtIntroducedBirthPlan: introducedBirthPlan,
           fundicHeigh: int.tryParse(fundicHeightController.text) ?? 0,
-          patientInformationId: widget.prenatal.id!,
+          patientInformationId: widget.clinicHistory.id,
           assignedBy: Person(id: int.tryParse(assignedByController.text) ?? 0),
           accompanyBy: Person(id: int.tryParse(accompaniedByController.text) ?? 0),
           services: serviceControllers.first.text,
@@ -227,8 +225,6 @@ class AddClinicVisitFormPageState extends State<AddClinicVisitFormPage> {
     ageController.dispose();
     obStatusController.dispose();
     barangayController.dispose();
-    donorFullnameController.dispose();
-    donorContactController.dispose();
     fundicHeightController.dispose();
     fundicHeightController.removeListener(fundicHeightListener);
     bloodPressureController.dispose();
@@ -299,26 +295,8 @@ class AddClinicVisitFormPageState extends State<AddClinicVisitFormPage> {
                             edc = d;
                           });
                         },
-                        philhealth: philhealth,
-                        onPhilhealthChange: (bool v) {
-                          setState(() {
-                            philhealth = v;
-                          });
-                        },
-                        nhts: nhts,
-                        onNhtsChange: (bool v) {
-                          setState(() {
-                            nhts = v;
-                          });
-                        },
-                        donorFullnameController: donorFullnameController,
-                        donorContactController: donorContactController,
-                        donorBloodTyped: donorTyped,
-                        onDonorBloodTypeChange: (bool v) {
-                          setState(() {
-                            donorTyped = v;
-                          });
-                        },
+                        philhealthController: philhealthController,
+                        nhtsController: nhtsController,
                       ),
                     ),
                   ),

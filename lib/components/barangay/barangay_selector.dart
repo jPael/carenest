@@ -49,8 +49,6 @@ class BarangaySelectorState extends State<BarangaySelector> {
         }
       }
 
-      // if (defaultValue?.id == null && defaultValue?.name == null) return;
-
       widget.onChange(defaultValue?.name, defaultValue?.id);
       barangays = _barangays;
       fetchingBarangay = false;
