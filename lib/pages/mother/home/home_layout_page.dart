@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:ionicons/ionicons.dart';
 import 'package:smartguide_app/pages/mother/home/chat_view.dart';
 import 'package:smartguide_app/pages/mother/home/home_view.dart';
@@ -102,9 +103,9 @@ class _HomeLayoutPageState extends State<HomeLayoutPage> {
                     color: Colors.white, fontWeight: FontWeight.w900, fontSize: 8 * 3),
               ),
               const Spacer(),
-              const Text(
-                "V 2",
-                style: TextStyle(color: Colors.white, fontSize: 8 * 2),
+              Text(
+                "V${dotenv.env['CURRENT_VERSION']!}",
+                style: const TextStyle(color: Colors.white, fontSize: 8 * 2),
               )
             ],
           ),
