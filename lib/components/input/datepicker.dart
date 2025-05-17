@@ -85,9 +85,19 @@ class DatePickerState extends State<DatePicker> {
     } else {
       return GestureDetector(
         onTap: () => _selectDate(context),
-        child: Text(
-          "Given at ${DateFormat("d'${getOrdinalSuffix(widget.selectedDate!.day)}' of MMMM yyyy").format(widget.selectedDate!)}",
-          style: const TextStyle(fontSize: 4 * 4),
+        child: Row(
+          spacing: 8,
+          children: [
+            Text(
+              "Given at ${DateFormat("d'${getOrdinalSuffix(widget.selectedDate!.day)}' of MMMM yyyy").format(widget.selectedDate!)}",
+              style: const TextStyle(fontSize: 4 * 4),
+            ),
+            Text(
+              "Tap to edit",
+              style: TextStyle(
+                  color: Theme.of(context).colorScheme.primary, fontWeight: FontWeight.bold),
+            )
+          ],
         ),
       );
     }

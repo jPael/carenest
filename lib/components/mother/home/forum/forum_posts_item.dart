@@ -1,7 +1,9 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 import 'package:smartguide_app/components/mother/home/forum/forum_like_button.dart';
 import 'package:smartguide_app/models/forum/forum.dart';
+import 'package:smartguide_app/models/user.dart';
 import 'package:smartguide_app/pages/mother/forum/forum_post_page.dart';
 import 'package:timeago/timeago.dart' as timeago;
 
@@ -22,6 +24,9 @@ class _CustomSectionItemState extends State<CustomSectionItem> {
 
   @override
   Widget build(BuildContext context) {
+    // final User user = context.read<User>();
+    // final isUser = widget.forum.authorId == user.uid;
+
     final String timeHumanize =
         timeago.format((widget.forum.createdAt as Timestamp).toDate(), locale: "en");
 

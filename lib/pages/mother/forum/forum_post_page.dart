@@ -1,11 +1,13 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 import 'package:smartguide_app/components/mother/home/forum/forum_message_bubble.dart';
 import 'package:smartguide_app/components/mother/home/forum/forum_message_input_section.dart';
 import 'package:smartguide_app/components/mother/home/forum/forum_post_poster_section.dart';
 import 'package:smartguide_app/components/section/custom_section.dart';
 import 'package:smartguide_app/models/forum/forum.dart';
 import 'package:smartguide_app/models/forum/reply.dart';
+import 'package:smartguide_app/models/user.dart';
 import 'package:smartguide_app/services/forum/forum_services.dart';
 
 class ForumPostPage extends StatefulWidget {
@@ -33,9 +35,59 @@ class _ForumPostPageState extends State<ForumPostPage> {
 
   @override
   Widget build(BuildContext context) {
+    final User user = context.read<User>();
+    final bool isUser = widget.forum.authorId == user.uid;
+
+    Future<void> showDeleteDialog(BuildContext context, String id) async {
+      return showDialog<void>(
+        context: context,
+        barrierDismissible: false, // User must tap a button to close
+        builder: (BuildContext context) {
+          return AlertDialog(
+            title: const Text('Confirm Deletion'),
+            content: const SingleChildScrollView(
+              child: ListBody(
+                children: <Widget>[
+                  Text('This action cannot be undone.'),
+                  Text('Are you sure you want to delete this item?'),
+                ],
+              ),
+            ),
+            actions: <Widget>[
+              TextButton(
+                child: const Text('Cancel'),
+                onPressed: () {
+                  Navigator.of(context).pop();
+                },
+              ),
+              TextButton(
+                child: const Text(
+                  'Delete',
+                  style: TextStyle(color: Colors.red),
+                ),
+                onPressed: () {
+                  // Call your delete function here
+                  forumServices.deleteForum(id);
+                  Navigator.of(context).pop();
+                  Navigator.of(context).pop();
+                },
+              ),
+            ],
+          );
+        },
+      );
+    }
+
     return Scaffold(
       appBar: AppBar(
         forceMaterialTransparency: true,
+        actions: [
+          if (isUser)
+            IconButton(
+                tooltip: "Delete post",
+                onPressed: () => showDeleteDialog(context, widget.forum.docId!),
+                icon: Icon(Icons.delete, color: Colors.red[800]))
+        ],
       ),
       body: Padding(
         padding: const EdgeInsets.symmetric(vertical: 8 * 2),
@@ -61,7 +113,8 @@ class _ForumPostPageState extends State<ForumPostPage> {
                             children: [
                               Text(
                                 widget.forum.title,
-                                style: const TextStyle(fontSize: 8 * 4, fontWeight: FontWeight.w500),
+                                style:
+                                    const TextStyle(fontSize: 8 * 4, fontWeight: FontWeight.w500),
                               ),
                               Text(
                                 widget.forum.content,

@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
+import 'package:provider/provider.dart';
 import 'package:smartguide_app/models/person.dart';
+import 'package:smartguide_app/models/user.dart';
 import 'package:smartguide_app/pages/midwife/prenatal_records/patients_history_list_page.dart';
 
 class MidwifePrenatalRecordsItems extends StatelessWidget {
@@ -14,6 +16,8 @@ class MidwifePrenatalRecordsItems extends StatelessWidget {
   final double profileImageSize = 60.0;
   @override
   Widget build(BuildContext context) {
+    final User user = context.read<User>();
+
     String fullname = "Default name";
     DateTime date = DateTime.now();
 
@@ -45,23 +49,32 @@ class MidwifePrenatalRecordsItems extends StatelessWidget {
           const SizedBox(
             width: 8,
           ),
-          Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              Text(
-                fullname,
-                style: const TextStyle(fontSize: 8 * 3, fontWeight: FontWeight.w500),
-              ),
-              Row(
-                children: [
-                  const Text(
-                    "Last visit: ",
-                    style: TextStyle(fontWeight: FontWeight.w500),
-                  ),
-                  Text(DateFormat("MMMM dd, yyyy").format(date)),
-                ],
-              )
-            ],
+          Expanded(
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Row(
+                  // spacing: MediaQuery.of(context).size.width / 4,
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: [
+                    Text(
+                      fullname,
+                      style: const TextStyle(fontSize: 8 * 3, fontWeight: FontWeight.w500),
+                    ),
+                    Text(mother?.address ?? user.address ?? "")
+                  ],
+                ),
+                Row(
+                  children: [
+                    const Text(
+                      "Last visit: ",
+                      style: TextStyle(fontWeight: FontWeight.w500),
+                    ),
+                    Text(DateFormat("MMMM dd, yyyy").format(date)),
+                  ],
+                )
+              ],
+            ),
           )
         ],
       ),

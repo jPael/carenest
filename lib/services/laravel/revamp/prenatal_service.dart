@@ -38,8 +38,11 @@ Future<void> createFirsTrimesterClinicVisit(
     "treatments":
         visit.treatments.map((t) => {"description": t.description, "value": t.value}).toList(),
     "counseling": visit.counselings.map((c) => {"name": c.description}).toList(),
-    "other_services": visit.otherServices,
+    "other_services":
+        visit.otherServices == null || visit.otherServices!.isEmpty ? "None" : visit.otherServices,
   };
+
+  // log(payload.toString());
 
   final url = apiURIBase.replace(path: LaravelPaths.firstTrimesterCreateClinicVisit);
 
@@ -55,7 +58,7 @@ Future<void> createFirsTrimesterClinicVisit(
 
   final json = jsonDecode(res.body);
 
-  if (json['success']) {
+  if (json['success'] ?? false) {
     Alert.showSuccessMessage(message: "Clinic visit has beem created successfully");
   } else {
     Alert.showErrorMessage(message: json['message']);
@@ -92,7 +95,7 @@ Future<void> createSecondTrimesterClinicVisit(
     "treatments":
         visit.treatments.map((t) => {"description": t.description, "value": t.value}).toList(),
     "counseling": visit.counselings.map((c) => {"name": c.description}).toList(),
-    "other_services": visit.notes,
+    "other_services": visit.notes == null || visit.notes!.isEmpty ? "None" : visit.notes,
   };
 
   final url = apiURIBase.replace(path: LaravelPaths.secondTrimesterCreateClinicVisit);
@@ -136,12 +139,11 @@ Future<void> createThirdTrimesterClinicVisit(
     "teeth_findings": visit.teethFindings,
     "urinalysis": visit.urinalysis,
     "complete_blood_count": visit.completeBloodCount,
-    "bacteriuria": visit.bacteriuria,
     "blood_rh_group": visit.bloodRhGroup,
     "return_date": visit.returnDate.toString(),
     "health_service_provider_id": visit.healthServiceProviderId,
     "hospital_referral": visit.hospitalReferral,
-    "notes": visit.notes,
+    "notes": visit.notes == null || visit.notes!.isEmpty ? "None" : visit.notes,
     "laboratories": visit.laboratories.map((l) => l.toJson()).toList(),
     "treatments": visit.treatments.map((t) => t.toJson()).toList(),
     "advices": visit.advices.map((a) => a.toJson()).toList(),
@@ -165,10 +167,11 @@ Future<void> createThirdTrimesterClinicVisit(
 
   final json = jsonDecode(res.body);
 
-  if (json['success']) {
+  if (json['success'] ?? false) {
     Alert.showSuccessMessage(message: "Clinic visit has beem created successfully");
   } else {
     Alert.showErrorMessage(message: json['message']);
+    log(json['message'].toString());
     log(json['error']);
     log(json['data'].toString());
   }
@@ -195,11 +198,11 @@ Future<void> createClinicHistory(
     "barangay_name": barangay,
   };
 
-  log(payload.toString());
+  // log(payload.toString());
 
   final url = apiURIBase.replace(path: LaravelPaths.createClinicHistory);
 
-  log(url.toString());
+  // log(url.toString());
 
   final res = await http.post(url,
       headers: {
@@ -213,8 +216,8 @@ Future<void> createClinicHistory(
 
   final json = jsonDecode(res.body);
 
-  if (json['success']) {
-    Alert.showSuccessMessage(message: "Clinic visit has beem created successfully");
+  if (json['success'] ?? false) {
+    Alert.showSuccessMessage(message: "Clinic visit has been created successfully");
   } else {
     Alert.showErrorMessage(message: json['message']);
     log(json['error']);

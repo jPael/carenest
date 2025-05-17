@@ -13,11 +13,25 @@ class RemindersUpcomingScheduleSection extends StatefulWidget {
 class RemindersUpcomingScheduleSectionState extends State<RemindersUpcomingScheduleSection> {
   @override
   Widget build(BuildContext context) {
-    return CustomSection(
-        title: "Upcoming Schedule",
-        children: widget.reminder
-            .map((r) => RemindersScheduleItem(
-                title: r.title, iconSrc: r.reminderType.image, datetime: r.date!))
-            .toList());
+    return Card(
+      child: Padding(
+        padding: const EdgeInsets.all(8.0),
+        child: CustomSection(
+            emptyChildrenContent: const Padding(
+              padding: EdgeInsets.all(8.0),
+              child: Center(
+                child: Column(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [Text("No reminders...")],
+                ),
+              ),
+            ),
+            title: "Upcoming Schedule",
+            children: widget.reminder
+                .map((r) => RemindersScheduleItem(
+                    title: r.title, iconSrc: r.reminderType.image, datetime: r.date!))
+                .toList()),
+      ),
+    );
   }
 }

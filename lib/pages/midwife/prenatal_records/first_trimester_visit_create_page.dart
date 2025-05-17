@@ -1,3 +1,7 @@
+// import 'dart:nativewrappers/_internal/vm/lib/developer.dart';
+
+import 'dart:developer';
+
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 import 'package:provider/provider.dart';
@@ -7,7 +11,7 @@ import 'package:smartguide_app/components/form/custom_form.dart';
 import 'package:smartguide_app/components/input/custom_input.dart';
 import 'package:smartguide_app/components/input/datepicker.dart';
 import 'package:smartguide_app/components/midwife/prenatal_records/clinic_view.dart/clinic_visit_dropdown.dart';
-import 'package:smartguide_app/components/midwife/prenatal_records/clinic_view.dart/multiDataInput.dart';
+import 'package:smartguide_app/components/midwife/prenatal_records/clinic_view.dart/multi_data_input.dart';
 import 'package:smartguide_app/components/midwife/prenatal_records/clinic_view.dart/nutrition_status_dropdown.dart';
 import 'package:smartguide_app/models/revamp/STI.dart';
 import 'package:smartguide_app/models/revamp/clinic_history.dart';
@@ -48,13 +52,13 @@ class FirstTrimesterVisitCreatePageState extends State<FirstTrimesterVisitCreate
   final TextEditingController otherServicesController = TextEditingController();
 
   final List<Map<String, TextEditingController>> laboratoryControllers = List.generate(
-      0, (i) => {"name": TextEditingController(), "description": TextEditingController()});
+      1, (i) => {"name": TextEditingController(), "description": TextEditingController()});
   final List<Map<String, TextEditingController>> stiControllers = List.generate(
-      0, (i) => {"name": TextEditingController(), "description": TextEditingController()});
+      1, (i) => {"name": TextEditingController(), "description": TextEditingController()});
   final List<Map<String, TextEditingController>> treatmentControllers =
-      List.generate(0, (i) => {"name": TextEditingController()});
+      List.generate(1, (i) => {"name": TextEditingController()});
   final List<Map<String, TextEditingController>> counselingControllers =
-      List.generate(0, (i) => {"name": TextEditingController()});
+      List.generate(1, (i) => {"name": TextEditingController()});
 
   @override
   void dispose() {
@@ -107,52 +111,61 @@ class FirstTrimesterVisitCreatePageState extends State<FirstTrimesterVisitCreate
     final User user = context.read<User>();
 
     if (!formKey.currentState!.validate()) {
+      setState(() {
+        isLoading = false;
+      });
       return;
     }
+    try {
+      final FirstTrimester ft = FirstTrimester(
+        clinicVisitId: widget.clinicHistory.id,
+        checkUp: checkup,
+        weight: double.parse(weightController.text),
+        height: double.parse(heightController.text),
+        ageGestation: int.parse(gestationAgeController.text),
+        bloodPressure: bloodPressureController.text,
+        nutritionalStatus: nutritionStatus,
+        birthPlan: birthPlanController.text,
+        teethFindings: teetFindingsController.text,
+        hemoglobinCount: hemoglobinCountController.text,
+        urinalysis: urinalysisController.text,
+        completeBloodCount: completeBloodCountController.text,
+        stoolExam: stoolExaminationController.text,
+        aceticAcidWash: aceticAcidWashController.text,
+        tetanusVaccine: tetanusVaccine,
+        tetanusVaccineGivenAt: tetanusVaccineDate,
+        returnDate: returnDate,
+        healthServiceProviderId: user.laravelId!,
+        hospitalReferral: referralController.text,
+        otherServices: otherServicesController.text,
+        createdAt: DateTime.now(),
+        updatedAt: DateTime.now(),
+        laboratories: laboratoryControllers
+            .map(
+                (l) => Laboratory(name: l['name']!.text, description: l['description']?.text ?? ""))
+            .toList(),
+        stis: stiControllers
+            .map((s) => Sti(name: s['name']!.text, description: s['description']?.text ?? ""))
+            .toList(),
+        treatments:
+            treatmentControllers.map((t) => Treatment(description: t['name']!.text)).toList(),
+        counselings:
+            counselingControllers.map((c) => Counseling(description: c['name']!.text)).toList(),
+      );
 
-    final FirstTrimester ft = FirstTrimester(
-      clinicVisitId: widget.clinicHistory.id,
-      checkUp: checkup,
-      weight: double.parse(weightController.text),
-      height: double.parse(heightController.text),
-      ageGestation: int.parse(gestationAgeController.text),
-      bloodPressure: bloodPressureController.text,
-      nutritionalStatus: nutritionStatus,
-      birthPlan: birthPlanController.text,
-      teethFindings: teetFindingsController.text,
-      hemoglobinCount: hemoglobinCountController.text,
-      urinalysis: urinalysisController.text,
-      completeBloodCount: completeBloodCountController.text,
-      stoolExam: stoolExaminationController.text,
-      aceticAcidWash: aceticAcidWashController.text,
-      tetanusVaccine: tetanusVaccine,
-      tetanusVaccineGivenAt: tetanusVaccineDate,
-      returnDate: returnDate,
-      healthServiceProviderId: user.laravelId!,
-      hospitalReferral: referralController.text,
-      otherServices: otherServicesController.text,
-      createdAt: DateTime.now(),
-      updatedAt: DateTime.now(),
-      laboratories: laboratoryControllers
-          .map((l) => Laboratory(name: l['name']!.text, description: l['description']?.text ?? ""))
-          .toList(),
-      stis: stiControllers
-          .map((s) => Sti(name: s['name']!.text, description: s['description']?.text ?? ""))
-          .toList(),
-      treatments: treatmentControllers.map((t) => Treatment(description: t['name']!.text)).toList(),
-      counselings:
-          counselingControllers.map((c) => Counseling(description: c['name']!.text)).toList(),
-    );
+      await ft.store(token: user.token!);
 
-    await ft.store(token: user.token!);
-
-    Navigator.pop(context);
-    Navigator.pop(context);
-    Navigator.pop(context);
-
-    setState(() {
-      isLoading = false;
-    });
+      Navigator.pop(context);
+      Navigator.pop(context);
+      Navigator.pop(context);
+    } catch (e, stackTrace) {
+      log(e.toString(), stackTrace: stackTrace);
+    } finally {
+      log("finally");
+      setState(() {
+        isLoading = false;
+      });
+    }
   }
 
   @override
@@ -213,15 +226,42 @@ class FirstTrimesterVisitCreatePageState extends State<FirstTrimesterVisitCreate
                 CustomInput.text(
                   context: context,
                   label: "Height",
-                  textInputType: TextInputType.number,
                   controller: heightController,
                   suffixText: "ft",
-                  validator: (p0) {
-                    if (p0 == null || p0.isEmpty) {
+                  hint: "00'00",
+                  validator: (value) {
+                    if (value == null || value.isEmpty) {
                       return "This is required!";
                     }
 
-                    return null;
+                    // Check if input is just digits (e.g., "5" or "05") → treated as feet only
+                    if (RegExp(r'^\d+$').hasMatch(value)) {
+                      final feet = int.tryParse(value);
+                      if (feet == null || feet < 0) {
+                        return "Feet must be a positive number";
+                      }
+                      return null; // Valid (feet only)
+                    }
+
+                    // Check if input is in feet'inches format (e.g., "5'9" or "05'09")
+                    if (RegExp(r"\d+\'\d+$").hasMatch(value)) {
+                      final parts = value.split('\'');
+                      if (parts.length != 2) return "Use format: 00 or 00'00";
+
+                      final feet = int.tryParse(parts[0]);
+                      final inches = int.tryParse(parts[1]);
+
+                      if (feet == null || inches == null) {
+                        return "Feet and inches must be numbers";
+                      }
+                      if (feet < 0 || inches < 0 || inches >= 12) {
+                        return "Feet must be ≥ 0, inches must be 0-11";
+                      }
+                      return null; // Valid (feet and inches)
+                    }
+
+                    // If neither format matches
+                    return "Enter as 00 (feet only) or 00'00 (feet & inches)";
                   },
                 ),
                 CustomInput.text(
@@ -240,14 +280,32 @@ class FirstTrimesterVisitCreatePageState extends State<FirstTrimesterVisitCreate
                 CustomInput.text(
                   context: context,
                   label: "Blood Pressure",
-                  textInputType: TextInputType.number,
+                  textInputType: TextInputType.url,
                   controller: bloodPressureController,
                   suffixText: "mm Hg",
-                  validator: (p0) {
-                    if (p0 == null || p0.isEmpty) {
+                  hint: "00/00",
+                  validator: (value) {
+                    if (value == null || value.isEmpty) {
                       return "This is required!";
                     }
 
+                    // Check if input matches the "XX/XX" format (e.g., 120/80)
+                    if (!RegExp(r'^\d{1,5}\/\d{1,5}$').hasMatch(value)) {
+                      return "Enter in format 00/00 (e.g., 120/80)";
+                    }
+
+                    final parts = value.split('/');
+                    if (parts.length != 2) {
+                      return "Must contain one '/' (e.g., 120/80)";
+                    }
+
+                    // Parse systolic (first number) and diastolic (second number)
+                    final systolic = int.tryParse(parts[0]);
+                    final diastolic = int.tryParse(parts[1]);
+
+                    if (systolic == null || diastolic == null) {
+                      return "Both values must be numbers";
+                    }
                     return null;
                   },
                 ),

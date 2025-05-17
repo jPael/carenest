@@ -14,6 +14,7 @@ class User extends ChangeNotifier {
   String? lastname;
   String? type;
   String? address;
+  int? barangayId;
   String? phoneNumber;
   String? dateOfBirth;
   String? email;
@@ -52,6 +53,7 @@ class User extends ChangeNotifier {
     dateOfBirth = json[UserFields.dateOfBirth];
     email = json[UserFields.email];
     token = json[UserFields.token];
+    barangayId = json[UserFields.barangayId];
     uid = json[UserFields.uid];
     laravelId = json[UserFields.laravelId];
     type = json[UserFields.userType];

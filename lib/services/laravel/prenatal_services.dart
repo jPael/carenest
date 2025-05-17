@@ -251,49 +251,68 @@ class PrenatalServices {
     return prenatals.where((p) => p.id == id).firstOrNull;
   }
 
-  Future<PersonHistory> fetchAllClinicHistoryByUserId(
+  Future<PersonHistory?> fetchAllClinicHistoryByUserId(
       {required String token, required int id}) async {
     final url = apiURIBase.replace(path: LaravelPaths.allPrenatal);
     // log(message)
-    final res = await http.get(url);
+    try {
+      final res = await http.get(url);
 
-    if (res.statusCode != 200) {
-      log('Failed to fetch prenatal data. Status code: ${res.statusCode}');
-      throw Exception('Failed to fetch prenatal data. Status code: ${res.statusCode}');
-    }
+      if (res.statusCode != 200) {
+        log('Failed to fetch prenatal data. Status code: ${res.statusCode}');
+        throw Exception('Failed to fetch prenatal data. Status code: ${res.statusCode}');
+      }
 
-    final List<dynamic> prenatalsMap = jsonDecode(res.body)
-      ..sort(
-        (a, b) => DateTime.parse(a[PrenatalFields.createdAt])
-            .compareTo(DateTime.parse(b[PrenatalFields.createdAt])),
+      final List<dynamic> prenatalsMap = jsonDecode(res.body)
+        ..sort(
+          (a, b) => DateTime.parse(a[PrenatalFields.createdAt])
+              .compareTo(DateTime.parse(b[PrenatalFields.createdAt])),
+        );
+
+      // for (var p in prenatalsMap) {
+      //   log(DateFormat('hh:MM aa')
+      //       .format(DateTime.parse(p[PrenatalFields.createdAt]).toLocal())
+      //       .toString());
+      // }
+
+      if (prenatalsMap.isEmpty) {
+        throw Exception('Failed to fetch prenatal data. Status code: ${res.statusCode}');
+      }
+
+      // log(prenatalsMap.toString());
+
+      final currentHistory = prenatalsMap.firstWhere(
+        (t) {
+          log(t['id'].toString());
+          log(t['user_id'].toString());
+          log(id.toString());
+
+          return t['user_id'] == id;
+        },
+        orElse: () => throw Exception('No records found for user id: $id'),
       );
 
-    // for (var p in prenatalsMap) {
-    //   log(DateFormat('hh:MM aa')
-    //       .format(DateTime.parse(p[PrenatalFields.createdAt]).toLocal())
-    //       .toString());
-    // }
-
-    if (prenatalsMap.isEmpty) {
-      throw Exception('Failed to fetch prenatal data. Status code: ${res.statusCode}');
-    }
-
-    final currentHistory = prenatalsMap.firstWhere((t) => t['user_id'] == id);
-
-    List<Map<String, dynamic>> clinicVisits = [];
-    for (var prenatal in prenatalsMap) {
-      if (prenatal['user_id'] == id) {
-        clinicVisits.addAll((prenatal["clinic_visits"] as List).cast<Map<String, dynamic>>());
+      List<Map<String, dynamic>> clinicVisits = [];
+      for (var prenatal in prenatalsMap) {
+        if (prenatal['user_id'] == id) {
+          clinicVisits.addAll((prenatal["clinic_visits"] as List).cast<Map<String, dynamic>>());
+        }
       }
+
+      clinicVisits.sort(
+        (a, b) => DateTime.parse(b['created_at']).compareTo(DateTime.parse(a['created_at'])),
+      );
+
+      currentHistory['clinic_visits'] = clinicVisits;
+
+      // log(currentHistory.toString());
+
+      return PersonHistory.fromJson(currentHistory);
+    } on Exception catch (e, stackTrace) {
+      log("e");
+      log(e.toString(), stackTrace: stackTrace);
+      return null;
     }
-
-    clinicVisits.sort(
-      (a, b) => DateTime.parse(b['created_at']).compareTo(DateTime.parse(a['created_at'])),
-    );
-
-    currentHistory['clinic_visits'] = clinicVisits;
-
-    return PersonHistory.fromJson(currentHistory);
   }
 
   Future<List<Prenatal>> fetchAllPrenatalByLaravelUserId(

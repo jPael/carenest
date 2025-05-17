@@ -1,17 +1,15 @@
 import 'dart:developer';
 
 import 'package:flutter/material.dart';
-import 'package:flutter_auto_size_text/flutter_auto_size_text.dart';
 import 'package:provider/provider.dart';
 import 'package:smartguide_app/components/alert/alert.dart';
+import 'package:smartguide_app/components/barangay/barangay_selector.dart';
 import 'package:smartguide_app/components/button/custom_button.dart';
 import 'package:smartguide_app/components/form/custom_form.dart';
 import 'package:smartguide_app/components/input/custom_input.dart';
-import 'package:smartguide_app/models/new_user.dart';
 import 'package:smartguide_app/models/revamp/person_history.dart';
 import 'package:smartguide_app/services/laravel/prenatal_services.dart';
 import 'package:smartguide_app/services/laravel/revamp/prenatal_service.dart';
-import 'package:smartguide_app/utils/const_utils.dart';
 import 'package:smartguide_app/utils/utils.dart';
 
 import '../../../models/user.dart';
@@ -158,18 +156,23 @@ class CreateNewPrenatalPageState extends State<CreateNewPrenatalPage> {
                           return null;
                         },
                       ),
-                      CustomInput.text(
-                        context: context,
-                        label: "Barangay",
-                        controller: barangayController,
-                        validator: (p0) {
-                          if (p0 == null || p0.isEmpty) {
-                            return "This is required!";
-                          }
+                      BarangaySelector(
+                          barangayName: barangayController.text,
+                          onChange: (String? barangayName, String? barangayId) {
+                            barangayController.text = barangayName ?? "";
+                          }),
+                      // CustomInput.text(
+                      //   context: context,
+                      //   label: "Barangay",
+                      //   controller: barangayController,
+                      //   validator: (p0) {
+                      //     if (p0 == null || p0.isEmpty) {
+                      //       return "This is required!";
+                      //     }
 
-                          return null;
-                        },
-                      ),
+                      //     return null;
+                      //   },
+                      // ),
                       CustomInput.datepicker(
                           context: context,
                           label: "Date of Birth",

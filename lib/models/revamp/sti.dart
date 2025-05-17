@@ -10,5 +10,5 @@ class Sti {
   });
 
   static Sti fromJson(Map<String, dynamic> json) =>
-      Sti(id: json['id'], name: json['name'], description: json['description']);
+      Sti(id: json['id'], name: json['name'], description: json['description'] ?? "");
 }

@@ -59,12 +59,13 @@ class ItemGroup extends StatelessWidget {
                                 Flexible(
                                   child: Text(
                                     l[0]!,
-                                    style: const TextStyle(fontSize: 4 * 4),
+                                    style: const TextStyle(
+                                        fontSize: 4 * 4, fontWeight: FontWeight.bold),
                                   ),
                                 )
                               ],
                             ),
-                            if (l[1] != null)
+                            if (l[1] != null && l[1]!.isNotEmpty)
                               Padding(
                                 padding: const EdgeInsets.only(left: 4 * 4),
                                 child: Row(

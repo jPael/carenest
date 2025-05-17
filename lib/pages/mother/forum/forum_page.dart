@@ -56,10 +56,10 @@ class _ForumPageState extends State<ForumPage> {
           widget.label,
           style: const TextStyle(fontWeight: FontWeight.w500),
         ),
-        bottom: const PreferredSize(
-          preferredSize: Size.fromHeight(48 + 8 * 2), // example height
-          child: ForumToolbarSection(),
-        ),
+        // bottom: const PreferredSize(
+        //   preferredSize: Size.fromHeight(48 + 8 * 2), // example height
+        //   child: ForumToolbarSection(),
+        // ),
       ),
       floatingActionButton: FloatingActionButton.extended(
         onPressed: () => showPostButton(context),

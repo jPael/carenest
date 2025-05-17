@@ -12,8 +12,17 @@ class Person {
   String? address;
   DateTime? birthday;
   Barangay? barangay;
+  int? barangayId;
 
-  Person({this.id, this.name, this.phone, this.email, this.address, this.birthday, this.barangay});
+  Person(
+      {this.barangayId,
+      this.id,
+      this.name,
+      this.phone,
+      this.email,
+      this.address,
+      this.birthday,
+      this.barangay});
 
   void fromJson(Map<String, dynamic> json) {
     id = json[LaravelUserFields.id];
@@ -36,6 +45,7 @@ class Person {
         email: json[UserFields.email],
         address: json[UserFields.address],
         birthday: json['date_of_birth'],
+        barangayId: json['barangay_id'],
         barangay: json['barangay'] == null ? null : Barangay.fromJson(json['barangay']));
   }
 

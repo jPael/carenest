@@ -4,6 +4,7 @@ import 'package:smartguide_app/models/revamp/clinic_history.dart';
 import 'package:smartguide_app/models/revamp/laboratory.dart';
 import 'package:smartguide_app/models/revamp/treatments.dart';
 import 'package:smartguide_app/models/revamp/counseling.dart';
+import 'package:smartguide_app/services/laravel/revamp/prenatal_service.dart';
 
 class ThirdTrimester {
   static const String label = "Third Trimester";
@@ -113,5 +114,9 @@ class ThirdTrimester {
       counselings: counselings,
       healthServiceProvider: Person.fromJsonStatic(json['health_service_provider'])!,
     );
+  }
+
+  Future<void> store({required String token}) async {
+    await createThirdTrimesterClinicVisit(token: token, visit: this);
   }
 }

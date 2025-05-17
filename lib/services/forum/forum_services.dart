@@ -167,4 +167,37 @@ class ForumServices {
         await _firestore.collection("forums").doc(forumId).collection("replies").get();
     return repliesSnapshot.docs.length;
   }
+
+  Future<void> deleteForum(String docId) async {
+    try {
+      // Create a batch to perform multiple operations atomically
+      final batch = _firestore.batch();
+
+      // Reference to the forum document
+      final forumRef = _firestore.collection("forums").doc(docId);
+
+      // Delete all replies subcollection documents
+      final repliesSnapshot = await forumRef.collection("replies").get();
+      for (var doc in repliesSnapshot.docs) {
+        batch.delete(doc.reference);
+      }
+
+      // Delete all likes subcollection documents
+      final likesSnapshot = await forumRef.collection("likes").get();
+      for (var doc in likesSnapshot.docs) {
+        batch.delete(doc.reference);
+      }
+
+      // Finally delete the forum document itself
+      batch.delete(forumRef);
+
+      // Commit the batch
+      await batch.commit();
+
+      log("Forum $docId and its associated data deleted successfully");
+    } catch (e, stackTrace) {
+      log("Error deleting forum: $e", stackTrace: stackTrace);
+      throw Exception("Failed to delete forum");
+    }
+  }
 }

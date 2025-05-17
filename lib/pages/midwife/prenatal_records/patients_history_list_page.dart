@@ -22,7 +22,7 @@ class PatientsHistoryListPage extends StatefulWidget {
 class _PatientsHistoryListPageState extends State<PatientsHistoryListPage> {
   final PrenatalServices prenatalServices = PrenatalServices();
 
-  late final PersonHistory prenatals;
+  PersonHistory? prenatals;
   bool isLoading = false;
 
   Future<void> fetchPrenatals() async {
@@ -53,8 +53,10 @@ class _PatientsHistoryListPageState extends State<PatientsHistoryListPage> {
         title: Text("${widget.person.name!.split(" ").first}'s history"),
       ),
       floatingActionButton: FloatingActionButton.extended(
-        onPressed: () => Navigator.push(context,
-            MaterialPageRoute(builder: (context) => CreateNewPrenatalPage(person: prenatals))),
+        onPressed: prenatals == null
+            ? () {}
+            : () => Navigator.push(context,
+                MaterialPageRoute(builder: (context) => CreateNewPrenatalPage(person: prenatals!))),
         label: const Text("Create"),
         icon: const Icon(Icons.edit_rounded),
       ),
@@ -77,7 +79,7 @@ class _PatientsHistoryListPageState extends State<PatientsHistoryListPage> {
                 ),
               ),
             )
-          : prenatals.clinicVisits.isEmpty
+          : prenatals == null || prenatals!.clinicVisits.isEmpty
               ? const Padding(
                   padding: EdgeInsets.symmetric(vertical: 10 * 8.0),
                   child: Center(
@@ -88,10 +90,10 @@ class _PatientsHistoryListPageState extends State<PatientsHistoryListPage> {
                   ),
                 )
               : ListView.builder(
-                  itemCount: prenatals.clinicVisits.length,
+                  itemCount: prenatals!.clinicVisits.length,
                   padding: const EdgeInsets.all(8 * 3),
                   itemBuilder: (context, index) {
-                    final ClinicHistory currPrenatal = prenatals.clinicVisits[index];
+                    final ClinicHistory currPrenatal = prenatals!.clinicVisits[index];
 
                     return Container(
                       margin: const EdgeInsets.symmetric(vertical: 4),

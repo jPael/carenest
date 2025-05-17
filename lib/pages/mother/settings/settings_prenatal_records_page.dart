@@ -99,7 +99,7 @@ class _SettingsPrenatalRecordsPageState extends State<SettingsPrenatalRecordsPag
     }
   }
 
-  late final PersonHistory prenatals;
+  PersonHistory? prenatals;
   bool isHistoryLoading = false;
 
   Future<void> fetchPrenatals() async {
@@ -206,7 +206,7 @@ class _SettingsPrenatalRecordsPageState extends State<SettingsPrenatalRecordsPag
                                 ),
                               ),
                             )
-                          else if (prenatals.clinicVisits.isEmpty)
+                          else if (prenatals == null || prenatals!.clinicVisits.isEmpty)
                             const Padding(
                               padding: EdgeInsets.symmetric(vertical: 80),
                               child: Center(child: Text("No records found")),
@@ -214,7 +214,7 @@ class _SettingsPrenatalRecordsPageState extends State<SettingsPrenatalRecordsPag
                           else
                             Column(
                               children: [
-                                for (final currPrenatal in prenatals.clinicVisits)
+                                for (final currPrenatal in prenatals!.clinicVisits)
                                   Card(
                                     margin: const EdgeInsets.only(bottom: 8),
                                     child: InkWell(
@@ -240,7 +240,7 @@ class _SettingsPrenatalRecordsPageState extends State<SettingsPrenatalRecordsPag
                                                     style: TextStyle(fontSize: 16),
                                                   ),
                                                 ),
-                                                if (prenatals.clinicVisits.indexOf(currPrenatal) ==
+                                                if (prenatals!.clinicVisits.indexOf(currPrenatal) ==
                                                     0)
                                                   Container(
                                                     padding: const EdgeInsets.symmetric(

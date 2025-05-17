@@ -57,13 +57,13 @@ class _RemindersPageState extends State<RemindersPage> {
           child: CustomSection(
         isLoading: isLoading,
         isLoadingWidget: loadingSkeleton(),
+        headerSpacing: 0,
         children: [
           isLoading
               ? const SizedBox()
               : Padding(
-                  padding: const EdgeInsets.symmetric(horizontal: 8.0 * 2),
+                  padding: const EdgeInsets.symmetric(horizontal: 8.0),
                   child: Column(
-                    spacing: 8 * 3,
                     children: [
                       // RemindersCalendarSection(),
                       // SizedBox(

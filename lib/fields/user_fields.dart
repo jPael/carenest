@@ -4,6 +4,7 @@ class UserFields {
   static String get lastname => "lastname";
   static String get phoneNumber => "phoneNumber";
   static String get address => "address";
+  static String get barangayId => "barangay_id";
   static String get dateOfBirth => "dateOfBirth";
   static String get userType => "userType";
   static String get email => "email";

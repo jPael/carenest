@@ -34,7 +34,12 @@ class MultiDataInput extends StatelessWidget {
                   fontSize: 4 * 4,
                 ),
               ),
-              IconButton(onPressed: handleAddController, icon: const Icon(Icons.add_rounded))
+              IconButton(
+                  onPressed: handleAddController,
+                  icon: Icon(
+                    Icons.add_rounded,
+                    color: Colors.black.withValues(alpha: 0.5),
+                  ))
             ],
           ),
           ...controllers.toList().asMap().entries.map((entry) {
@@ -50,6 +55,7 @@ class MultiDataInput extends StatelessWidget {
                       child: CustomInput.text(
                         context: context,
                         label: "Name",
+                        hint: "(N/A) if none",
                         controller: l['name'],
                         validator: (p0) {
                           if (p0 == null || p0.isEmpty) return "This is required!";
@@ -59,7 +65,10 @@ class MultiDataInput extends StatelessWidget {
                     ),
                     IconButton(
                       onPressed: () => handleRemoveController(index),
-                      icon: const Icon(Icons.remove_rounded),
+                      icon: Icon(
+                        Icons.remove_rounded,
+                        color: Colors.black.withValues(alpha: 0.5),
+                      ),
                     ),
                   ],
                 ),
@@ -67,6 +76,7 @@ class MultiDataInput extends StatelessWidget {
                   CustomInput.text(
                     context: context,
                     label: "Description",
+                    hint: "(N/A) if none",
                     maxLines: 3,
                     controller: l['description'],
                     textInputType: TextInputType.multiline,

@@ -1,10 +1,12 @@
 import 'dart:developer';
 
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 import 'package:smartguide_app/components/midwife/prenatal_records/midwife_prenatal_records_items.dart';
 import 'package:smartguide_app/components/midwife/prenatal_records/midwife_prenatal_records_search_bar.dart';
 import 'package:smartguide_app/components/section/custom_section.dart';
 import 'package:smartguide_app/models/person.dart';
+import 'package:smartguide_app/models/user.dart';
 import 'package:smartguide_app/services/laravel/mother_services.dart';
 
 class PrenatalRecordsListPage extends StatefulWidget {
@@ -32,12 +34,14 @@ class _PrenatalRecordsListPageState extends State<PrenatalRecordsListPage> {
     setState(() {
       isLoading = true;
     });
-    // final User user = context.read<User>();
+    final User user = context.read<User>();
 
     // final PrenatalServices prenatalServices = PrenatalServices();
     // final M m = M();
 
-    originMothers = await fetchAllMothers();
+    log("b Id: ${user.barangayId}");
+
+    originMothers = await fetchAllMothers(barangay: user.address);
 
     setState(() {
       mothers = originMothers;
@@ -74,8 +78,6 @@ class _PrenatalRecordsListPageState extends State<PrenatalRecordsListPage> {
                 ...mothers.map((p) => MidwifePrenatalRecordsItems(
                       mother: p,
                     ))
-
-              
             ],
           ),
         ),
