@@ -6,12 +6,11 @@ Uri get apiURIBase {
     return Uri(scheme: "https", host: dotenv.env['REMOTE_BACKEND_API']!);
   } else {
     return Uri(
-      scheme: "https",
-      host: dotenv.env['REMOTE_BACKEND_API']!,
-      // scheme: "http",
-      // host: dotenv.env['LOCAL_BACKEND_API']!,
-      // port: int.parse(dotenv.env['LOCAL_BACKEND_PORT']!)
-    );
+        // scheme: "https",
+        // host: dotenv.env['REMOTE_BACKEND_API']!,
+        scheme: "http",
+        host: dotenv.env['LOCAL_BACKEND_API']!,
+        port: int.parse(dotenv.env['LOCAL_BACKEND_PORT']!));
   }
 }
 

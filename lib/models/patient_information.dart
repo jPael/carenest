@@ -47,8 +47,8 @@ class PatientInformation {
       birthday: DateTime.parse(json['date_of_birth']),
       userId: json[LaravelUserFields.userId],
       id: json[PatientInformationFields.id],
-      philhealth: json[PatientInformationFields.philhealth],
-      nhts: json[PatientInformationFields.nhts],
+      philhealth: json[PatientInformationFields.philhealth] ?? "",
+      nhts: json[PatientInformationFields.nhts] ?? "",
       lmp: json[PatientInformationFields.lmp] != null
           ? DateTime.parse(json[PatientInformationFields.lmp]).toLocal()
           : DateTime.now(),

@@ -158,25 +158,11 @@ class _PatientInformationFormState extends State<PatientInformationForm> {
                         readonly: widget.isReadonly,
                         context: context,
                         controller: widget.philhealthController,
-                        validator: (v) {
-                          if (v == null || v.isEmpty) {
-                            return "Please enter your first name";
-                          }
-
-                          return null;
-                        },
                         label: "PhilHealth ID"),
                     CustomInput.text(
                         readonly: widget.isReadonly,
                         context: context,
                         controller: widget.nhtsController,
-                        validator: (v) {
-                          if (v == null || v.isEmpty) {
-                            return "Please enter your first name";
-                          }
-
-                          return null;
-                        },
                         label: "NHTS ID"),
                   ])
             ],

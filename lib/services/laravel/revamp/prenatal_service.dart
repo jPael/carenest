@@ -62,6 +62,7 @@ Future<void> createFirsTrimesterClinicVisit(
     Alert.showSuccessMessage(message: "Clinic visit has beem created successfully");
   } else {
     Alert.showErrorMessage(message: json['message']);
+    log(json['message'].toString());
     log(json['error']);
     log(json['data'].toString());
   }
@@ -198,11 +199,11 @@ Future<void> createClinicHistory(
     "barangay_name": barangay,
   };
 
-  // log(payload.toString());
+  log(payload.toString());
 
   final url = apiURIBase.replace(path: LaravelPaths.createClinicHistory);
 
-  // log(url.toString());
+  log(url.toString());
 
   final res = await http.post(url,
       headers: {

@@ -269,12 +269,6 @@ class PrenatalServices {
               .compareTo(DateTime.parse(b[PrenatalFields.createdAt])),
         );
 
-      // for (var p in prenatalsMap) {
-      //   log(DateFormat('hh:MM aa')
-      //       .format(DateTime.parse(p[PrenatalFields.createdAt]).toLocal())
-      //       .toString());
-      // }
-
       if (prenatalsMap.isEmpty) {
         throw Exception('Failed to fetch prenatal data. Status code: ${res.statusCode}');
       }

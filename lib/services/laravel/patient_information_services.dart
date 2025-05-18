@@ -68,6 +68,7 @@ Future<int> storePatientInformation(
   log(payload.toString());
   try {
     final Uri url = apiURIBase.replace(path: LaravelPaths.createMotherPatientInformation);
+    log(url.toString());
 
     final res = await http.post(url,
         headers: {

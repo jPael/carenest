@@ -80,8 +80,8 @@ class _SettingsPrenatalRecordsPageState extends State<SettingsPrenatalRecordsPag
           birthday: DateTime.parse(user.dateOfBirth!),
           nhts: nhtsController.text,
           userId: user.laravelId!,
-          lmp: lmp!,
-          edc: edc!,
+          lmp: lmp ?? DateTime.now(),
+          edc: edc ?? DateTime.now(),
           obStatus: obStatusController.text);
 
       final Map<String, dynamic> res =

@@ -50,6 +50,9 @@ class CreateNewPrenatalPageState extends State<CreateNewPrenatalPage> {
           edc: edc!,
           userId: widget.person.userId,
           token: user.token!);
+
+      Navigator.pop(context);
+      Navigator.pop(context);
     } catch (e, stackTrace) {
       Alert.showErrorMessage(message: "Something went wrong. Please try again");
       log(e.toString(), stackTrace: stackTrace);
@@ -77,14 +80,14 @@ class CreateNewPrenatalPageState extends State<CreateNewPrenatalPage> {
     super.initState();
 
     fullnameController.text = widget.person.user?.name ?? "";
-    ageController.text = widget.person.user?.birthday != null
-        ? calculateAge(widget.person.user!.birthday!).toString()
+    ageController.text = widget.person.dateOfBirth != null
+        ? calculateAge(widget.person.dateOfBirth!).toString()
         : "";
     obStatusController.text = widget.person.obStatus;
-    log("${widget.person.user?.birthday}");
+    log("${widget.person.dateOfBirth}");
     // log("${widget.person.user?.barangay?.name}");
     barangayController.text = widget.person.user?.barangay?.name ?? "";
-    birthday = widget.person.user?.birthday;
+    birthday = widget.person.dateOfBirth;
     lmp = widget.person.lmp;
     edc = widget.person.edc;
 

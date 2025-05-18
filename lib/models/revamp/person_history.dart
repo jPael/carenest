@@ -1,3 +1,5 @@
+import 'dart:developer';
+
 import 'package:smartguide_app/models/person.dart';
 import 'package:smartguide_app/models/revamp/clinic_history.dart';
 
@@ -9,6 +11,7 @@ class PersonHistory {
   final DateTime lmp;
   final DateTime edc;
   final int userId;
+  final DateTime? dateOfBirth;
   final Person? user;
   final DateTime createdAt;
   final DateTime updatedAt;
@@ -16,6 +19,7 @@ class PersonHistory {
   final List<ClinicHistory> clinicVisits;
 
   PersonHistory({
+    this.dateOfBirth,
     required this.id,
     required this.philHealth,
     required this.nhts,
@@ -30,7 +34,7 @@ class PersonHistory {
   });
 
   static PersonHistory fromJson(Map<String, dynamic> json) {
-    // log(json.toString());
+    // log("fromjson: " + json.toString());
     final List<dynamic> clinicVisitsJson = json['clinic_visits'];
 
     List<ClinicHistory> history;
@@ -43,12 +47,13 @@ class PersonHistory {
 
     return PersonHistory(
         id: json['id'],
-        philHealth: json['philhealt'],
-        nhts: json['nhts'],
+        philHealth: json['philhealt'] ?? "",
+        nhts: json['nhts'] ?? "",
         obStatus: json['ob_status'],
         lmp: DateTime.parse(json['lmp']),
         user: Person.fromJsonStatic({...json['user'], "date_of_birth ": json['date_of_birth']}),
         edc: DateTime.parse(json['edc']),
+        dateOfBirth: json['date_of_birth'] == null ? null : DateTime.parse(json['date_of_birth']),
         userId: json['user_id'],
         createdAt: DateTime.parse(json['created_at']),
         updatedAt: DateTime.parse(json['updated_at']),
